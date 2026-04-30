@@ -1,0 +1,57 @@
+# Tee time search targets.
+#
+# Each [[targets]] block is one configured destination — typically one
+# tenant on one booking platform, possibly covering multiple courses
+# at that tenant (CPS Westminster covers 3 courses in one API call).
+#
+# The `params` table is platform-specific; see each adapter's docstring
+# for what it expects. As more adapters land, more targets light up
+# automatically (see config.py — unknown adapters are skipped with a
+# warning until their implementation is added).
+
+# ──────────────────────────────────────────────────────────────────────
+# CPS / Club Prophet Systems  (*.cps.golf)
+# ──────────────────────────────────────────────────────────────────────
+
+[[targets]]
+slug = "westminster"
+name = "Westminster (Legacy Ridge + Walnut Creek)"
+adapter = "cps"
+timezone = "America/Denver"
+booking_url = "https://cityofwestminster.cps.golf/onlineresweb/search-teetime"
+
+  [targets.params]
+  tenant = "cityofwestminster"
+  website_id = "be7f2728-0758-4a72-fe80-08d97849167d"
+  api_key = "8ea2914e-cac2-48a7-a3e5-e0f41350bf3a"
+  site_id = 2
+  # Legacy Ridge (1), Walnut Creek (2), Legacy Ridge Back 9 (4)
+  course_ids = [1, 2, 4]
+
+# TODO: Fossil Trace — needs a 30s recon run against fossiltrace.cps.golf
+# to capture its website_id / api_key / site_id / course_ids. See
+# investigation/capture.py.
+
+# ──────────────────────────────────────────────────────────────────────
+# Other platforms — added as their adapters land.
+# IDs already discovered during recon (see investigation/*_summary.txt):
+#
+#   TeeItUp/Kenna:
+#     - CommonGround: facility id TBD (re-run recon — site uses Kenna)
+#     - Riverdale:    facility id 1016, x-be-alias "riverdale"
+#
+#   MemberSports (api.membersports.com, x-api-key A9814038-...147FC):
+#     - Fox Hollow:   golfClubId 3703, golfCourseId 20589
+#     - Denver group (golfClubGroupId 1):
+#         City Park   golfClubId 3660, golfCourseId 4711
+#         Wellshire   golfClubId 3831, golfCourseId 4928
+#         Willis Case golfClubId 3833, golfCourseId 4932
+#
+#   Noteefy:
+#     - Broadlands: course_id "CO_The_Broadlands"
+#       (POST booking-engine.noteefy.app/tee-times/availability — needs
+#        curl_cffi Chrome impersonation for Cloudflare TLS)
+#
+#   Quick18:
+#     - Thorncreek: form POST to thorncreek.quick18.com/teetimes/searchmatrix
+#       (CourseId=693, regex extract from response HTML)
