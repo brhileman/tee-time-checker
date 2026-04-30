@@ -128,14 +128,20 @@ def _parse_slot(slot: dict[str, Any], target: Target, criteria: SearchCriteria) 
     """Convert a CPS slot dict into our normalized TeeTime, or None to drop it.
 
     Drops slots that:
-    - are already booked (`bookingList` is non-empty),
-    - don't have enough remaining capacity for the requested party size.
+    - are already booked (`bookingList` is non-empty), or
+    - have a per-slot party-size policy that excludes the requested size.
+
+    Important: `participants` (always 4) is hardware capacity and useless
+    for filtering. The real constraint is the `minPlayer`/`maxPlayer` pair,
+    which mirrors the "1 - 2 GOLFERS" style label on the booking page.
     """
     if slot.get("bookingList"):
         return None
 
-    capacity: int = slot.get("participants", 0)
-    if capacity < criteria.players:
+    min_players: int = slot.get("minPlayer", 1)
+    max_players: int = slot.get("maxPlayer", slot.get("participants", 4))
+
+    if not (min_players <= criteria.players <= max_players):
         return None
 
     # CPS returns "2026-05-03T16:20:00" — naive ISO. Tag it with the
@@ -144,21 +150,40 @@ def _parse_slot(slot: dict[str, Any], target: Target, criteria: SearchCriteria) 
         tzinfo=ZoneInfo(target.timezone)
     )
 
-    rate = slot.get("defaultBookingRate") or {}
-    price_min = rate.get("greenFeeWalking") or rate.get("baseRate")
-    price_max = rate.get("greenFeeRiding") or price_min
+    # Best-effort price extraction: shItemPrices contains line items keyed
+    # by shItemCode (GreenFee18, GreenFee9, HalfCart18, etc.). For our
+    # summary we want the green fee for the user's holes choice; carts and
+    # other add-ons aren't included. A range comes from comparing against
+    # any 9-hole rate when both are present.
+    price_min, price_max = _extract_prices(slot.get("shItemPrices") or [], criteria.holes)
 
     return TeeTime(
         course_name=slot.get("courseName") or target.name,
         course_slug=target.slug,
         start_time=start_local,
-        max_players=capacity,
+        min_players=min_players,
+        max_players=max_players,
         holes=slot.get("holes", criteria.holes),
         booking_url=target.booking_url,
-        price_min=_as_float(price_min),
-        price_max=_as_float(price_max),
+        price_min=price_min,
+        price_max=price_max,
         raw=slot,
     )
+
+
+def _extract_prices(items: list[dict[str, Any]], holes: int) -> tuple[float | None, float | None]:
+    """Pull the green-fee for the requested holes from CPS rate line items.
+
+    Returns (min, max). For now they're equal — CPS exposes one green-fee
+    rate per slot per duration. We keep the tuple shape for future
+    multi-rate platforms (twilight vs prime, member vs guest, etc.).
+    """
+    code = "GreenFee9" if holes == 9 else "GreenFee18"
+    for item in items:
+        if item.get("shItemCode") == code:
+            price = _as_float(item.get("displayPrice") or item.get("price"))
+            return price, price
+    return None, None
 
 
 def _format_search_date(d) -> str:

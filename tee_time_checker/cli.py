@@ -150,13 +150,14 @@ def _print_result(result: SearchResult) -> None:
         preview = slots[: min(6, len(slots))]
         for tt in preview:
             t = tt.start_time.strftime("%I:%M %p").lstrip("0").lower()
+            players = _format_players(tt.min_players, tt.max_players)
             price = ""
             if tt.price_min is not None:
                 if tt.price_max is not None and tt.price_max != tt.price_min:
                     price = f" — ${tt.price_min:.0f}–${tt.price_max:.0f}"
                 else:
                     price = f" — ${tt.price_min:.0f}"
-            print(f"      {t}  up to {tt.max_players} players{price}")
+            print(f"      {t}  {players}{price}")
         if len(slots) > len(preview):
             print(f"      … +{len(slots) - len(preview)} more")
         print()
@@ -165,6 +166,14 @@ def _print_result(result: SearchResult) -> None:
         print("Errors:")
         for e in result.errors:
             print(f"  {e.target.slug}: {e.error}")
+
+
+def _format_players(min_p: int, max_p: int) -> str:
+    """Format a slot's allowed party size, mirroring booking-site phrasing."""
+    if min_p == max_p:
+        unit = "player" if min_p == 1 else "players"
+        return f"{min_p} {unit} only"
+    return f"{min_p}-{max_p} players"
 
 
 if __name__ == "__main__":

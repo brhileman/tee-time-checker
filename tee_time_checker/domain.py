@@ -73,7 +73,8 @@ class TeeTime:
     course_name: str
     course_slug: str       # which configured target produced this
     start_time: datetime   # tz-aware, in course-local time
-    max_players: int       # how many slots are open at this time
+    min_players: int       # minimum party size the slot will accept
+    max_players: int       # maximum party size (min and max can equal — single-player only)
     holes: int
     booking_url: str | None = None      # deep-link the user can tap to book
     price_min: float | None = None
