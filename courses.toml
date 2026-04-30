@@ -33,19 +33,66 @@ booking_url = "https://cityofwestminster.cps.golf/onlineresweb/search-teetime"
 # investigation/capture.py.
 
 # ──────────────────────────────────────────────────────────────────────
+# MemberSports (`api.membersports.com`)
+# ──────────────────────────────────────────────────────────────────────
+# Per-(group_id, date) responses are cached inside the adapter, so
+# multiple targets in the same group only cost one HTTP call per search.
+
+[[targets]]
+slug = "city-park"
+name = "City Park"
+adapter = "membersports"
+timezone = "America/Denver"
+booking_url = "https://app.membersports.com/tee-times/3660/4711/1"
+
+  [targets.params]
+  group_id = 1
+  club_id = 3660
+  course_id = 4711
+
+[[targets]]
+slug = "wellshire"
+name = "Wellshire"
+adapter = "membersports"
+timezone = "America/Denver"
+booking_url = "https://app.membersports.com/tee-times/3831/4928/1"
+
+  [targets.params]
+  group_id = 1
+  club_id = 3831
+  course_id = 4928
+
+[[targets]]
+slug = "willis-case"
+name = "Willis Case"
+adapter = "membersports"
+timezone = "America/Denver"
+booking_url = "https://app.membersports.com/tee-times/3833/4932/1"
+
+  [targets.params]
+  group_id = 1
+  club_id = 3833
+  course_id = 4932
+
+[[targets]]
+slug = "fox-hollow"
+name = "Fox Hollow"
+adapter = "membersports"
+timezone = "America/Denver"
+booking_url = "https://app.membersports.com/tee-times/3703/20589/0"
+
+  [targets.params]
+  group_id = 7
+  club_id = 3703
+  course_id = 20589
+
+# ──────────────────────────────────────────────────────────────────────
 # Other platforms — added as their adapters land.
 # IDs already discovered during recon (see investigation/*_summary.txt):
 #
 #   TeeItUp/Kenna:
 #     - CommonGround: facility id TBD (re-run recon — site uses Kenna)
 #     - Riverdale:    facility id 1016, x-be-alias "riverdale"
-#
-#   MemberSports (api.membersports.com, x-api-key A9814038-...147FC):
-#     - Fox Hollow:   golfClubId 3703, golfCourseId 20589
-#     - Denver group (golfClubGroupId 1):
-#         City Park   golfClubId 3660, golfCourseId 4711
-#         Wellshire   golfClubId 3831, golfCourseId 4928
-#         Willis Case golfClubId 3833, golfCourseId 4932
 #
 #   Noteefy:
 #     - Broadlands: course_id "CO_The_Broadlands"

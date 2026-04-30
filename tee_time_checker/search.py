@@ -21,17 +21,21 @@ from dataclasses import dataclass
 
 from tee_time_checker.adapters.base import Adapter, Target
 from tee_time_checker.adapters.cps import CPSAdapter
+from tee_time_checker.adapters.membersports import MemberSportsAdapter
 from tee_time_checker.domain import SearchCriteria, TeeTime
 
 
 def build_default_registry() -> dict[str, Adapter]:
-    """Map adapter name -> singleton instance.
+    """Map adapter name -> instance for one search round.
 
-    Add new adapters here as they land. The names here are the source of
-    truth for `Target.adapter` values in courses.toml.
+    Adapter instances may carry per-round caches (see MemberSports — its
+    response cache is shared across sibling-course targets). Build fresh
+    per orchestrator call so the cache lifetime matches one search.
+    Names here are the source of truth for `Target.adapter` in courses.toml.
     """
     return {
         "cps": CPSAdapter(),
+        "membersports": MemberSportsAdapter(),
     }
 
 
