@@ -128,12 +128,19 @@ def _parse_slot(slot: dict[str, Any], target: Target, criteria: SearchCriteria) 
     """Convert a CPS slot dict into our normalized TeeTime, or None to drop it.
 
     Drops slots that:
-    - are already booked (`bookingList` is non-empty), or
-    - have a per-slot party-size policy that excludes the requested size.
+    - are already booked (`bookingList` is non-empty),
+    - have a per-slot party-size policy that excludes the requested size, or
+    - don't support the requested round length (9 vs 18 holes).
 
     Important: `participants` (always 4) is hardware capacity and useless
     for filtering. The real constraint is the `minPlayer`/`maxPlayer` pair,
     which mirrors the "1 - 2 GOLFERS" style label on the booking page.
+
+    For the hole count: `slot["holes"]` is the parent course total, not
+    the slot's bookable length. The reliable signals are the booleans
+    `isContain18HoleItems` / `isContain9HoleItems`. For Westminster every
+    slot has both flags true (player chooses at booking), but other CPS
+    tenants may have 9-only or 18-only slots and we shouldn't leak them.
     """
     if slot.get("bookingList"):
         return None
@@ -144,6 +151,26 @@ def _parse_slot(slot: dict[str, Any], target: Target, criteria: SearchCriteria) 
     if not (min_players <= criteria.players <= max_players):
         return None
 
+    # Default both to True if missing — keep the slot if we can't tell;
+    # better to surface a slightly-wrong slot than drop a real match.
+    has_18 = slot.get("isContain18HoleItems", True)
+    has_9 = slot.get("isContain9HoleItems", True)
+    if criteria.holes == 18 and not has_18:
+        return None
+    if criteria.holes == 9 and not has_9:
+        return None
+
+    # When a slot supports both, the user picks at booking time so we
+    # report whatever they asked for; pinned slots use their actual length.
+    if has_18 and has_9:
+        slot_holes = criteria.holes
+    elif has_18:
+        slot_holes = 18
+    elif has_9:
+        slot_holes = 9
+    else:
+        slot_holes = criteria.holes
+
     # CPS returns "2026-05-03T16:20:00" — naive ISO. Tag it with the
     # course's timezone so window filtering compares like-for-like.
     start_local = datetime.fromisoformat(slot["startTime"]).replace(
@@ -153,9 +180,8 @@ def _parse_slot(slot: dict[str, Any], target: Target, criteria: SearchCriteria) 
     # Best-effort price extraction: shItemPrices contains line items keyed
     # by shItemCode (GreenFee18, GreenFee9, HalfCart18, etc.). For our
     # summary we want the green fee for the user's holes choice; carts and
-    # other add-ons aren't included. A range comes from comparing against
-    # any 9-hole rate when both are present.
-    price_min, price_max = _extract_prices(slot.get("shItemPrices") or [], criteria.holes)
+    # other add-ons aren't included.
+    price_min, price_max = _extract_prices(slot.get("shItemPrices") or [], slot_holes)
 
     return TeeTime(
         course_name=slot.get("courseName") or target.name,
@@ -163,7 +189,7 @@ def _parse_slot(slot: dict[str, Any], target: Target, criteria: SearchCriteria) 
         start_time=start_local,
         min_players=min_players,
         max_players=max_players,
-        holes=slot.get("holes", criteria.holes),
+        holes=slot_holes,
         booking_url=target.booking_url,
         price_min=price_min,
         price_max=price_max,
