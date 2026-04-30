@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual envs
+.venv/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# OS / editors
+.DS_Store
+.vscode/
+.idea/
+*.swp
+
+# Claude Code per-machine settings
+.claude/settings.local.json
+
+# Investigation captures (regenerable; screenshots are large)
+investigation/*_screenshot.png
+investigation/*.html

@@ -1,0 +1,46 @@
+[
+  {
+    "id": 1016,
+    "courseId": "54f14bac0c8ad60378b01412",
+    "checkinInstructions": "",
+    "isSimulator": false,
+    "name": "Riverdale Dunes Golf Course",
+    "timeZone": "America/Denver",
+    "address": "13300 Riverdale Road, Brighton, CO 80601, US",
+    "locality": "Brighton",
+    "region": "CO",
+    "country": "US",
+    "location": [
+      -104.8756543,
+      39.9362925
+    ],
+    "currency": "USD",
+    "phone": "(303) 659-6700",
+    "email": "jeff@riverdalegolf.com",
+    "description": "<p>Riverdale Golf boasts two beautifully unique courses, the Dunes and the Knolls. Located merely 20 miles from Denver in majestic Brighton Colorado, Riverdale gives golfers a memorable, relaxing experience with each round.</p>\n<p>The professional staff at Riverdale is here to serve all of your lesson needs. Our instructors have the knowledge and experience to help golfers of all levels and abilities. The banquet room can accommodate up to 228 guests, including a dance floor and 2 full service bars.</p>\n",
+    "policy": "Riverdale Golf is pleased to offer, for the convenience of our customers, tee time reservations online. Please take a moment to consider the following policies before making your tee time reservation: \n\nProper golf attire is required. Soft Spikes or Spikeless are mandatory! \nGREENS FEES \u2013 (Proof of Adams County residency required for Resident fees) \nYou can book tee times online 8 days in advance. 7 days in advance for phone calls. \nName, address, phone #, credit card #, and email address are all required when booking a tee time. \nAll players starting on the front nine before 2:00 pm on Fri., Sat., and Sunday must play 18 holes. Nine hole play is limited to the back nine early and after 2:00 pm (Call the golf shop for specific details.) \nSingles can only book tee times with an already existing threesome. \nYou may only book two tee times per customer. The course reserves the right to cancel any additional tee times booked under the same name or credit card number. \nCancellations and/or modifications to your tee time must be made 24 hours in advance over the phone, (303) 659-4700. If this is not done your credit card will be charged for the non-resident rate for the amount of spots booked and not used. \nYou will receive an email confirmation when booking a tee time. If you call and cancel a tee time you will also receive email notification of your cancellation. \nRiverdale reserves the right to cancel, or modify any person\u2019s tee times if the above rules are not followed. \nUse of the online tee-time reservation service constitutes agreement with the above outlined policies.",
+    "image": "https://x8t5x9a4.ssl.hwcdn.net/app/ttf/image/hdm/1016.jpg"
+  },
+  {
+    "id": 1017,
+    "courseId": "54f14bac0c8ad60378b01414",
+    "checkinInstructions": "",
+    "isSimulator": false,
+    "name": "Riverdale Knolls Golf Course",
+    "timeZone": "America/Denver",
+    "address": "13300 Riverdale Road, Brighton, CO 80601 US",
+    "locality": "Brighton",
+    "region": "CO",
+    "country": "US",
+    "location": [
+      -104.877301,
+      39.937448
+    ],
+    "currency": "USD",
+    "phone": "+13036596700",
+    "email": null,
+    "description": "<p>Riverdale Golf boasts two beautifully unique courses, the Dunes and the Knolls. Located merely 20 miles from Denver in majestic Brighton Colorado, Riverdale gives golfers a memorable, relaxing experience with each round.</p>\n<p>The professional staff at Riverdale is here to serve all of your lesson needs. Our instructors have the knowledge and experience to help golfers of all levels and abilities. The banquet room can accommodate up to 228 guests, including a dance floor and 2 full service bars.</p>\n",
+    "policy": "\r\nWe ask that our customers adhere to golf course dress code \r\n\t- No denim allowed\r\n\t- Collared shirt is require\r\n\t- Bermuda Shorts Only\r\n\t- Soft spikes only\r\n\r\nPlease call (303)659-4700 for customer service.",
+    "image": "https://x8t5x9a4.ssl.hwcdn.net/app/ttf/image/hdm/1017.jpg"
+  }
+]

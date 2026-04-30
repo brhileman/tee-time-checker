@@ -1,0 +1,20 @@
+slug: quick18
+total interesting requests: 3
+  JSON: 1    other: 2
+
+API hosts:
+    1  thorncreek.dailydeals.golf
+
+================================================================================
+JSON CALLS
+================================================================================
+
+POST https://thorncreek.dailydeals.golf/widget/load
+  status: 200  body_file: 01.json
+  preview: {"cssFiles": ["https://fonts.googleapis.com/css?family=Fira+Sans:400,600,700", "https://fonts.googleapis.com/icon?family=Material+Icons", "https://thorncreek.dailydeals.golf/content/ws/1811/css/widget?ver=638858494540000000"], "jsFiles": ["https://thorncreek.dailydeals.golf/scripts/sagacitywidgetcom
+
+================================================================================
+OTHER
+================================================================================
+GET 200 https://thorncreek.quick18.com/teetimes/searchmatrix
+POST 204 https://analytics.google.com/g/collect?v=2&tid=G-J5ZLERX7SR&gtm=45je64s1v9116248798z8852556961za20gzb852556961zd852556961&_p=1777564003903&_gaz=1&gcd=13l3l3l3l1l1&npa=0&_ng=1&dma=0&_eu=AAAAAGA&are=1&cid=1535056563.1777564004&frm=0&pscdl=noapi&rcb=18&sr=1280x900&uaa=x86&uab=64&uafvl=HeadlessChrome%3B147.0.7727.15%7CNot.A%252FBrand%3B8.0.0.0%7CChromium%3B147.0.7727.15&uam=&uamb=0&uap=macOS&uapv=10.15.7&uaw=0&ul=en-us&gaf=2&_s=1&tag_exp=0~115938466~115938468~116363097~117266400~117384405~117512543~118463261&sid=1777564004&sct=1&seg=0&dl=https%3A%2F%2Fthorncreek.quick18.com%2Fteetimes%2Fsearchmatrix&dt=Search&_tu=QA&en=page_view&_fv=1&_nsi=1&_ss=1&tfd=1129

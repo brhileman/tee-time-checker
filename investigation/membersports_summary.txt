@@ -1,0 +1,98 @@
+slug: membersports
+total interesting requests: 19
+  JSON: 16    other: 3
+
+API hosts:
+   16  api.membersports.com
+
+================================================================================
+JSON CALLS
+================================================================================
+
+GET https://api.membersports.com/api/v1/golfclubs/golfCourse/20589/rotationInfo
+  status: 200  body_file: 01.json
+  authorization: Bearer null...
+  preview: {"golfCourseId": 20589, "rotationTypeId": 2, "showIndividualClubOnlineBooking": false}
+
+GET https://api.membersports.com/api/v1/golfclubs/3703/maxReserveDays
+  status: 200  body_file: 02.json
+  authorization: Bearer null...
+  preview: 14
+
+GET https://api.membersports.com/api/v1/golfclubs/3703/name
+  status: 200  body_file: 03.json
+  authorization: Bearer null...
+  preview: "Fox Hollow Golf Course"
+
+GET https://api.membersports.com/api/v1/golfclubs/golfClubIsPrivate/3703
+  status: 200  body_file: 04.json
+  authorization: Bearer null...
+  preview: false
+
+GET https://api.membersports.com/api/v1/golfClubs/golfCourseImage/20589
+  status: 200  body_file: 05.json
+  authorization: Bearer null...
+  preview: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAyAAAAFoCAYAAACv5J9AAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAADIKADAAQAAAABAAABaAAAAADl33+8AABAAElEQVR4AeydB5xTxRPHJ7nkej+O46hHlw5SFFABAVFEEVTs2HvD3vjbG4qKvSv2hl1ARVFBVEQ6WOidg+u9JJf8Zx4eUpK8Tb3cy28/n
+
+GET https://api.membersports.com/api/v1/golfClubs/3703/golfClubGroup
+  status: 200  body_file: 06.json
+  authorization: Bearer null...
+  preview: {"golfClubGroupId": 7, "name": "Golf Lakewood", "buttonText": "Golf Lakewood", "golfGroupImage": null, "showIndividualClubOnlineBooking": false, "maximumDailyTeeTimes": -1, "courses": [{"golfCourseId": 20589, "golfClubId": 3703, "name": "Fox Hollow", "holes": 27, "par": 107, "golfCourseTypeId": 5, "
+
+GET https://api.membersports.com/api/v1/golfclubs/3703/golfCourses/20589/types/0/teesheetparameters
+  status: 200  body_file: 07.json
+  authorization: Bearer null...
+  preview: [{"golfCourseName": "Fox Hollow", "isSelected": true, "teeSheetParametersId": 12201, "golfCourseId": 20589, "configurationTypeId": 0, "minutesBetweenTeeTimes": 9, "minutesBetweenTeeTimesAlternate": 0, "displayMemberName": true, "twilightTime": 1080, "allowFivesomes": false, "defaultEventTeeSetId": 1
+
+GET https://api.membersports.com/api/v1/golfClubs/golfCourseImage/20589
+  status: 200  body_file: 14.json
+  authorization: Bearer null...
+  preview: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAyAAAAFoCAYAAACv5J9AAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAADIKADAAQAAAABAAABaAAAAADl33+8AABAAElEQVR4AeydB5xTxRPHJ7nkej+O46hHlw5SFFABAVFEEVTs2HvD3vjbG4qKvSv2hl1ARVFBVEQ6WOidg+u9JJf8Zx4eUpK8Tb3cy28/n
+
+GET https://api.membersports.com/api/v1/golfClubs/3703/golfClubGroup
+  status: 200  body_file: 09.json
+  authorization: Bearer null...
+  preview: {"golfClubGroupId": 7, "name": "Golf Lakewood", "buttonText": "Golf Lakewood", "golfGroupImage": null, "showIndividualClubOnlineBooking": false, "maximumDailyTeeTimes": -1, "courses": [{"golfCourseId": 20589, "golfClubId": 3703, "name": "Fox Hollow", "holes": 27, "par": 107, "golfCourseTypeId": 5, "
+
+GET https://api.membersports.com/api/v1/golfClubs/golfClubsByGroupId/7
+  status: 200  body_file: 10.json
+  authorization: Bearer null...
+  preview: [{"golfClubId": 3703, "golfClubName": "Fox Hollow Golf Course"}, {"golfClubId": 3807, "golfClubName": "Homestead Golf Course"}]
+
+GET https://api.membersports.com/api/v1/golfclubs/3703/2026-04-30/noticeBanners
+  status: 200  body_file: 11.json
+  authorization: Bearer null...
+  preview: [{"teeSheetParametersNoticeBannerId": 985, "teeSheetParametersId": 12201, "content": "<p>Fox Hollow Golf Course will be conducting Spring aeration starting Monday, April 20 through Thursday, April 23, weather dependent.</p>\n<p>One of the Links, Canyon and Meadow Nines will be closed each day.</p>\n
+
+GET https://api.membersports.com/api/v1/teesheets/golfclubs/3703/courses/20589/types/0/dates/2026-04-30/2026-04-30/702/profiles/0/bookingCounts
+  status: 200  body_file: 12.json
+  authorization: Bearer null...
+  preview: {"customTeeTimeLimit": 0, "enableMaximumTeeTimes": false, "hasCustomTeeTimeLimit": false, "limitTeeTimesPerMembership": false, "maximumDailyTeeTimes": -1, "membershipTeeTimeLimit": 0, "name": "Golf Lakewood", "playerBookingCount": 0, "totalTeeTimesHeld": 0}
+
+GET https://api.membersports.com/api/v1/golfclubs/3703/coursesslim
+  status: 200  body_file: 13.json
+  authorization: Bearer null...
+  preview: [{"golfCourseId": 20589, "name": "Fox Hollow", "isSelected": false, "rotationTypeId": 0}]
+
+GET https://api.membersports.com/api/v1/golfClubs/golfCourseImage/20589
+  status: 200  body_file: 14.json
+  authorization: Bearer null...
+  preview: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAyAAAAFoCAYAAACv5J9AAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAADIKADAAQAAAABAAABaAAAAADl33+8AABAAElEQVR4AeydB5xTxRPHJ7nkej+O46hHlw5SFFABAVFEEVTs2HvD3vjbG4qKvSv2hl1ARVFBVEQ6WOidg+u9JJf8Zx4eUpK8Tb3cy28/n
+
+GET https://api.membersports.com/api/v1/golfClubs/3703/golfClubGroup
+  status: 200  body_file: 15.json
+  authorization: Bearer null...
+  preview: {"golfClubGroupId": 7, "name": "Golf Lakewood", "buttonText": "Golf Lakewood", "golfGroupImage": null, "showIndividualClubOnlineBooking": false, "maximumDailyTeeTimes": -1, "courses": [{"golfCourseId": 20589, "golfClubId": 3703, "name": "Fox Hollow", "holes": 27, "par": 107, "golfCourseTypeId": 5, "
+
+POST https://api.membersports.com/api/v1/golfclubs/onlineBookingTeeTimes
+  status: 200  body_file: 16.json
+  post_data: {"configurationTypeId":0,"date":"2026-04-30","golfClubGroupId":7,"golfClubId":3703,"golfCourseId":20589,"groupSheetTypeId":0}
+  authorization: Bearer null...
+  preview: [{"teeTime": 420, "items": [{"allowSinglesToBookOnline": true, "availableCount": 0, "backNinePlayerCount": 0, "bookingNotAllowed": false, "bookingNotAllowedReason": null, "cartRequirementTypeId": 0, "configurationTypeId": 0, "event2RoundId": 0, "frontTeeTimeId": 0, "hasBackNineEvent": false, "golfCl
+
+================================================================================
+OTHER
+================================================================================
+GET 200 https://app.membersports.com/tee-times/3703/20589/0
+GET 200 https://ka-p.fontawesome.com/releases/v7.2.0/js/pro.min.js?token=7aa4bc216c
+GET 200 https://ka-p.fontawesome.com/releases/v7.2.0/js/pro-v4-shims.min.js?token=7aa4bc216c

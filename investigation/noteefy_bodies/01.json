@@ -1,0 +1,71 @@
+{
+  "errorsWhileComputingFlags": false,
+  "flags": {},
+  "requestId": "3fa183de-433c-4813-9662-4e2bc6a7eb2a",
+  "evaluatedAt": 1777563806915,
+  "supportedCompression": [
+    "gzip",
+    "gzip-js"
+  ],
+  "elementsChainAsString": true,
+  "errorTracking": {
+    "autocaptureExceptions": false,
+    "suppressionRules": []
+  },
+  "autocaptureExceptions": false,
+  "autocapture_opt_out": true,
+  "defaultIdentifiedOnly": true,
+  "sdkVersion": {
+    "requested": "1"
+  },
+  "hasFeatureFlags": false,
+  "capturePerformance": {
+    "network_timing": true,
+    "web_vitals": false,
+    "web_vitals_allowed_metrics": null
+  },
+  "heatmaps": false,
+  "token": "phc_GlNH893zSmGQXgc803sJaHTzkUT86ERicTaLgJt8coi",
+  "analytics": {
+    "endpoint": "/i/v0/e/"
+  },
+  "conversations": false,
+  "captureDeadClicks": false,
+  "logs": {
+    "captureConsoleLogs": false
+  },
+  "productTours": false,
+  "sessionRecording": {
+    "canvasFps": null,
+    "canvasQuality": null,
+    "consoleLogRecordingEnabled": true,
+    "endpoint": "/s/",
+    "eventTriggers": [],
+    "linkedFlag": null,
+    "masking": {
+      "maskAllInputs": true
+    },
+    "minimumDurationMilliseconds": null,
+    "networkPayloadCapture": {
+      "recordBody": true,
+      "recordHeaders": true
+    },
+    "recordCanvas": false,
+    "recorderVersion": "v2",
+    "sampleRate": null,
+    "scriptConfig": {
+      "script": "posthog-recorder"
+    },
+    "triggerMatchType": "any",
+    "urlBlocklist": [],
+    "urlTriggers": [
+      {
+        "matching": "regex",
+        "url": "https?:\\/\\/([\\w.-]*\\.)?booking\\.noteefy\\.app\\S*"
+      }
+    ],
+    "version": 1
+  },
+  "siteApps": [],
+  "surveys": false
+}

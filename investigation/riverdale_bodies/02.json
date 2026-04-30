@@ -1,0 +1,121 @@
+{
+  "enable-pro-account": {
+    "version": 307,
+    "flagVersion": 17,
+    "value": true,
+    "variation": 0,
+    "trackEvents": false
+  },
+  "enable-detailed-no-results": {
+    "version": 307,
+    "flagVersion": 3,
+    "value": false,
+    "variation": 1,
+    "trackEvents": false
+  },
+  "isWeatherApiEnabled": {
+    "version": 307,
+    "flagVersion": 2,
+    "value": false,
+    "variation": 1,
+    "trackEvents": false
+  },
+  "be-pay-now-and-save": {
+    "version": 307,
+    "flagVersion": 42,
+    "value": {},
+    "variation": 1,
+    "trackEvents": false
+  },
+  "enable-ui-twitter": {
+    "version": 307,
+    "flagVersion": 7,
+    "value": false,
+    "variation": 1,
+    "trackEvents": false
+  },
+  "enableRoundUpSettings": {
+    "version": 307,
+    "flagVersion": 5,
+    "value": false,
+    "variation": 1,
+    "trackEvents": false
+  },
+  "enable-product-lineups": {
+    "version": 307,
+    "flagVersion": 2,
+    "value": false,
+    "variation": 1,
+    "trackEvents": false
+  },
+  "ddReplayEnabled": {
+    "version": 307,
+    "flagVersion": 4,
+    "value": false,
+    "variation": 1,
+    "trackEvents": false
+  },
+  "isDeleteCCDisabled": {
+    "version": 307,
+    "flagVersion": 10,
+    "value": false,
+    "variation": 1,
+    "trackEvents": false
+  },
+  "isDeleteCcDisabled": {
+    "version": 307,
+    "flagVersion": 10,
+    "value": false,
+    "variation": 1,
+    "trackEvents": false
+  },
+  "is-delete-cc-disabled": {
+    "version": 307,
+    "flagVersion": 8,
+    "value": false,
+    "variation": 1,
+    "trackEvents": false
+  },
+  "enable-ui-email-verification": {
+    "version": 307,
+    "flagVersion": 8,
+    "value": true,
+    "variation": 0,
+    "trackEvents": false
+  },
+  "enable-commerce-api": {
+    "version": 307,
+    "flagVersion": 45,
+    "value": false,
+    "variation": 1,
+    "trackEvents": false
+  },
+  "enablePromotedRates": {
+    "version": 307,
+    "flagVersion": 7,
+    "value": true,
+    "variation": 0,
+    "trackEvents": false
+  },
+  "is-teetime-alerts-enabled": {
+    "version": 307,
+    "flagVersion": 30,
+    "value": true,
+    "variation": 0,
+    "trackEvents": false
+  },
+  "enable-ui-ca-message-settings": {
+    "version": 307,
+    "flagVersion": 2,
+    "value": false,
+    "variation": 1,
+    "trackEvents": false
+  },
+  "upgrade-membership-enabled": {
+    "version": 307,
+    "flagVersion": 3,
+    "value": false,
+    "variation": 1,
+    "trackEvents": false
+  }
+}

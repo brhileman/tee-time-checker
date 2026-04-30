@@ -1,0 +1,312 @@
+{
+  "theme": {
+    "subdomain": "thebroadlandsgc",
+    "info": {
+      "course_ids": [
+        "CO_The_Broadlands"
+      ],
+      "multi_course_subdomain": null
+    },
+    "website_text": {
+      "tagline": "The Broadlands Tee Booking Time Assistant",
+      "filter_box": "Get notified when tee times are available based on your preferences.",
+      "brand_name": "The Broadlands",
+      "how_it_works_header": "How Noteefy Works",
+      "how_it_works_checklist": null,
+      "how_it_works_bell": null,
+      "how_it_works_browser": null,
+      "how_it_works_target": null,
+      "how_it_works_golfer": null,
+      "home_button": "Click Here to Get Notified",
+      "success_page": {
+        "text": "You're all set! We'll notify you when tee times are available at The Broadlands.",
+        "link_text": null,
+        "link_href": null,
+        "post_link_text": null
+      },
+      "suggested_courses": "Want to add other great courses to your search?",
+      "marketing_opt_in": ""
+    },
+    "public_assets": {
+      "brand_logo_url": "https://noteefypublic.blob.core.windows.net/partner-courses/CO-The-Broadlands/the-broadlands-logo.png",
+      "stylesheet_url": null,
+      "bg_url_homepage": "https://noteefypublic.blob.core.windows.net/partner-courses/CO-The-Broadlands/the-broadlands.jpg",
+      "bg_url_sign_in": "https://noteefypublic.blob.core.windows.net/partner-courses/CO-The-Broadlands/the-broadlands.jpg",
+      "bg_url_success_page": "https://noteefypublic.blob.core.windows.net/partner-courses/CO-The-Broadlands/the-broadlands.jpg",
+      "bg_url_low_res": "https://noteefypublic.blob.core.windows.net/partner-courses/CO-The-Broadlands/CO_The_Broadlands_low_res.jpeg"
+    },
+    "feature_flags": {
+      "simple_share": true,
+      "time_range_enabled": false,
+      "marketing_opt_in": false,
+      "show_course_availability": true,
+      "show_course_card_price": true,
+      "show_course_card_info": true,
+      "has_gallus_app": false,
+      "default_start_time": null,
+      "default_end_time": null,
+      "time_select_range_min": null,
+      "time_select_range_max": null,
+      "min_calendar_date": null,
+      "max_calendar_date": null,
+      "hide_noteefy_footer_branding": false,
+      "region_select_enabled": [],
+      "min_num_players": 1,
+      "max_num_players": 4,
+      "logo_click_url": null,
+      "redirect_to_multi_course_site": false,
+      "homepage_flyer": null,
+      "membership_tiers_page_details": {
+        "title_text": "",
+        "subtitle_text": "",
+        "options": []
+      },
+      "should_disable_action_page_navigation": false,
+      "is_instructor_site": false,
+      "use_sex_instead_of_gender": false,
+      "skip_course_selection": false,
+      "hide_time_selection": false,
+      "send_search_confirmation": false
+    },
+    "colors": {
+      "primary_color": "#252345",
+      "buttons": {
+        "primary": {
+          "border": "#252345",
+          "text": "#ffffff",
+          "disabled": "#bdbdbd",
+          "disabled_text": "#dedede"
+        },
+        "secondary": {
+          "border": "#000000",
+          "text": "#000000",
+          "disabled": "#999999"
+        }
+      },
+      "inputs": {
+        "border": "#eaeaea",
+        "border_hover": "#eaeaea",
+        "border_focused": "#eaeaea",
+        "title_text": "#000000",
+        "background": "#ffffff",
+        "text": "#4e4e4e",
+        "error_text": "red",
+        "disabled": "#fafafa",
+        "placeholder": "#767676"
+      },
+      "text": {
+        "primary": "#000000",
+        "light": "#8f8f9a",
+        "secondary": "#666666",
+        "accent": "#252345",
+        "error": "red",
+        "loud": "#252345",
+        "header_text": null
+      },
+      "backgrounds": {
+        "header_bar": "#ffffff",
+        "date_hover": "#9291a2",
+        "profile_sidebar_active": "#9291a2",
+        "account_settings_shadow": "#9291a2",
+        "icon": "#9291a2",
+        "filter_box": "#f5f6f8e6"
+      },
+      "selected_booking": {
+        "shadow": "#252345",
+        "border": "#252345",
+        "content": "#fffaef",
+        "dash": "#252345"
+      }
+    },
+    "widget": {
+      "css_template": "default",
+      "js_template": "default",
+      "embedded_css_template": "default",
+      "embedded_js_template": null,
+      "public_assets": {
+        "widget_css": "https://noteefypublic.blob.core.windows.net/widget/thebroadlandsgc/thebroadlandsgcWidget.css",
+        "widget_js": "https://noteefypublic.blob.core.windows.net/widget/thebroadlandsgc/thebroadlandsgcWidget.js",
+        "embedded_calendar_css": "https://noteefypublic.blob.core.windows.net/widget/thebroadlandsgc/thebroadlandsgcEmbed.css",
+        "embedded_calendar_js": null
+      },
+      "header_text": null,
+      "submit_button_text": null,
+      "alert_text": null,
+      "courses": null,
+      "feature_flags": null,
+      "configurations": null,
+      "colors": null
+    },
+    "created_at": "2025-09-17T10:36:23.739000",
+    "updated_at": "2026-04-13T17:56:51.837000"
+  },
+  "assistant": {
+    "virtual_assistant_id": "4dc653f2-1e3a-4014-9d30-f5e2935a3429",
+    "virtual_assistant_display_name": "The Broadlands ",
+    "render_origin": "https://thebroadlandsgc.com",
+    "origin_url": "https://thebroadlandsgc.noteefy.app",
+    "course_ids": [
+      "CO_The_Broadlands"
+    ],
+    "virtual_assistant_title": "AI Pro Shop Assistant",
+    "waitlist_title": "Noteefy Tee Time Waitlist",
+    "container_styles": {
+      "position": {
+        "bottom": "20",
+        "right": "20",
+        "z_index": "9999999"
+      },
+      "color": "#fff",
+      "background_color": "#125446",
+      "border_radius": "9",
+      "verbose_border_radius": "9",
+      "border_color": "#fff",
+      "box_shadow": "0 2px 10px rgba(0,0,0,0.1)",
+      "header_background_color": "#125446",
+      "header_color": "#fff",
+      "subheader_background_color": "#EFF0F7",
+      "subheader_border_bottom_color": "#e0e0e0",
+      "subheader_color": "#666",
+      "width": "500",
+      "verbose_width": "350",
+      "open_height_percentage": "80",
+      "breakpoint_sm": "576",
+      "breakpoint_md": "768",
+      "breakpoint_lg": "992",
+      "breakpoint_xl": "1200",
+      "width_sm": "500",
+      "width_md": "500",
+      "width_lg": "500",
+      "width_xl": "500",
+      "responsive_position": {
+        "default": {
+          "top": null,
+          "bottom": "20",
+          "left": null,
+          "right": "20",
+          "z_index": "9999999"
+        },
+        "sm": {
+          "top": null,
+          "bottom": "20",
+          "left": null,
+          "right": "20",
+          "z_index": "9999999"
+        },
+        "md": {
+          "top": null,
+          "bottom": "20",
+          "left": null,
+          "right": "20",
+          "z_index": "9999999"
+        },
+        "lg": {
+          "top": null,
+          "bottom": "20",
+          "left": null,
+          "right": "20",
+          "z_index": "9999999"
+        },
+        "xl": {
+          "top": null,
+          "bottom": "20",
+          "left": null,
+          "right": "20",
+          "z_index": "9999999"
+        }
+      },
+      "responsive_heights": {
+        "default": "80",
+        "sm": "80",
+        "md": "80",
+        "lg": "80",
+        "xl": "80"
+      },
+      "responsive_sizes": {
+        "closed": {
+          "default": "500",
+          "sm": "500",
+          "md": "500",
+          "lg": "500",
+          "xl": "500"
+        },
+        "open": {
+          "default": "500",
+          "sm": "500",
+          "md": "500",
+          "lg": "500",
+          "xl": "500"
+        }
+      }
+    },
+    "set_verbose_closed_style": true,
+    "header_icon_asset_path": "https://noteefypublic.blob.core.windows.net/static-assets/widget/default/virtual_assistant_man.png",
+    "iframe_display_type": "waitlist",
+    "waitlist_url": "https://thebroadlandsgc.noteefy.app",
+    "render_paths": [
+      "/"
+    ],
+    "render_all_paths": true,
+    "render_on_query_parameters": null,
+    "advanced_positioning_enabled": false,
+    "positioning_selector": "",
+    "positioning_type": "sibling"
+  },
+  "display_info": {
+    "name": "The Broadlands",
+    "address": "4380 West 144th Ave Broomfield, CO 80020",
+    "phone": "(303) 466-8285"
+  },
+  "booking_engine_course_ids": [
+    "CO_The_Broadlands"
+  ],
+  "ai_assistant_settings": {
+    "assistant_message_bubble": {
+      "title": "AI Pro Shop Assistant",
+      "content": "Ready to help!",
+      "is_priority": false,
+      "is_enabled": true
+    }
+  },
+  "analytics_settings": {
+    "google_analytics_measurement_id": "G-68QDQVCMF2",
+    "google_tag_manager_container_id": null
+  },
+  "course_player_type_configurations": {
+    "CO_The_Broadlands": [
+      {
+        "lightspeed_player_type_id": "049dfe76-2006-4994-acce-f99454e07be3",
+        "name": "Resident",
+        "booking_range_in_days": 7
+      },
+      {
+        "lightspeed_player_type_id": "1835383c-60be-461e-9cda-d037f760dd29",
+        "name": "Public",
+        "booking_range_in_days": 7
+      }
+    ]
+  },
+  "course_waitlist_course_ids": {
+    "CO_The_Broadlands": "CO_The_Broadlands"
+  },
+  "course_hole_options": {
+    "CO_The_Broadlands": {
+      "has_18_hole_option": true,
+      "has_9_hole_option": true
+    }
+  },
+  "course_display_player_transportation_options": {
+    "CO_The_Broadlands": false
+  },
+  "course_player_count_booking_restrictions": {
+    "CO_The_Broadlands": [
+      {
+        "open_slots": 4,
+        "min_players": 2
+      }
+    ]
+  },
+  "course_background_images": {
+    "CO_The_Broadlands": "https://noteefypublic.blob.core.windows.net/partner-courses/CO-The-Broadlands/the-broadlands.jpg"
+  }
+}

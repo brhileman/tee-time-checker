@@ -1,0 +1,15 @@
+[project]
+name = "tee-time-checker"
+version = "0.1.0"
+description = "SMS-driven tee time availability checker across multiple booking platforms"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "curl-cffi>=0.15.0",
+]
+
+[dependency-groups]
+# Tools used only for ad-hoc platform recon, not in the deployed service.
+recon = [
+    "playwright>=1.59.0",
+]

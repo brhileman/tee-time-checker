@@ -1,0 +1,63 @@
+slug: riverdale
+total interesting requests: 17
+  JSON: 10    other: 7
+
+API hosts:
+    6  phx-api-be-east-1b.kenna.io
+    2  app.launchdarkly.com
+    2  events.launchdarkly.com
+
+================================================================================
+JSON CALLS
+================================================================================
+
+GET https://app.launchdarkly.com/sdk/goals/669e7388f078f70f6bd4efd2
+  status: 200  body_file: 01.json
+  preview: []
+
+GET https://app.launchdarkly.com/sdk/evalx/669e7388f078f70f6bd4efd2/contexts/eyJraW5kIjoidXNlciIsImtleSI6InJpdmVyZGFsZSJ9
+  status: 200  body_file: 02.json
+  preview: {"enable-pro-account": {"version": 307, "flagVersion": 17, "value": true, "variation": 0, "trackEvents": false}, "enable-detailed-no-results": {"version": 307, "flagVersion": 3, "value": false, "variation": 1, "trackEvents": false}, "isWeatherApiEnabled": {"version": 307, "flagVersion": 2, "value": 
+
+POST https://events.launchdarkly.com/events/diagnostic/669e7388f078f70f6bd4efd2
+  status: 202  body_file: -
+  post_data: {"kind":"diagnostic-combined","id":{"diagnosticId":"fd870750-44aa-11f1-8587-e974552fce9b","sdkKeySuffix":"d4efd2"},"creationDate":1777563661382,"dataSinceDate":1777563661381,"droppedEvents":0,"eventsInLastBatch":0,"streamInits":[],"sdk":{"name":"js-client-sdk","version":"3.9.0","wrapperName":"react-
+
+GET https://phx-api-be-east-1b.kenna.io/facilities
+  status: 200  body_file: 03.json
+  preview: [{"id": 1016, "courseId": "54f14bac0c8ad60378b01412", "checkinInstructions": "", "isSimulator": false, "name": "Riverdale Dunes Golf Course", "timeZone": "America/Denver", "address": "13300 Riverdale Road, Brighton, CO 80601, US", "locality": "Brighton", "region": "CO", "country": "US", "location": 
+
+POST https://phx-api-be-east-1b.kenna.io/shopping-cart
+  status: 201  body_file: 04.json
+  preview: {"alias": "riverdale", "id": "b56b6859-f898-44fc-9796-071e1b7ee4d5", "items": []}
+
+GET https://phx-api-be-east-1b.kenna.io/gift-certificates?facilityIds%5B%5D=1016&facilityIds%5B%5D=1017
+  status: 200  body_file: 05.json
+  preview: [{"id": 37318, "name": "Riverdale Online Gift Cards/Certificates", "expiration": "4/27/2027", "termsAndConditions": "Please call the Pro Shop to discuss Terms and Conditions of Gift Certifications - (303) 659-4700.", "facilityId": 1016}, {"id": 37318, "name": "Riverdale Online Gift Cards/Certificate
+
+GET https://phx-api-be-east-1b.kenna.io/memberships
+  status: 200  body_file: 06.json
+  preview: [{"facilityId": 1016, "memberships": []}, {"facilityId": 1017, "memberships": []}]
+
+GET https://phx-api-be-east-1b.kenna.io/v2/tee-times?date=2026-04-30&facilityIds=1016&returnPromotedRates=true
+  status: 200  body_file: 07.json
+  preview: [{"dayInfo": {"dawn": "2026-04-30T11:32:00.000Z", "sunrise": "2026-04-30T12:02:00.000Z", "sunset": "2026-05-01T01:50:00.000Z", "dusk": "2026-05-01T02:22:00.000Z"}, "teetimes": [{"courseId": "54f14bac0c8ad60378b01412", "teetime": "2026-04-30T16:12:00.000Z", "backNine": false, "rates": [{"_id": 273923
+
+GET https://phx-api-be-east-1b.kenna.io/course/54f14bac0c8ad60378b01412/tee-time/locks?localDate=2026-04-30
+  status: 200  body_file: 08.json
+  preview: []
+
+POST https://events.launchdarkly.com/events/bulk/669e7388f078f70f6bd4efd2
+  status: 202  body_file: -
+  post_data: [{"kind":"identify","context":{"key":"riverdale","kind":"user"},"creationDate":1777563661382},{"startDate":1777563661554,"endDate":1777563662585,"features":{"enable-pro-account":{"default":true,"counters":[{"value":true,"count":3,"variation":0,"version":17}],"contextKinds":["user"]},"enable-commerce
+
+================================================================================
+OTHER
+================================================================================
+GET 200 https://www.riverdalegolf.com/teetimes/
+GET 200 https://riverdale.book.teeitup.com/
+POST 200 https://riverdale.book.teeitup.com/cdn-cgi/challenge-platform/h/b/jsd/oneshot/0b8fb825cb67/0.08223540600150381:1777562742:3jcAzbLAF9nnfJgvBqidO0n-cjY2ZyYRNV9od15mYoU/9f47a5ececa7538c
+GET 200 https://riverdale.book.teeitup.com/teetimes?_rsc=1l1mm
+GET 200 https://riverdale.book.teeitup.com/course/info?_rsc=1l1mm
+GET 200 https://riverdale.book.teeitup.com/store?_rsc=1l1mm
+POST 200 https://www.google.com/ccm/collect?rcb=1&_ng=1&frm=2&ae=g&en=page_view&dr=www.riverdalegolf.com&dl=https%3A%2F%2Friverdale.book.teeitup.com%2F&top=https%3A%2F%2Fwww.riverdalegolf.com%2F&scrsrc=www.googletagmanager.com&rnd=235137031.1777563661&dt=Tee%20Times&navt=n&npa=0&ep.ads_data_redaction=0&gtm=45He64s1v9199481449za200zd9199481449xea&gcd=13l3l3l3l1l1&dma=0&tag_exp=0~115616985~115938465~115938468~116363098~117266400~118463262&apve=1&apvf=f&apvc=1&tft=1777563661454&tfd=1346

@@ -1,0 +1,1733 @@
+{
+  "tee_times": [
+    {
+      "courseId": "CO_The_Broadlands",
+      "course": "The Broadlands",
+      "min_player": 1,
+      "max_player": 4,
+      "date": "05/07/2026",
+      "time": "07:30",
+      "timestamp": 1778160600,
+      "is_9_holes": true,
+      "is_18_holes": true,
+      "min_price": 32.0,
+      "max_price": 62.0,
+      "rates": [
+        {
+          "player_type_id": "049dfe76-2006-4994-acce-f99454e07be3",
+          "holes": "18",
+          "green_fee": 57.0,
+          "half_cart": 20.0,
+          "one_person_cart": null,
+          "subtotal": 57.0,
+          "mobility_details": [
+            {
+              "price": "20.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwMzksImdyZWVuX2ZlZV9jZW50cyI6NTcwMCwiaGFsZl9jYXJ0X2NlbnRzIjoyMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMDQ5ZGZlNzYtMjAwNi00OTk0LWFjY2UtZjk5NDU0ZTA3YmUzIn0=.a479e39a16cd6a586f00eb5c438aab401e9698f1054d7eea9339443fba06682e"
+        },
+        {
+          "player_type_id": "1835383c-60be-461e-9cda-d037f760dd29",
+          "holes": "18",
+          "green_fee": 62.0,
+          "half_cart": 20.0,
+          "one_person_cart": null,
+          "subtotal": 62.0,
+          "mobility_details": [
+            {
+              "price": "20.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwMzksImdyZWVuX2ZlZV9jZW50cyI6NjIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoyMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMTgzNTM4M2MtNjBiZS00NjFlLTljZGEtZDAzN2Y3NjBkZDI5In0=.8f5a5f2b6140b37b7e163f8fb36afd3ac7c431f4e311ff18f2ae15a712fc900b"
+        },
+        {
+          "player_type_id": "049dfe76-2006-4994-acce-f99454e07be3",
+          "holes": "9",
+          "green_fee": 32.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 32.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwNDAsImdyZWVuX2ZlZV9jZW50cyI6MzIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMDQ5ZGZlNzYtMjAwNi00OTk0LWFjY2UtZjk5NDU0ZTA3YmUzIn0=.b3f7683aa0bc6c0dd200c8323b92fd75b46dcdc6d1bd30b0d8eaf38e5df0c3a5"
+        },
+        {
+          "player_type_id": "1835383c-60be-461e-9cda-d037f760dd29",
+          "holes": "9",
+          "green_fee": 32.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 32.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwNDAsImdyZWVuX2ZlZV9jZW50cyI6MzIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMTgzNTM4M2MtNjBiZS00NjFlLTljZGEtZDAzN2Y3NjBkZDI5In0=.25ca7ef1fe2013da25a0156113866d2e7bb9b19f099041ab8426073b2f523ec4"
+        }
+      ],
+      "player_card": [],
+      "booking_url": "https://www.chronogolf.com/club/broadlands-golf-course/date/2026-05-07",
+      "time_crawled": "2026-04-30 15:40:39",
+      "mobility_details": [
+        {
+          "price": "20.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "20.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        }
+      ],
+      "provider_metadata": {
+        "chronogolf_teetime_id": "e385727b-8783-470e-a68d-610fdcb16a80"
+      },
+      "pricing_token": null
+    },
+    {
+      "courseId": "CO_The_Broadlands",
+      "course": "The Broadlands",
+      "min_player": 1,
+      "max_player": 4,
+      "date": "05/07/2026",
+      "time": "07:40",
+      "timestamp": 1778161200,
+      "is_9_holes": true,
+      "is_18_holes": true,
+      "min_price": 32.0,
+      "max_price": 62.0,
+      "rates": [
+        {
+          "player_type_id": "049dfe76-2006-4994-acce-f99454e07be3",
+          "holes": "18",
+          "green_fee": 57.0,
+          "half_cart": 20.0,
+          "one_person_cart": null,
+          "subtotal": 57.0,
+          "mobility_details": [
+            {
+              "price": "20.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwMzksImdyZWVuX2ZlZV9jZW50cyI6NTcwMCwiaGFsZl9jYXJ0X2NlbnRzIjoyMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMDQ5ZGZlNzYtMjAwNi00OTk0LWFjY2UtZjk5NDU0ZTA3YmUzIn0=.a479e39a16cd6a586f00eb5c438aab401e9698f1054d7eea9339443fba06682e"
+        },
+        {
+          "player_type_id": "1835383c-60be-461e-9cda-d037f760dd29",
+          "holes": "18",
+          "green_fee": 62.0,
+          "half_cart": 20.0,
+          "one_person_cart": null,
+          "subtotal": 62.0,
+          "mobility_details": [
+            {
+              "price": "20.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwMzksImdyZWVuX2ZlZV9jZW50cyI6NjIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoyMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMTgzNTM4M2MtNjBiZS00NjFlLTljZGEtZDAzN2Y3NjBkZDI5In0=.8f5a5f2b6140b37b7e163f8fb36afd3ac7c431f4e311ff18f2ae15a712fc900b"
+        },
+        {
+          "player_type_id": "049dfe76-2006-4994-acce-f99454e07be3",
+          "holes": "9",
+          "green_fee": 32.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 32.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwNDAsImdyZWVuX2ZlZV9jZW50cyI6MzIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMDQ5ZGZlNzYtMjAwNi00OTk0LWFjY2UtZjk5NDU0ZTA3YmUzIn0=.b3f7683aa0bc6c0dd200c8323b92fd75b46dcdc6d1bd30b0d8eaf38e5df0c3a5"
+        },
+        {
+          "player_type_id": "1835383c-60be-461e-9cda-d037f760dd29",
+          "holes": "9",
+          "green_fee": 32.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 32.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwNDAsImdyZWVuX2ZlZV9jZW50cyI6MzIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMTgzNTM4M2MtNjBiZS00NjFlLTljZGEtZDAzN2Y3NjBkZDI5In0=.25ca7ef1fe2013da25a0156113866d2e7bb9b19f099041ab8426073b2f523ec4"
+        }
+      ],
+      "player_card": [],
+      "booking_url": "https://www.chronogolf.com/club/broadlands-golf-course/date/2026-05-07",
+      "time_crawled": "2026-04-30 15:40:39",
+      "mobility_details": [
+        {
+          "price": "20.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "20.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        }
+      ],
+      "provider_metadata": {
+        "chronogolf_teetime_id": "f8830859-49ea-4f84-a277-0cc54ef6ddb0"
+      },
+      "pricing_token": null
+    },
+    {
+      "courseId": "CO_The_Broadlands",
+      "course": "The Broadlands",
+      "min_player": 1,
+      "max_player": 2,
+      "date": "05/07/2026",
+      "time": "07:50",
+      "timestamp": 1778161800,
+      "is_9_holes": true,
+      "is_18_holes": true,
+      "min_price": 32.0,
+      "max_price": 62.0,
+      "rates": [
+        {
+          "player_type_id": "049dfe76-2006-4994-acce-f99454e07be3",
+          "holes": "18",
+          "green_fee": 57.0,
+          "half_cart": 20.0,
+          "one_person_cart": null,
+          "subtotal": 57.0,
+          "mobility_details": [
+            {
+              "price": "20.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwMzksImdyZWVuX2ZlZV9jZW50cyI6NTcwMCwiaGFsZl9jYXJ0X2NlbnRzIjoyMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMDQ5ZGZlNzYtMjAwNi00OTk0LWFjY2UtZjk5NDU0ZTA3YmUzIn0=.a479e39a16cd6a586f00eb5c438aab401e9698f1054d7eea9339443fba06682e"
+        },
+        {
+          "player_type_id": "1835383c-60be-461e-9cda-d037f760dd29",
+          "holes": "18",
+          "green_fee": 62.0,
+          "half_cart": 20.0,
+          "one_person_cart": null,
+          "subtotal": 62.0,
+          "mobility_details": [
+            {
+              "price": "20.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwMzksImdyZWVuX2ZlZV9jZW50cyI6NjIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoyMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMTgzNTM4M2MtNjBiZS00NjFlLTljZGEtZDAzN2Y3NjBkZDI5In0=.8f5a5f2b6140b37b7e163f8fb36afd3ac7c431f4e311ff18f2ae15a712fc900b"
+        },
+        {
+          "player_type_id": "049dfe76-2006-4994-acce-f99454e07be3",
+          "holes": "9",
+          "green_fee": 32.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 32.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwNDAsImdyZWVuX2ZlZV9jZW50cyI6MzIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMDQ5ZGZlNzYtMjAwNi00OTk0LWFjY2UtZjk5NDU0ZTA3YmUzIn0=.b3f7683aa0bc6c0dd200c8323b92fd75b46dcdc6d1bd30b0d8eaf38e5df0c3a5"
+        },
+        {
+          "player_type_id": "1835383c-60be-461e-9cda-d037f760dd29",
+          "holes": "9",
+          "green_fee": 32.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 32.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwNDAsImdyZWVuX2ZlZV9jZW50cyI6MzIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMTgzNTM4M2MtNjBiZS00NjFlLTljZGEtZDAzN2Y3NjBkZDI5In0=.25ca7ef1fe2013da25a0156113866d2e7bb9b19f099041ab8426073b2f523ec4"
+        }
+      ],
+      "player_card": [],
+      "booking_url": "https://www.chronogolf.com/club/broadlands-golf-course/date/2026-05-07",
+      "time_crawled": "2026-04-30 15:40:39",
+      "mobility_details": [
+        {
+          "price": "20.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "20.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        }
+      ],
+      "provider_metadata": {
+        "chronogolf_teetime_id": "7737475c-a9ce-409a-b8db-6a6b6706413e"
+      },
+      "pricing_token": null
+    },
+    {
+      "courseId": "CO_The_Broadlands",
+      "course": "The Broadlands",
+      "min_player": 1,
+      "max_player": 1,
+      "date": "05/07/2026",
+      "time": "11:10",
+      "timestamp": 1778173800,
+      "is_9_holes": true,
+      "is_18_holes": true,
+      "min_price": 32.0,
+      "max_price": 62.0,
+      "rates": [
+        {
+          "player_type_id": "049dfe76-2006-4994-acce-f99454e07be3",
+          "holes": "18",
+          "green_fee": 57.0,
+          "half_cart": 20.0,
+          "one_person_cart": null,
+          "subtotal": 57.0,
+          "mobility_details": [
+            {
+              "price": "20.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwMzksImdyZWVuX2ZlZV9jZW50cyI6NTcwMCwiaGFsZl9jYXJ0X2NlbnRzIjoyMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMDQ5ZGZlNzYtMjAwNi00OTk0LWFjY2UtZjk5NDU0ZTA3YmUzIn0=.a479e39a16cd6a586f00eb5c438aab401e9698f1054d7eea9339443fba06682e"
+        },
+        {
+          "player_type_id": "1835383c-60be-461e-9cda-d037f760dd29",
+          "holes": "18",
+          "green_fee": 62.0,
+          "half_cart": 20.0,
+          "one_person_cart": null,
+          "subtotal": 62.0,
+          "mobility_details": [
+            {
+              "price": "20.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwMzksImdyZWVuX2ZlZV9jZW50cyI6NjIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoyMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMTgzNTM4M2MtNjBiZS00NjFlLTljZGEtZDAzN2Y3NjBkZDI5In0=.8f5a5f2b6140b37b7e163f8fb36afd3ac7c431f4e311ff18f2ae15a712fc900b"
+        },
+        {
+          "player_type_id": "049dfe76-2006-4994-acce-f99454e07be3",
+          "holes": "9",
+          "green_fee": 32.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 32.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwNDAsImdyZWVuX2ZlZV9jZW50cyI6MzIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMDQ5ZGZlNzYtMjAwNi00OTk0LWFjY2UtZjk5NDU0ZTA3YmUzIn0=.b3f7683aa0bc6c0dd200c8323b92fd75b46dcdc6d1bd30b0d8eaf38e5df0c3a5"
+        },
+        {
+          "player_type_id": "1835383c-60be-461e-9cda-d037f760dd29",
+          "holes": "9",
+          "green_fee": 32.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 32.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwNDAsImdyZWVuX2ZlZV9jZW50cyI6MzIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMTgzNTM4M2MtNjBiZS00NjFlLTljZGEtZDAzN2Y3NjBkZDI5In0=.25ca7ef1fe2013da25a0156113866d2e7bb9b19f099041ab8426073b2f523ec4"
+        }
+      ],
+      "player_card": [],
+      "booking_url": "https://www.chronogolf.com/club/broadlands-golf-course/date/2026-05-07",
+      "time_crawled": "2026-04-30 15:40:39",
+      "mobility_details": [
+        {
+          "price": "20.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "20.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        }
+      ],
+      "provider_metadata": {
+        "chronogolf_teetime_id": "864e62e1-6212-443e-93cc-cd61427e08a5"
+      },
+      "pricing_token": null
+    },
+    {
+      "courseId": "CO_The_Broadlands",
+      "course": "The Broadlands",
+      "min_player": 1,
+      "max_player": 4,
+      "date": "05/07/2026",
+      "time": "11:40",
+      "timestamp": 1778175600,
+      "is_9_holes": true,
+      "is_18_holes": true,
+      "min_price": 32.0,
+      "max_price": 62.0,
+      "rates": [
+        {
+          "player_type_id": "049dfe76-2006-4994-acce-f99454e07be3",
+          "holes": "18",
+          "green_fee": 57.0,
+          "half_cart": 20.0,
+          "one_person_cart": null,
+          "subtotal": 57.0,
+          "mobility_details": [
+            {
+              "price": "20.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwMzksImdyZWVuX2ZlZV9jZW50cyI6NTcwMCwiaGFsZl9jYXJ0X2NlbnRzIjoyMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMDQ5ZGZlNzYtMjAwNi00OTk0LWFjY2UtZjk5NDU0ZTA3YmUzIn0=.a479e39a16cd6a586f00eb5c438aab401e9698f1054d7eea9339443fba06682e"
+        },
+        {
+          "player_type_id": "1835383c-60be-461e-9cda-d037f760dd29",
+          "holes": "18",
+          "green_fee": 62.0,
+          "half_cart": 20.0,
+          "one_person_cart": null,
+          "subtotal": 62.0,
+          "mobility_details": [
+            {
+              "price": "20.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwMzksImdyZWVuX2ZlZV9jZW50cyI6NjIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoyMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMTgzNTM4M2MtNjBiZS00NjFlLTljZGEtZDAzN2Y3NjBkZDI5In0=.8f5a5f2b6140b37b7e163f8fb36afd3ac7c431f4e311ff18f2ae15a712fc900b"
+        },
+        {
+          "player_type_id": "049dfe76-2006-4994-acce-f99454e07be3",
+          "holes": "9",
+          "green_fee": 32.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 32.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwNDAsImdyZWVuX2ZlZV9jZW50cyI6MzIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMDQ5ZGZlNzYtMjAwNi00OTk0LWFjY2UtZjk5NDU0ZTA3YmUzIn0=.b3f7683aa0bc6c0dd200c8323b92fd75b46dcdc6d1bd30b0d8eaf38e5df0c3a5"
+        },
+        {
+          "player_type_id": "1835383c-60be-461e-9cda-d037f760dd29",
+          "holes": "9",
+          "green_fee": 32.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 32.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwNDAsImdyZWVuX2ZlZV9jZW50cyI6MzIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMTgzNTM4M2MtNjBiZS00NjFlLTljZGEtZDAzN2Y3NjBkZDI5In0=.25ca7ef1fe2013da25a0156113866d2e7bb9b19f099041ab8426073b2f523ec4"
+        }
+      ],
+      "player_card": [],
+      "booking_url": "https://www.chronogolf.com/club/broadlands-golf-course/date/2026-05-07",
+      "time_crawled": "2026-04-30 15:40:39",
+      "mobility_details": [
+        {
+          "price": "20.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "20.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        }
+      ],
+      "provider_metadata": {
+        "chronogolf_teetime_id": "6eaf7c6e-332c-4af7-9149-8748366acca1"
+      },
+      "pricing_token": null
+    },
+    {
+      "courseId": "CO_The_Broadlands",
+      "course": "The Broadlands",
+      "min_player": 1,
+      "max_player": 4,
+      "date": "05/07/2026",
+      "time": "11:50",
+      "timestamp": 1778176200,
+      "is_9_holes": true,
+      "is_18_holes": true,
+      "min_price": 32.0,
+      "max_price": 62.0,
+      "rates": [
+        {
+          "player_type_id": "049dfe76-2006-4994-acce-f99454e07be3",
+          "holes": "18",
+          "green_fee": 57.0,
+          "half_cart": 20.0,
+          "one_person_cart": null,
+          "subtotal": 57.0,
+          "mobility_details": [
+            {
+              "price": "20.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwMzksImdyZWVuX2ZlZV9jZW50cyI6NTcwMCwiaGFsZl9jYXJ0X2NlbnRzIjoyMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMDQ5ZGZlNzYtMjAwNi00OTk0LWFjY2UtZjk5NDU0ZTA3YmUzIn0=.a479e39a16cd6a586f00eb5c438aab401e9698f1054d7eea9339443fba06682e"
+        },
+        {
+          "player_type_id": "1835383c-60be-461e-9cda-d037f760dd29",
+          "holes": "18",
+          "green_fee": 62.0,
+          "half_cart": 20.0,
+          "one_person_cart": null,
+          "subtotal": 62.0,
+          "mobility_details": [
+            {
+              "price": "20.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwMzksImdyZWVuX2ZlZV9jZW50cyI6NjIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoyMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMTgzNTM4M2MtNjBiZS00NjFlLTljZGEtZDAzN2Y3NjBkZDI5In0=.8f5a5f2b6140b37b7e163f8fb36afd3ac7c431f4e311ff18f2ae15a712fc900b"
+        },
+        {
+          "player_type_id": "049dfe76-2006-4994-acce-f99454e07be3",
+          "holes": "9",
+          "green_fee": 32.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 32.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwNDAsImdyZWVuX2ZlZV9jZW50cyI6MzIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMDQ5ZGZlNzYtMjAwNi00OTk0LWFjY2UtZjk5NDU0ZTA3YmUzIn0=.b3f7683aa0bc6c0dd200c8323b92fd75b46dcdc6d1bd30b0d8eaf38e5df0c3a5"
+        },
+        {
+          "player_type_id": "1835383c-60be-461e-9cda-d037f760dd29",
+          "holes": "9",
+          "green_fee": 32.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 32.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwNDAsImdyZWVuX2ZlZV9jZW50cyI6MzIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMTgzNTM4M2MtNjBiZS00NjFlLTljZGEtZDAzN2Y3NjBkZDI5In0=.25ca7ef1fe2013da25a0156113866d2e7bb9b19f099041ab8426073b2f523ec4"
+        }
+      ],
+      "player_card": [],
+      "booking_url": "https://www.chronogolf.com/club/broadlands-golf-course/date/2026-05-07",
+      "time_crawled": "2026-04-30 15:40:39",
+      "mobility_details": [
+        {
+          "price": "20.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "20.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        }
+      ],
+      "provider_metadata": {
+        "chronogolf_teetime_id": "0556def5-3182-4475-b3d8-c9b67ab7cece"
+      },
+      "pricing_token": null
+    },
+    {
+      "courseId": "CO_The_Broadlands",
+      "course": "The Broadlands",
+      "min_player": 1,
+      "max_player": 4,
+      "date": "05/07/2026",
+      "time": "12:10",
+      "timestamp": 1778177400,
+      "is_9_holes": true,
+      "is_18_holes": true,
+      "min_price": 32.0,
+      "max_price": 62.0,
+      "rates": [
+        {
+          "player_type_id": "049dfe76-2006-4994-acce-f99454e07be3",
+          "holes": "18",
+          "green_fee": 57.0,
+          "half_cart": 20.0,
+          "one_person_cart": null,
+          "subtotal": 57.0,
+          "mobility_details": [
+            {
+              "price": "20.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwMzksImdyZWVuX2ZlZV9jZW50cyI6NTcwMCwiaGFsZl9jYXJ0X2NlbnRzIjoyMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMDQ5ZGZlNzYtMjAwNi00OTk0LWFjY2UtZjk5NDU0ZTA3YmUzIn0=.a479e39a16cd6a586f00eb5c438aab401e9698f1054d7eea9339443fba06682e"
+        },
+        {
+          "player_type_id": "1835383c-60be-461e-9cda-d037f760dd29",
+          "holes": "18",
+          "green_fee": 62.0,
+          "half_cart": 20.0,
+          "one_person_cart": null,
+          "subtotal": 62.0,
+          "mobility_details": [
+            {
+              "price": "20.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwMzksImdyZWVuX2ZlZV9jZW50cyI6NjIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoyMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMTgzNTM4M2MtNjBiZS00NjFlLTljZGEtZDAzN2Y3NjBkZDI5In0=.8f5a5f2b6140b37b7e163f8fb36afd3ac7c431f4e311ff18f2ae15a712fc900b"
+        },
+        {
+          "player_type_id": "049dfe76-2006-4994-acce-f99454e07be3",
+          "holes": "9",
+          "green_fee": 32.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 32.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwNDAsImdyZWVuX2ZlZV9jZW50cyI6MzIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMDQ5ZGZlNzYtMjAwNi00OTk0LWFjY2UtZjk5NDU0ZTA3YmUzIn0=.b3f7683aa0bc6c0dd200c8323b92fd75b46dcdc6d1bd30b0d8eaf38e5df0c3a5"
+        },
+        {
+          "player_type_id": "1835383c-60be-461e-9cda-d037f760dd29",
+          "holes": "9",
+          "green_fee": 32.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 32.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwNDAsImdyZWVuX2ZlZV9jZW50cyI6MzIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMTgzNTM4M2MtNjBiZS00NjFlLTljZGEtZDAzN2Y3NjBkZDI5In0=.25ca7ef1fe2013da25a0156113866d2e7bb9b19f099041ab8426073b2f523ec4"
+        }
+      ],
+      "player_card": [],
+      "booking_url": "https://www.chronogolf.com/club/broadlands-golf-course/date/2026-05-07",
+      "time_crawled": "2026-04-30 15:40:39",
+      "mobility_details": [
+        {
+          "price": "20.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "20.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        }
+      ],
+      "provider_metadata": {
+        "chronogolf_teetime_id": "5e43f108-1396-4eda-97e8-80998f256497"
+      },
+      "pricing_token": null
+    },
+    {
+      "courseId": "CO_The_Broadlands",
+      "course": "The Broadlands",
+      "min_player": 1,
+      "max_player": 2,
+      "date": "05/07/2026",
+      "time": "12:20",
+      "timestamp": 1778178000,
+      "is_9_holes": true,
+      "is_18_holes": true,
+      "min_price": 32.0,
+      "max_price": 62.0,
+      "rates": [
+        {
+          "player_type_id": "049dfe76-2006-4994-acce-f99454e07be3",
+          "holes": "18",
+          "green_fee": 57.0,
+          "half_cart": 20.0,
+          "one_person_cart": null,
+          "subtotal": 57.0,
+          "mobility_details": [
+            {
+              "price": "20.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwMzksImdyZWVuX2ZlZV9jZW50cyI6NTcwMCwiaGFsZl9jYXJ0X2NlbnRzIjoyMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMDQ5ZGZlNzYtMjAwNi00OTk0LWFjY2UtZjk5NDU0ZTA3YmUzIn0=.a479e39a16cd6a586f00eb5c438aab401e9698f1054d7eea9339443fba06682e"
+        },
+        {
+          "player_type_id": "1835383c-60be-461e-9cda-d037f760dd29",
+          "holes": "18",
+          "green_fee": 62.0,
+          "half_cart": 20.0,
+          "one_person_cart": null,
+          "subtotal": 62.0,
+          "mobility_details": [
+            {
+              "price": "20.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwMzksImdyZWVuX2ZlZV9jZW50cyI6NjIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoyMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMTgzNTM4M2MtNjBiZS00NjFlLTljZGEtZDAzN2Y3NjBkZDI5In0=.8f5a5f2b6140b37b7e163f8fb36afd3ac7c431f4e311ff18f2ae15a712fc900b"
+        },
+        {
+          "player_type_id": "049dfe76-2006-4994-acce-f99454e07be3",
+          "holes": "9",
+          "green_fee": 32.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 32.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwNDAsImdyZWVuX2ZlZV9jZW50cyI6MzIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMDQ5ZGZlNzYtMjAwNi00OTk0LWFjY2UtZjk5NDU0ZTA3YmUzIn0=.b3f7683aa0bc6c0dd200c8323b92fd75b46dcdc6d1bd30b0d8eaf38e5df0c3a5"
+        },
+        {
+          "player_type_id": "1835383c-60be-461e-9cda-d037f760dd29",
+          "holes": "9",
+          "green_fee": 32.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 32.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwNDAsImdyZWVuX2ZlZV9jZW50cyI6MzIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMTgzNTM4M2MtNjBiZS00NjFlLTljZGEtZDAzN2Y3NjBkZDI5In0=.25ca7ef1fe2013da25a0156113866d2e7bb9b19f099041ab8426073b2f523ec4"
+        }
+      ],
+      "player_card": [],
+      "booking_url": "https://www.chronogolf.com/club/broadlands-golf-course/date/2026-05-07",
+      "time_crawled": "2026-04-30 15:40:39",
+      "mobility_details": [
+        {
+          "price": "20.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "20.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        }
+      ],
+      "provider_metadata": {
+        "chronogolf_teetime_id": "7239a580-0848-4469-bc54-a59d14730e84"
+      },
+      "pricing_token": null
+    },
+    {
+      "courseId": "CO_The_Broadlands",
+      "course": "The Broadlands",
+      "min_player": 1,
+      "max_player": 4,
+      "date": "05/07/2026",
+      "time": "12:30",
+      "timestamp": 1778178600,
+      "is_9_holes": true,
+      "is_18_holes": true,
+      "min_price": 32.0,
+      "max_price": 62.0,
+      "rates": [
+        {
+          "player_type_id": "049dfe76-2006-4994-acce-f99454e07be3",
+          "holes": "18",
+          "green_fee": 57.0,
+          "half_cart": 20.0,
+          "one_person_cart": null,
+          "subtotal": 57.0,
+          "mobility_details": [
+            {
+              "price": "20.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwMzksImdyZWVuX2ZlZV9jZW50cyI6NTcwMCwiaGFsZl9jYXJ0X2NlbnRzIjoyMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMDQ5ZGZlNzYtMjAwNi00OTk0LWFjY2UtZjk5NDU0ZTA3YmUzIn0=.a479e39a16cd6a586f00eb5c438aab401e9698f1054d7eea9339443fba06682e"
+        },
+        {
+          "player_type_id": "1835383c-60be-461e-9cda-d037f760dd29",
+          "holes": "18",
+          "green_fee": 62.0,
+          "half_cart": 20.0,
+          "one_person_cart": null,
+          "subtotal": 62.0,
+          "mobility_details": [
+            {
+              "price": "20.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwMzksImdyZWVuX2ZlZV9jZW50cyI6NjIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoyMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMTgzNTM4M2MtNjBiZS00NjFlLTljZGEtZDAzN2Y3NjBkZDI5In0=.8f5a5f2b6140b37b7e163f8fb36afd3ac7c431f4e311ff18f2ae15a712fc900b"
+        },
+        {
+          "player_type_id": "049dfe76-2006-4994-acce-f99454e07be3",
+          "holes": "9",
+          "green_fee": 32.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 32.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwNDAsImdyZWVuX2ZlZV9jZW50cyI6MzIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMDQ5ZGZlNzYtMjAwNi00OTk0LWFjY2UtZjk5NDU0ZTA3YmUzIn0=.b3f7683aa0bc6c0dd200c8323b92fd75b46dcdc6d1bd30b0d8eaf38e5df0c3a5"
+        },
+        {
+          "player_type_id": "1835383c-60be-461e-9cda-d037f760dd29",
+          "holes": "9",
+          "green_fee": 32.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 32.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwNDAsImdyZWVuX2ZlZV9jZW50cyI6MzIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMTgzNTM4M2MtNjBiZS00NjFlLTljZGEtZDAzN2Y3NjBkZDI5In0=.25ca7ef1fe2013da25a0156113866d2e7bb9b19f099041ab8426073b2f523ec4"
+        }
+      ],
+      "player_card": [],
+      "booking_url": "https://www.chronogolf.com/club/broadlands-golf-course/date/2026-05-07",
+      "time_crawled": "2026-04-30 15:40:39",
+      "mobility_details": [
+        {
+          "price": "20.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "20.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        }
+      ],
+      "provider_metadata": {
+        "chronogolf_teetime_id": "e84aa411-1c97-482d-9b6b-06e9042596ce"
+      },
+      "pricing_token": null
+    },
+    {
+      "courseId": "CO_The_Broadlands",
+      "course": "The Broadlands",
+      "min_player": 1,
+      "max_player": 4,
+      "date": "05/07/2026",
+      "time": "12:40",
+      "timestamp": 1778179200,
+      "is_9_holes": true,
+      "is_18_holes": true,
+      "min_price": 32.0,
+      "max_price": 62.0,
+      "rates": [
+        {
+          "player_type_id": "049dfe76-2006-4994-acce-f99454e07be3",
+          "holes": "18",
+          "green_fee": 57.0,
+          "half_cart": 20.0,
+          "one_person_cart": null,
+          "subtotal": 57.0,
+          "mobility_details": [
+            {
+              "price": "20.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwMzksImdyZWVuX2ZlZV9jZW50cyI6NTcwMCwiaGFsZl9jYXJ0X2NlbnRzIjoyMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMDQ5ZGZlNzYtMjAwNi00OTk0LWFjY2UtZjk5NDU0ZTA3YmUzIn0=.a479e39a16cd6a586f00eb5c438aab401e9698f1054d7eea9339443fba06682e"
+        },
+        {
+          "player_type_id": "1835383c-60be-461e-9cda-d037f760dd29",
+          "holes": "18",
+          "green_fee": 62.0,
+          "half_cart": 20.0,
+          "one_person_cart": null,
+          "subtotal": 62.0,
+          "mobility_details": [
+            {
+              "price": "20.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwMzksImdyZWVuX2ZlZV9jZW50cyI6NjIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoyMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMTgzNTM4M2MtNjBiZS00NjFlLTljZGEtZDAzN2Y3NjBkZDI5In0=.8f5a5f2b6140b37b7e163f8fb36afd3ac7c431f4e311ff18f2ae15a712fc900b"
+        },
+        {
+          "player_type_id": "049dfe76-2006-4994-acce-f99454e07be3",
+          "holes": "9",
+          "green_fee": 32.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 32.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwNDAsImdyZWVuX2ZlZV9jZW50cyI6MzIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMDQ5ZGZlNzYtMjAwNi00OTk0LWFjY2UtZjk5NDU0ZTA3YmUzIn0=.b3f7683aa0bc6c0dd200c8323b92fd75b46dcdc6d1bd30b0d8eaf38e5df0c3a5"
+        },
+        {
+          "player_type_id": "1835383c-60be-461e-9cda-d037f760dd29",
+          "holes": "9",
+          "green_fee": 32.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 32.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwNDAsImdyZWVuX2ZlZV9jZW50cyI6MzIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMTgzNTM4M2MtNjBiZS00NjFlLTljZGEtZDAzN2Y3NjBkZDI5In0=.25ca7ef1fe2013da25a0156113866d2e7bb9b19f099041ab8426073b2f523ec4"
+        }
+      ],
+      "player_card": [],
+      "booking_url": "https://www.chronogolf.com/club/broadlands-golf-course/date/2026-05-07",
+      "time_crawled": "2026-04-30 15:40:39",
+      "mobility_details": [
+        {
+          "price": "20.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "20.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        }
+      ],
+      "provider_metadata": {
+        "chronogolf_teetime_id": "214af1b4-e7dd-4c08-a5c7-288671559b76"
+      },
+      "pricing_token": null
+    },
+    {
+      "courseId": "CO_The_Broadlands",
+      "course": "The Broadlands",
+      "min_player": 1,
+      "max_player": 4,
+      "date": "05/07/2026",
+      "time": "12:50",
+      "timestamp": 1778179800,
+      "is_9_holes": true,
+      "is_18_holes": true,
+      "min_price": 32.0,
+      "max_price": 62.0,
+      "rates": [
+        {
+          "player_type_id": "049dfe76-2006-4994-acce-f99454e07be3",
+          "holes": "18",
+          "green_fee": 57.0,
+          "half_cart": 20.0,
+          "one_person_cart": null,
+          "subtotal": 57.0,
+          "mobility_details": [
+            {
+              "price": "20.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwMzksImdyZWVuX2ZlZV9jZW50cyI6NTcwMCwiaGFsZl9jYXJ0X2NlbnRzIjoyMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMDQ5ZGZlNzYtMjAwNi00OTk0LWFjY2UtZjk5NDU0ZTA3YmUzIn0=.a479e39a16cd6a586f00eb5c438aab401e9698f1054d7eea9339443fba06682e"
+        },
+        {
+          "player_type_id": "1835383c-60be-461e-9cda-d037f760dd29",
+          "holes": "18",
+          "green_fee": 62.0,
+          "half_cart": 20.0,
+          "one_person_cart": null,
+          "subtotal": 62.0,
+          "mobility_details": [
+            {
+              "price": "20.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwMzksImdyZWVuX2ZlZV9jZW50cyI6NjIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoyMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMTgzNTM4M2MtNjBiZS00NjFlLTljZGEtZDAzN2Y3NjBkZDI5In0=.8f5a5f2b6140b37b7e163f8fb36afd3ac7c431f4e311ff18f2ae15a712fc900b"
+        },
+        {
+          "player_type_id": "049dfe76-2006-4994-acce-f99454e07be3",
+          "holes": "9",
+          "green_fee": 32.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 32.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwNDAsImdyZWVuX2ZlZV9jZW50cyI6MzIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMDQ5ZGZlNzYtMjAwNi00OTk0LWFjY2UtZjk5NDU0ZTA3YmUzIn0=.b3f7683aa0bc6c0dd200c8323b92fd75b46dcdc6d1bd30b0d8eaf38e5df0c3a5"
+        },
+        {
+          "player_type_id": "1835383c-60be-461e-9cda-d037f760dd29",
+          "holes": "9",
+          "green_fee": 32.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 32.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwNDAsImdyZWVuX2ZlZV9jZW50cyI6MzIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMTgzNTM4M2MtNjBiZS00NjFlLTljZGEtZDAzN2Y3NjBkZDI5In0=.25ca7ef1fe2013da25a0156113866d2e7bb9b19f099041ab8426073b2f523ec4"
+        }
+      ],
+      "player_card": [],
+      "booking_url": "https://www.chronogolf.com/club/broadlands-golf-course/date/2026-05-07",
+      "time_crawled": "2026-04-30 15:40:39",
+      "mobility_details": [
+        {
+          "price": "20.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "20.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        }
+      ],
+      "provider_metadata": {
+        "chronogolf_teetime_id": "2193ed7d-0652-46cc-b70d-858a944095c5"
+      },
+      "pricing_token": null
+    },
+    {
+      "courseId": "CO_The_Broadlands",
+      "course": "The Broadlands",
+      "min_player": 1,
+      "max_player": 4,
+      "date": "05/07/2026",
+      "time": "13:00",
+      "timestamp": 1778180400,
+      "is_9_holes": true,
+      "is_18_holes": true,
+      "min_price": 32.0,
+      "max_price": 62.0,
+      "rates": [
+        {
+          "player_type_id": "049dfe76-2006-4994-acce-f99454e07be3",
+          "holes": "18",
+          "green_fee": 57.0,
+          "half_cart": 20.0,
+          "one_person_cart": null,
+          "subtotal": 57.0,
+          "mobility_details": [
+            {
+              "price": "20.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwMzksImdyZWVuX2ZlZV9jZW50cyI6NTcwMCwiaGFsZl9jYXJ0X2NlbnRzIjoyMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMDQ5ZGZlNzYtMjAwNi00OTk0LWFjY2UtZjk5NDU0ZTA3YmUzIn0=.a479e39a16cd6a586f00eb5c438aab401e9698f1054d7eea9339443fba06682e"
+        },
+        {
+          "player_type_id": "1835383c-60be-461e-9cda-d037f760dd29",
+          "holes": "18",
+          "green_fee": 62.0,
+          "half_cart": 20.0,
+          "one_person_cart": null,
+          "subtotal": 62.0,
+          "mobility_details": [
+            {
+              "price": "20.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwMzksImdyZWVuX2ZlZV9jZW50cyI6NjIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoyMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMTgzNTM4M2MtNjBiZS00NjFlLTljZGEtZDAzN2Y3NjBkZDI5In0=.8f5a5f2b6140b37b7e163f8fb36afd3ac7c431f4e311ff18f2ae15a712fc900b"
+        },
+        {
+          "player_type_id": "049dfe76-2006-4994-acce-f99454e07be3",
+          "holes": "9",
+          "green_fee": 32.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 32.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwNDAsImdyZWVuX2ZlZV9jZW50cyI6MzIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMDQ5ZGZlNzYtMjAwNi00OTk0LWFjY2UtZjk5NDU0ZTA3YmUzIn0=.b3f7683aa0bc6c0dd200c8323b92fd75b46dcdc6d1bd30b0d8eaf38e5df0c3a5"
+        },
+        {
+          "player_type_id": "1835383c-60be-461e-9cda-d037f760dd29",
+          "holes": "9",
+          "green_fee": 32.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 32.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwNDAsImdyZWVuX2ZlZV9jZW50cyI6MzIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMTgzNTM4M2MtNjBiZS00NjFlLTljZGEtZDAzN2Y3NjBkZDI5In0=.25ca7ef1fe2013da25a0156113866d2e7bb9b19f099041ab8426073b2f523ec4"
+        }
+      ],
+      "player_card": [],
+      "booking_url": "https://www.chronogolf.com/club/broadlands-golf-course/date/2026-05-07",
+      "time_crawled": "2026-04-30 15:40:39",
+      "mobility_details": [
+        {
+          "price": "20.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "20.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        }
+      ],
+      "provider_metadata": {
+        "chronogolf_teetime_id": "b9c58721-774d-4cef-9bc0-9bb83bc69d89"
+      },
+      "pricing_token": null
+    },
+    {
+      "courseId": "CO_The_Broadlands",
+      "course": "The Broadlands",
+      "min_player": 1,
+      "max_player": 4,
+      "date": "05/07/2026",
+      "time": "13:10",
+      "timestamp": 1778181000,
+      "is_9_holes": true,
+      "is_18_holes": true,
+      "min_price": 32.0,
+      "max_price": 62.0,
+      "rates": [
+        {
+          "player_type_id": "049dfe76-2006-4994-acce-f99454e07be3",
+          "holes": "18",
+          "green_fee": 57.0,
+          "half_cart": 20.0,
+          "one_person_cart": null,
+          "subtotal": 57.0,
+          "mobility_details": [
+            {
+              "price": "20.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwMzksImdyZWVuX2ZlZV9jZW50cyI6NTcwMCwiaGFsZl9jYXJ0X2NlbnRzIjoyMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMDQ5ZGZlNzYtMjAwNi00OTk0LWFjY2UtZjk5NDU0ZTA3YmUzIn0=.a479e39a16cd6a586f00eb5c438aab401e9698f1054d7eea9339443fba06682e"
+        },
+        {
+          "player_type_id": "1835383c-60be-461e-9cda-d037f760dd29",
+          "holes": "18",
+          "green_fee": 62.0,
+          "half_cart": 20.0,
+          "one_person_cart": null,
+          "subtotal": 62.0,
+          "mobility_details": [
+            {
+              "price": "20.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwMzksImdyZWVuX2ZlZV9jZW50cyI6NjIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoyMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMTgzNTM4M2MtNjBiZS00NjFlLTljZGEtZDAzN2Y3NjBkZDI5In0=.8f5a5f2b6140b37b7e163f8fb36afd3ac7c431f4e311ff18f2ae15a712fc900b"
+        },
+        {
+          "player_type_id": "049dfe76-2006-4994-acce-f99454e07be3",
+          "holes": "9",
+          "green_fee": 32.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 32.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwNDAsImdyZWVuX2ZlZV9jZW50cyI6MzIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMDQ5ZGZlNzYtMjAwNi00OTk0LWFjY2UtZjk5NDU0ZTA3YmUzIn0=.b3f7683aa0bc6c0dd200c8323b92fd75b46dcdc6d1bd30b0d8eaf38e5df0c3a5"
+        },
+        {
+          "player_type_id": "1835383c-60be-461e-9cda-d037f760dd29",
+          "holes": "9",
+          "green_fee": 32.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 32.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwNDAsImdyZWVuX2ZlZV9jZW50cyI6MzIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMTgzNTM4M2MtNjBiZS00NjFlLTljZGEtZDAzN2Y3NjBkZDI5In0=.25ca7ef1fe2013da25a0156113866d2e7bb9b19f099041ab8426073b2f523ec4"
+        }
+      ],
+      "player_card": [],
+      "booking_url": "https://www.chronogolf.com/club/broadlands-golf-course/date/2026-05-07",
+      "time_crawled": "2026-04-30 15:40:39",
+      "mobility_details": [
+        {
+          "price": "20.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "20.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        }
+      ],
+      "provider_metadata": {
+        "chronogolf_teetime_id": "a013782e-9610-44bc-91e3-7e7a8abdcc24"
+      },
+      "pricing_token": null
+    },
+    {
+      "courseId": "CO_The_Broadlands",
+      "course": "The Broadlands",
+      "min_player": 1,
+      "max_player": 4,
+      "date": "05/07/2026",
+      "time": "13:20",
+      "timestamp": 1778181600,
+      "is_9_holes": true,
+      "is_18_holes": true,
+      "min_price": 32.0,
+      "max_price": 62.0,
+      "rates": [
+        {
+          "player_type_id": "049dfe76-2006-4994-acce-f99454e07be3",
+          "holes": "18",
+          "green_fee": 57.0,
+          "half_cart": 20.0,
+          "one_person_cart": null,
+          "subtotal": 57.0,
+          "mobility_details": [
+            {
+              "price": "20.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwMzksImdyZWVuX2ZlZV9jZW50cyI6NTcwMCwiaGFsZl9jYXJ0X2NlbnRzIjoyMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMDQ5ZGZlNzYtMjAwNi00OTk0LWFjY2UtZjk5NDU0ZTA3YmUzIn0=.a479e39a16cd6a586f00eb5c438aab401e9698f1054d7eea9339443fba06682e"
+        },
+        {
+          "player_type_id": "1835383c-60be-461e-9cda-d037f760dd29",
+          "holes": "18",
+          "green_fee": 62.0,
+          "half_cart": 20.0,
+          "one_person_cart": null,
+          "subtotal": 62.0,
+          "mobility_details": [
+            {
+              "price": "20.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwMzksImdyZWVuX2ZlZV9jZW50cyI6NjIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoyMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMTgzNTM4M2MtNjBiZS00NjFlLTljZGEtZDAzN2Y3NjBkZDI5In0=.8f5a5f2b6140b37b7e163f8fb36afd3ac7c431f4e311ff18f2ae15a712fc900b"
+        },
+        {
+          "player_type_id": "049dfe76-2006-4994-acce-f99454e07be3",
+          "holes": "9",
+          "green_fee": 32.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 32.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwNDAsImdyZWVuX2ZlZV9jZW50cyI6MzIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMDQ5ZGZlNzYtMjAwNi00OTk0LWFjY2UtZjk5NDU0ZTA3YmUzIn0=.b3f7683aa0bc6c0dd200c8323b92fd75b46dcdc6d1bd30b0d8eaf38e5df0c3a5"
+        },
+        {
+          "player_type_id": "1835383c-60be-461e-9cda-d037f760dd29",
+          "holes": "9",
+          "green_fee": 32.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 32.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwNDAsImdyZWVuX2ZlZV9jZW50cyI6MzIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMTgzNTM4M2MtNjBiZS00NjFlLTljZGEtZDAzN2Y3NjBkZDI5In0=.25ca7ef1fe2013da25a0156113866d2e7bb9b19f099041ab8426073b2f523ec4"
+        }
+      ],
+      "player_card": [],
+      "booking_url": "https://www.chronogolf.com/club/broadlands-golf-course/date/2026-05-07",
+      "time_crawled": "2026-04-30 15:40:39",
+      "mobility_details": [
+        {
+          "price": "20.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "20.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        }
+      ],
+      "provider_metadata": {
+        "chronogolf_teetime_id": "19c3f0fb-440c-4c85-8c0f-c5e1f6688e22"
+      },
+      "pricing_token": null
+    },
+    {
+      "courseId": "CO_The_Broadlands",
+      "course": "The Broadlands",
+      "min_player": 1,
+      "max_player": 4,
+      "date": "05/07/2026",
+      "time": "17:20",
+      "timestamp": 1778196000,
+      "is_9_holes": true,
+      "is_18_holes": true,
+      "min_price": 30.0,
+      "max_price": 35.0,
+      "rates": [
+        {
+          "player_type_id": "049dfe76-2006-4994-acce-f99454e07be3",
+          "holes": "18",
+          "green_fee": 35.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 35.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwMzksImdyZWVuX2ZlZV9jZW50cyI6MzUwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMDQ5ZGZlNzYtMjAwNi00OTk0LWFjY2UtZjk5NDU0ZTA3YmUzIn0=.d3afd7fede594e2fed1f07eda6fe2f1c929cc8a596016d4100ff74ceccfbd95c"
+        },
+        {
+          "player_type_id": "1835383c-60be-461e-9cda-d037f760dd29",
+          "holes": "18",
+          "green_fee": 35.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 35.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwMzksImdyZWVuX2ZlZV9jZW50cyI6MzUwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMTgzNTM4M2MtNjBiZS00NjFlLTljZGEtZDAzN2Y3NjBkZDI5In0=.2fa6773a554732b5f95fa6032fc69fbddfa5cf0f49f03207fd99d4037e137f3e"
+        },
+        {
+          "player_type_id": "049dfe76-2006-4994-acce-f99454e07be3",
+          "holes": "9",
+          "green_fee": 32.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 32.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwNDAsImdyZWVuX2ZlZV9jZW50cyI6MzIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMDQ5ZGZlNzYtMjAwNi00OTk0LWFjY2UtZjk5NDU0ZTA3YmUzIn0=.b3f7683aa0bc6c0dd200c8323b92fd75b46dcdc6d1bd30b0d8eaf38e5df0c3a5"
+        },
+        {
+          "player_type_id": "1835383c-60be-461e-9cda-d037f760dd29",
+          "holes": "9",
+          "green_fee": 30.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 30.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwNDAsImdyZWVuX2ZlZV9jZW50cyI6MzAwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMTgzNTM4M2MtNjBiZS00NjFlLTljZGEtZDAzN2Y3NjBkZDI5In0=.dd39a2d6a14a1564b7f3eec8266e590d986dbc33314aeb7b240d44a576714136"
+        }
+      ],
+      "player_card": [],
+      "booking_url": "https://www.chronogolf.com/club/broadlands-golf-course/date/2026-05-07",
+      "time_crawled": "2026-04-30 15:40:39",
+      "mobility_details": [
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        }
+      ],
+      "provider_metadata": {
+        "chronogolf_teetime_id": "11f26041-cc93-4aeb-9816-af31cdad491d"
+      },
+      "pricing_token": null
+    },
+    {
+      "courseId": "CO_The_Broadlands",
+      "course": "The Broadlands",
+      "min_player": 1,
+      "max_player": 4,
+      "date": "05/07/2026",
+      "time": "17:30",
+      "timestamp": 1778196600,
+      "is_9_holes": true,
+      "is_18_holes": true,
+      "min_price": 30.0,
+      "max_price": 35.0,
+      "rates": [
+        {
+          "player_type_id": "049dfe76-2006-4994-acce-f99454e07be3",
+          "holes": "18",
+          "green_fee": 35.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 35.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwMzksImdyZWVuX2ZlZV9jZW50cyI6MzUwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMDQ5ZGZlNzYtMjAwNi00OTk0LWFjY2UtZjk5NDU0ZTA3YmUzIn0=.d3afd7fede594e2fed1f07eda6fe2f1c929cc8a596016d4100ff74ceccfbd95c"
+        },
+        {
+          "player_type_id": "1835383c-60be-461e-9cda-d037f760dd29",
+          "holes": "18",
+          "green_fee": 35.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 35.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwMzksImdyZWVuX2ZlZV9jZW50cyI6MzUwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMTgzNTM4M2MtNjBiZS00NjFlLTljZGEtZDAzN2Y3NjBkZDI5In0=.2fa6773a554732b5f95fa6032fc69fbddfa5cf0f49f03207fd99d4037e137f3e"
+        },
+        {
+          "player_type_id": "049dfe76-2006-4994-acce-f99454e07be3",
+          "holes": "9",
+          "green_fee": 32.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 32.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwNDAsImdyZWVuX2ZlZV9jZW50cyI6MzIwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMDQ5ZGZlNzYtMjAwNi00OTk0LWFjY2UtZjk5NDU0ZTA3YmUzIn0=.b3f7683aa0bc6c0dd200c8323b92fd75b46dcdc6d1bd30b0d8eaf38e5df0c3a5"
+        },
+        {
+          "player_type_id": "1835383c-60be-461e-9cda-d037f760dd29",
+          "holes": "9",
+          "green_fee": 30.0,
+          "half_cart": 10.0,
+          "one_person_cart": null,
+          "subtotal": 30.0,
+          "mobility_details": [
+            {
+              "price": "10.0",
+              "type": "cart",
+              "included_in_tee_time_price": false
+            }
+          ],
+          "pricing_token": "eyJleHAiOjE3Nzc1NzgwNDAsImdyZWVuX2ZlZV9jZW50cyI6MzAwMCwiaGFsZl9jYXJ0X2NlbnRzIjoxMDAwLCJvbmVfcGVyc29uX2NhcnRfY2VudHMiOjAsInBsYXllcl90eXBlX2lkIjoiMTgzNTM4M2MtNjBiZS00NjFlLTljZGEtZDAzN2Y3NjBkZDI5In0=.dd39a2d6a14a1564b7f3eec8266e590d986dbc33314aeb7b240d44a576714136"
+        }
+      ],
+      "player_card": [],
+      "booking_url": "https://www.chronogolf.com/club/broadlands-golf-course/date/2026-05-07",
+      "time_crawled": "2026-04-30 15:40:39",
+      "mobility_details": [
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        },
+        {
+          "price": "10.0",
+          "type": "cart",
+          "included_in_tee_time_price": false
+        }
+      ],
+      "provider_metadata": {
+        "chronogolf_teetime_id": "6df1e67c-a3bd-43a2-a4bc-7a9911e33bc2"
+      },
+      "pricing_token": null
+    }
+  ],
+  "status": "ready"
+}

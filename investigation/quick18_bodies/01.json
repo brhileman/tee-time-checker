@@ -1,0 +1,25 @@
+{
+  "cssFiles": [
+    "https://fonts.googleapis.com/css?family=Fira+Sans:400,600,700",
+    "https://fonts.googleapis.com/icon?family=Material+Icons",
+    "https://thorncreek.dailydeals.golf/content/ws/1811/css/widget?ver=638858494540000000"
+  ],
+  "jsFiles": [
+    "https://thorncreek.dailydeals.golf/scripts/sagacitywidgetcommon.js?ver=638647767460000000",
+    "https://thorncreek.dailydeals.golf/scripts/sagacitywidget.js?ver=638355586640000000"
+  ],
+  "isDebug": true,
+  "googleGA4AnalyticsIDs": [
+    "G-C5VCHDGXJ9"
+  ],
+  "googleGA3AnalyticsIDs": [
+    "UA-131261457-8",
+    "UA-156957695-47"
+  ],
+  "authData": null,
+  "locationCss": "lw-widget_top",
+  "initHtml": "\r\n    <div id=\"lw-widget-container\" class=\"lw-container lw-container_width_auto lw-container_circle\">\r\n        <div id=\"SGW_widgetDiv\" class=\"lw-drop lw-drop-daily-deals\" style=\"display: none;\">\r\n<div id=\"lw-widget-step\" data-step=\"load\" style=\"display:none;\"></div>\r\n\r\n<div class=\"lw-wrap lw-bb dd-head\">\r\n    <a href=\"https://thorncreek.dailydeals.golf/Widget/layout/0/Times?t=639131608039991195\"><div class=\"dd-widget-logo-daily-deals\"><span>Thorncreek Golf Course</span></div></a>\r\n</div>\r\n            <div class=\"lw-wrap lw-p-y dd-body\">\r\n                <div class=\"dd-loading-cover-with-header\">\r\n                    <div class=\"dd-loading\">\r\n                        <img src=\"https://thorncreek.dailydeals.golf/content/img/dd-loading.gif\">\r\n                        <div class=\"dd-loading-message\">Loading tee times</div>\r\n                    </div>\r\n                </div>\r\n                <div id=\"dd-error-div\" class=\"dd-errors\" style=\"display: none;\"></div>\r\n            </div>\r\n        </div>\r\n        <div class=\"lw-tooltip dd-tooltip\" style=\"display: none;\">\r\n            <button class=\"lw-circle lw-tooltip-parent dd-launcher-icon-daily-deals\" data-lw-ripple><div class=\"dd-launcher-daily-deals\"></div><i class=\"material-icons\">close</i></button>\r\n            <div class=\"lw-tooltip-content\">Save up to <strong>25%</strong></div>\r\n        </div>\r\n    </div>\r\n",
+  "isDisabled": false,
+  "step": null,
+  "lastAction": "/Date(-62135596800000)/"
+}

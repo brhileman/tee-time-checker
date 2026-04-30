@@ -1,0 +1,26 @@
+[
+  {
+    "teeSheetParametersNoticeBannerId": 985,
+    "teeSheetParametersId": 12201,
+    "content": "<p>Fox Hollow Golf Course will be conducting Spring aeration starting Monday, April 20 through Thursday, April 23, weather dependent.</p>\n<p>One of the Links, Canyon and Meadow Nines will be closed each day.</p>\n<p>There are no aeration discounts.</p>",
+    "startDate": "2026-04-06T00:00:00Z",
+    "endDate": "2026-05-07T00:00:00Z",
+    "showOnTeeSheet": false,
+    "showOnOnlineBooking": true,
+    "showOnMyReservations": false,
+    "sortPosition": 0,
+    "recordStatusTypeId": 1
+  },
+  {
+    "teeSheetParametersNoticeBannerId": 988,
+    "teeSheetParametersId": 1826,
+    "content": "<p>Homestead Golf Course will be conducting Spring aeration starting Monday, May 4 through Wednesday, May 6, weather dependent.</p>\n<p>Only 9 holes will be available on May 4th and May 5th.</p>\n<p>There are no aeration discounts.</p>",
+    "startDate": "2026-04-13T00:00:00Z",
+    "endDate": "2026-05-20T00:00:00Z",
+    "showOnTeeSheet": false,
+    "showOnOnlineBooking": true,
+    "showOnMyReservations": false,
+    "sortPosition": 0,
+    "recordStatusTypeId": 1
+  }
+]

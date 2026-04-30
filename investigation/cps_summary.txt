@@ -1,0 +1,69 @@
+Total interesting requests: 15
+  JSON API calls: 14
+  Other (HTML/etc): 1
+
+================================================================================
+JSON API CALLS
+================================================================================
+
+GET https://cityofwestminster.cps.golf/onlineresweb/Home/Configuration
+  status: 200  content-type: application/json; charset=utf-8
+  body_preview: {"clientId": "onlineresweb", "production": true, "authorityBaseUrl": "https://cityofwestminster.cps.golf/identityapi", "onlineResBaseUrl": "https://cityofwestminster.cps.golf/onlineres", "onlineApi": "https://cityofwestminster.cps.golf/onlineres/onlineapi/api/v1/onlinereservation", "emailApi": "https://cityofwestminster.cps.golf/onlineres/emailapi/api/email", "saleApi": "https://cityofwestminster.
+
+GET https://cityofwestminster.cps.golf/onlineres/referencesapi/api/Options/Online/SiteLanguages
+  status: 200  content-type: application/json; charset=utf-8
+  body_preview: [{"code": "en", "description": "English"}, {"code": "fr", "description": "French"}, {"code": "nl", "description": "Dutch"}]
+
+GET https://cityofwestminster.cps.golf/onlineres/onlineapi/api/v1/onlinereservation/GetAllOptions/cityofwestminster?version=25.3.4.21239412485%0A&product=3
+  status: 200  content-type: application/json; charset=utf-8
+  body_preview: {"shRules": [{"ruleId": 2548, "name": "UseRestrictReservation", "value": "False", "type": "RestrictReservation", "siteId": 2, "courseId": 1}, {"ruleId": 2549, "name": "ApplyToOnline", "value": "True", "type": "RestrictReservation", "siteId": 2, "courseId": 1}, {"ruleId": 6113, "name": "UseCapacityPricing", "value": "False", "type": "CapacityPricing", "siteId": -1, "courseId": -1}, {"ruleId": 8722,
+
+GET https://cityofwestminster.cps.golf/assets/i18n/en.json
+  status: 200  content-type: application/json
+  body_preview: {"auctionType": {"flashDeal": "Flash Deal", "backward": "Backward", "forward": "ForwardAuction", "valuePackage": "ValuePackage", "off": "OFF"}, "rate": {"cartIncluded": "CART INCLUDED", "cartRate": "CART RATE", "walkingRate": "WALKING RATE"}, "endUserAgreement": {"byClickingNext": "By clicking Next, you indicate you have read and agree to the terms on this page"}, "auth": {"checkYourEmailForLogin"
+
+GET https://cityofwestminster.cps.golf/identityapi/.well-known/openid-configuration
+  status: 200  content-type: application/json; charset=UTF-8
+  body_preview: {"issuer": "https://cityofwestminster.cps.golf/identityapi", "jwks_uri": "https://cityofwestminster.cps.golf/identityapi/.well-known/openid-configuration/jwks", "authorization_endpoint": "https://cityofwestminster.cps.golf/identityapi/connect/authorize", "token_endpoint": "https://cityofwestminster.cps.golf/identityapi/connect/token", "userinfo_endpoint": "https://cityofwestminster.cps.golf/identi
+
+GET https://cityofwestminster.cps.golf/onlineresweb/assets/version.json?t=1777563409472
+  status: 200  content-type: application/json
+  body_preview: {"version": "0.0.0", "hash": "c216b9850a38a4bb"}
+
+GET https://cityofwestminster.cps.golf/onlineres/onlineapi/api/v1/onlinereservation/FavIcon
+  status: 200  content-type: application/json; charset=utf-8
+  body_preview: "iVBORw0KGgoAAAANSUhEUgAAA4QAAAIPCAYAAAArThCUAACAAElEQVR42uzdd5xcdfX/8deWbHohhRBIIXQIJfTey1W8iHUcxw4IjgIiY0HEr4oooK6Ciisq2Nf9LXYdkKH3EpIQQoCEhJBeSW/bf3+cz0qEJHtn7p267+fjkQeCu5M7d+7ce8/9nFKFiIhIb1TfMBi4DngH8GlgCqlkl3aMiIj0JtXaBSIi0guDwRrgHOBTwOFAEthNO0ZERBQQioiIVL5xwBeAUe7f3wN8RLtFRER6myrtAhER6VXqG4YC3wYuBfq6/9oFvARcBTxEKtmhHSUiIr2BVghFRKQ3BYP9gQ8DH9wuGAR7QHoI8BXgEOob9MBUREQUEIqIiFRQMFgDnAR8FthjBz9
+
+GET https://cityofwestminster.cps.golf/identityapi/.well-known/openid-configuration/jwks
+  status: 200  content-type: application/json; charset=UTF-8
+  body_preview: {"keys": [{"kty": "RSA", "use": "sig", "kid": "222F7C6716FFF97E9C3F72226F00A3CDBEF59D8ARS256", "x5t": "Ii98Zxb_-X6cP3IibwCjzb71nYo", "e": "AQAB", "n": "mpxzaBIrAKpS7ymNAaqwn8SeJ3Qh3vdX5e9TBMWxOfc4zkMwKClESZSpxVVDhxJbssVoomBrllj-m4dJt80DNIB3pXu36t9V87fjD-6QelNP_6T434L9lERWzaEDoCf5YyCLvpYMuHOX5f8u-69EssyfUuphc82JNb7trEWlCs9fUEgWvcQgz3eQrljxx-IoCa54-zziWtGmipl5pAhDWpeLlaPONF7khzzSSgPmP6_Li20BfEOtffAM
+
+POST https://cityofwestminster.cps.golf/onlineres/onlineapi/api/v1/onlinereservation/RegisterTransactionId
+  status: 200  content-type: application/json; charset=utf-8
+  post_data: {"transactionId":"49efba11-e919-ccd7-51aa-2a1d62ac6ec6"}
+  body_preview: true
+
+GET https://cityofwestminster.cps.golf/onlineres/onlineapi/api/v1/onlinereservation/OnlineCourses
+  status: 200  content-type: application/json; charset=utf-8
+  body_preview: [{"isDefaultSelected": true, "websiteId": "be7f2728-0758-4a72-fe80-08d97849167d", "timezoneId": "America/Denver", "storeId": 2, "classCode": "GW GOLFER", "onlineCourseName": "Legacy Ridge", "isSetOnlineCourseName": true, "courseId": 1, "courseName": "Legacy Ridge Golf Course", "siteId": 2, "courseTypeId": 1, "holes": 18, "courseColor": -16777216, "confirmationEmailTemplateId": 51, "reminderEmailTe
+
+GET https://cityofwestminster.cps.golf/onlineres/onlineapi/api/v1/onlinereservation/BookingRuleModels?classcode=R&courseIds=1%2C4%2C2&searchDate=Thu%20Apr%2030%202026
+  status: 200  content-type: application/json; charset=utf-8
+  body_preview: {"bookingRuleByClass": [], "bookingRuleByCourses": [{"bookingRuleId": 6, "courseId": 2, "courseDesc": "Walnut Creek", "daysInAdvance": 15}, {"bookingRuleId": 7, "courseId": 1, "courseDesc": "Legacy Ridge Golf Course", "maximumDailyBookings": 1, "daysInAdvance": 15}, {"bookingRuleId": 8, "courseId": 4, "courseDesc": "LR Back 9 - 9 Holes Only", "maximumDailyBookings": 1, "daysInAdvance": 15}], "webS
+
+GET https://cityofwestminster.cps.golf/onlineres/onlineapi/api/v1/onlinereservation/InformationCell?courseIds=1&courseIds=4&courseIds=2
+  status: 200  content-type: application/json; charset=utf-8
+  body_preview: []
+
+GET https://cityofwestminster.cps.golf/onlineres/onlineapi/api/v1/onlinereservation/TeeSheetNotes?courseIds=1%2C4%2C2&courseDate=Thu%20Apr%2030%202026
+  status: 200  content-type: application/json; charset=utf-8
+  body_preview: [{"id": 6846, "courseId": 2, "courseDate": "2026-04-30T00:00:00", "isShowNoteOnTeeTime": true, "isShowNoteOnOnline": true, "isPopNoteOnReserve": true, "notes": "CART PATH ONLY ON ALL PAR 3's, #1, #9, #10, #15, #16, #18 / DRIVING RANGE: ARTIFICIAL MATS ONLY UNTIL FURTHER NOTICE", "courseName": "Walnut Creek"}, {"id": 6858, "courseId": 1, "courseDate": "2026-04-30T00:00:00", "isShowNoteOnTeeTime": t
+
+GET https://cityofwestminster.cps.golf/onlineres/onlineapi/api/v1/onlinereservation/TeeTimes?searchDate=Thu%20Apr%2030%202026&holes=0&numberOfPlayer=0&courseIds=1%2C4%2C2&searchTimeType=0&transactionId=49efba11-e919-ccd7-51aa-2a1d62ac6ec6&teeOffTimeMin=0&teeOffTimeMax=23&isChangeTeeOffTime=true&teeSheetSearchView=5&classCode=R&defaultOnlineRate=N&isUseCapacityPricing=false&memberStoreId=1&searchType=1
+  status: 200  content-type: application/json; charset=utf-8
+  body_preview: {"transactionId": "49efba11-e919-ccd7-51aa-2a1d62ac6ec6", "isSuccess": true, "content": [{"bookingList": [], "teeSheetId": 491972, "startTime": "2026-04-30T09:40:00", "courseTimeId": 13860, "startingTee": 10, "crossOverTeeSheetId": 0, "participants": 4, "courseId": 1, "courseDate": "2026-04-30T00:00:00", "defaultRateCode": "LR GW GOLFER", "defaultBookingRate": {"rateCode": "LR GW GOLFER", "booking
+
+================================================================================
+OTHER (non-JSON) REQUESTS
+================================================================================
+GET 200 https://cityofwestminster.cps.golf/onlineresweb/search-teetime?TeeOffTimeMin=0&TeeOffTimeMax=23

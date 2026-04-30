@@ -1,0 +1,11 @@
+{
+  "customTeeTimeLimit": 0,
+  "enableMaximumTeeTimes": false,
+  "hasCustomTeeTimeLimit": false,
+  "limitTeeTimesPerMembership": false,
+  "maximumDailyTeeTimes": -1,
+  "membershipTeeTimeLimit": 0,
+  "name": "Golf Lakewood",
+  "playerBookingCount": 0,
+  "totalTeeTimesHeld": 0
+}

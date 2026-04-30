@@ -1,0 +1,20 @@
+{
+  "course_id": "CO_The_Broadlands",
+  "availability": "Low",
+  "teesheet_provider": "chronogolfv2",
+  "booking_link": "https://www.chronogolf.com/club/broadlands-golf-course",
+  "course": "The Broadlands",
+  "multi_course_owner": "Landscapes",
+  "holes": "18",
+  "length": "7289",
+  "location": "4380 West 144th Ave Broomfield, CO 80020",
+  "notification_allowed": true,
+  "par": "72",
+  "price_range": "40-70",
+  "status": "disabled",
+  "image": "https://noteefypublic.blob.core.windows.net/partner-courses/CO-The-Broadlands/the-broadlands.jpg",
+  "gallus_app_id": "",
+  "crawler_subtype": "",
+  "timezone": "US/Mountain",
+  "contact_phone_number": "(303) 466-8285"
+}
