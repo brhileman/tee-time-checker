@@ -171,17 +171,29 @@ def _build_tee_time(
     if not (min_players <= criteria.players <= max_players):
         return None
 
+    # Filter by hole count *per item*, not per course. Each item carries a
+    # `holesRequirementTypeId`: 0=either, 1=9-only, 2=18-only, null=unknown.
+    # The course-level `golfCourseNumberOfHoles` describes the total holes
+    # (27 for Fox Hollow), which is misleading — a 27-hole course offers
+    # both 9- and 18-hole rounds as separate items, distinguished by this
+    # field, not by the parent total.
+    holes_req = item.get("holesRequirementTypeId")
+    if holes_req == 1 and criteria.holes != 9:
+        return None
+    if holes_req == 2 and criteria.holes != 18:
+        return None
+
+    if holes_req == 1:
+        slot_holes = 9
+    elif holes_req == 2:
+        slot_holes = 18
+    else:
+        # 0 (either) or null (regular course): pass through whatever the
+        # user asked for, since they get to pick at booking time.
+        slot_holes = criteria.holes
+
     start_local = _minutes_to_local_dt(tee_minutes, criteria.date, target.timezone)
     price = _as_float(item.get("price"))
-
-    # Item may report a different hole count than the user asked for —
-    # MemberSports has both 9-hole and 18-hole variants on the same sheet.
-    # Honor `criteria.holes` as a filter where it's a strict mismatch (a
-    # 9-hole-only item shouldn't appear when the user asked for 18).
-    item_holes = item.get("golfCourseNumberOfHoles") or criteria.holes
-    if criteria.holes in (9, 18) and item_holes not in (criteria.holes, 27, 36):
-        # 27/36-hole courses can do either 9 or 18 — keep them.
-        return None
 
     return TeeTime(
         course_name=item.get("name") or target.name,
@@ -189,7 +201,7 @@ def _build_tee_time(
         start_time=start_local,
         min_players=min_players,
         max_players=max_players,
-        holes=criteria.holes if item_holes in (27, 36) else item_holes,
+        holes=slot_holes,
         booking_url=target.booking_url,
         price_min=price,
         price_max=price,
