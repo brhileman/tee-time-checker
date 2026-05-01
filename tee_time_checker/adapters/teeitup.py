@@ -113,18 +113,8 @@ def _parse_slot(slot: dict[str, Any], target: Target, criteria: SearchCriteria) 
 
     # `teetime` is UTC ISO ("...Z"). fromisoformat handles the Z suffix
     # natively in Python 3.11+; convert to target timezone for windowing.
-    raw_dt = slot["teetime"]
-    start_utc = datetime.fromisoformat(raw_dt)
+    start_utc = datetime.fromisoformat(slot["teetime"])
     start_local = start_utc.astimezone(ZoneInfo(target.timezone))
-
-    # Pricing: prices are in cents. Different courses expose different
-    # fields based on cart policy — riding-courses use greenFeeCart,
-    # walking-only courses (e.g. CommonGround) use greenFeeWalking.
-    # Take whichever is present.
-    fees_cents = [_rate_price_cents(r) for r in matching_rates]
-    fees_cents = [c for c in fees_cents if c]
-    price_min = min(fees_cents) / 100.0 if fees_cents else None
-    price_max = max(fees_cents) / 100.0 if fees_cents else None
 
     # Distinguish back-9 starts in the display name so the user can tell
     # them apart on the booking page (matches our Wellshire / Fox Hollow
@@ -141,23 +131,5 @@ def _parse_slot(slot: dict[str, Any], target: Target, criteria: SearchCriteria) 
         max_players=max_players,
         holes=criteria.holes,
         booking_url=target.booking_url,
-        price_min=price_min,
-        price_max=price_max,
         raw=slot,
-    )
-
-
-def _rate_price_cents(rate: dict[str, Any]) -> int:
-    """Extract a rate's green fee in cents.
-
-    Falls back across the various Kenna pricing fields. `greenFeeCart`
-    typically appears for riding courses; `greenFeeWalking` for walking-
-    only courses. Either may be 0 (free / no online price published) —
-    we treat 0 as 'no price' downstream.
-    """
-    return (
-        rate.get("greenFeeCart")
-        or rate.get("greenFeeWalking")
-        or rate.get("greenFee")
-        or 0
     )

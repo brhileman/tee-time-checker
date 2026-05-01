@@ -77,6 +77,4 @@ class TeeTime:
     max_players: int       # maximum party size (min and max can equal — single-player only)
     holes: int
     booking_url: str | None = None      # deep-link the user can tap to book
-    price_min: float | None = None
-    price_max: float | None = None
     raw: dict[str, Any] = field(default_factory=dict, repr=False)  # debugging only

@@ -193,7 +193,6 @@ def _build_tee_time(
         slot_holes = criteria.holes
 
     start_local = _minutes_to_local_dt(tee_minutes, criteria.date, target.timezone)
-    price = _as_float(item.get("price"))
 
     return TeeTime(
         course_name=item.get("name") or target.name,
@@ -203,8 +202,6 @@ def _build_tee_time(
         max_players=max_players,
         holes=slot_holes,
         booking_url=target.booking_url,
-        price_min=price,
-        price_max=price,
         raw=item,
     )
 
@@ -217,12 +214,3 @@ def _minutes_to_local_dt(minutes: int, on_date: date_cls, tz_name: str) -> datet
     """
     midnight = datetime.combine(on_date, time(0, 0), tzinfo=ZoneInfo(tz_name))
     return midnight + timedelta(minutes=minutes)
-
-
-def _as_float(v: Any) -> float | None:
-    if v is None:
-        return None
-    try:
-        return float(v)
-    except (TypeError, ValueError):
-        return None

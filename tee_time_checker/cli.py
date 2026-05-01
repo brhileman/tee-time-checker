@@ -151,13 +151,7 @@ def _print_result(result: SearchResult) -> None:
         for tt in preview:
             t = tt.start_time.strftime("%I:%M %p").lstrip("0").lower()
             players = _format_players(tt.min_players, tt.max_players)
-            price = ""
-            if tt.price_min is not None:
-                if tt.price_max is not None and tt.price_max != tt.price_min:
-                    price = f" — ${tt.price_min:.0f}–${tt.price_max:.0f}"
-                else:
-                    price = f" — ${tt.price_min:.0f}"
-            print(f"      {t}  {players}{price}")
+            print(f"      {t}  {players}")
         if len(slots) > len(preview):
             print(f"      … +{len(slots) - len(preview)} more")
         print()

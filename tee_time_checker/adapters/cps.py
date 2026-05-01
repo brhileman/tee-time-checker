@@ -177,12 +177,6 @@ def _parse_slot(slot: dict[str, Any], target: Target, criteria: SearchCriteria) 
         tzinfo=ZoneInfo(target.timezone)
     )
 
-    # Best-effort price extraction: shItemPrices contains line items keyed
-    # by shItemCode (GreenFee18, GreenFee9, HalfCart18, etc.). For our
-    # summary we want the green fee for the user's holes choice; carts and
-    # other add-ons aren't included.
-    price_min, price_max = _extract_prices(slot.get("shItemPrices") or [], slot_holes)
-
     return TeeTime(
         course_name=slot.get("courseName") or target.name,
         course_slug=target.slug,
@@ -191,25 +185,8 @@ def _parse_slot(slot: dict[str, Any], target: Target, criteria: SearchCriteria) 
         max_players=max_players,
         holes=slot_holes,
         booking_url=target.booking_url,
-        price_min=price_min,
-        price_max=price_max,
         raw=slot,
     )
-
-
-def _extract_prices(items: list[dict[str, Any]], holes: int) -> tuple[float | None, float | None]:
-    """Pull the green-fee for the requested holes from CPS rate line items.
-
-    Returns (min, max). For now they're equal — CPS exposes one green-fee
-    rate per slot per duration. We keep the tuple shape for future
-    multi-rate platforms (twilight vs prime, member vs guest, etc.).
-    """
-    code = "GreenFee9" if holes == 9 else "GreenFee18"
-    for item in items:
-        if item.get("shItemCode") == code:
-            price = _as_float(item.get("displayPrice") or item.get("price"))
-            return price, price
-    return None, None
 
 
 def _format_search_date(d) -> str:
@@ -228,12 +205,3 @@ def _tz_offset_minutes(tz_name: str, on_date) -> int:
     """
     sample = datetime(on_date.year, on_date.month, on_date.day, 12, 0, tzinfo=ZoneInfo(tz_name))
     return -int(sample.utcoffset().total_seconds() // 60)
-
-
-def _as_float(v: Any) -> float | None:
-    if v is None:
-        return None
-    try:
-        return float(v)
-    except (TypeError, ValueError):
-        return None
