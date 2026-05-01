@@ -1,0 +1,62 @@
+slug: commonground
+total interesting requests: 16
+  JSON: 10    other: 6
+
+API hosts:
+    6  phx-api-be-east-1b.kenna.io
+    2  app.launchdarkly.com
+    2  events.launchdarkly.com
+
+================================================================================
+JSON CALLS
+================================================================================
+
+GET https://app.launchdarkly.com/sdk/goals/669e7388f078f70f6bd4efd2
+  status: 200  body_file: 01.json
+  preview: []
+
+GET https://app.launchdarkly.com/sdk/evalx/669e7388f078f70f6bd4efd2/contexts/eyJraW5kIjoidXNlciIsImtleSI6ImNvbW1vbmdyb3VuZC1nb2xmLWNvdXJzZSJ9
+  status: 200  body_file: 02.json
+  preview: {"upgrade-membership-enabled": {"version": 307, "flagVersion": 3, "value": false, "variation": 1, "trackEvents": false}, "ddReplayEnabled": {"version": 307, "flagVersion": 4, "value": false, "variation": 1, "trackEvents": false}, "enable-ui-email-verification": {"version": 307, "flagVersion": 8, "va
+
+POST https://events.launchdarkly.com/events/diagnostic/669e7388f078f70f6bd4efd2
+  status: 202  body_file: -
+  post_data: {"kind":"diagnostic-combined","id":{"diagnosticId":"f9265ef0-44ef-11f1-bd96-09e7dd298699","sdkKeySuffix":"d4efd2"},"creationDate":1777593289312,"dataSinceDate":1777593289311,"droppedEvents":0,"eventsInLastBatch":0,"streamInits":[],"sdk":{"name":"js-client-sdk","version":"3.9.0","wrapperName":"react-
+
+GET https://phx-api-be-east-1b.kenna.io/facilities
+  status: 200  body_file: 03.json
+  preview: [{"id": 5275, "courseId": "54f14d400c8ad60378b0382c", "checkinInstructions": "", "isSimulator": false, "name": "CommonGround Golf Course", "timeZone": "America/Denver", "address": "10300 East Golfers Way, Aurora, CO 80010, US", "locality": "Aurora", "region": "CO", "country": "US", "location": [-104
+
+POST https://phx-api-be-east-1b.kenna.io/shopping-cart
+  status: 201  body_file: 04.json
+  preview: {"alias": "commonground-golf-course", "id": "dd25a213-cb14-4544-a342-0299dcc6be16", "items": []}
+
+GET https://phx-api-be-east-1b.kenna.io/memberships
+  status: 200  body_file: 05.json
+  preview: [{"facilityId": 5275, "memberships": []}]
+
+GET https://phx-api-be-east-1b.kenna.io/gift-certificates?facilityIds%5B%5D=5275
+  status: 200  body_file: 06.json
+  preview: [{"id": 36347, "name": "CommonGround Gift Cards", "expiration": "4/30/2031", "termsAndConditions": ".", "facilityId": 5275}]
+
+GET https://phx-api-be-east-1b.kenna.io/v2/tee-times?date=2026-05-03&facilityIds=5275&returnPromotedRates=true
+  status: 200  body_file: 07.json
+  preview: [{"dayInfo": {"dawn": "2026-05-03T11:29:00.000Z", "sunrise": "2026-05-03T11:58:00.000Z", "sunset": "2026-05-04T01:53:00.000Z", "dusk": "2026-05-04T02:25:00.000Z"}, "teetimes": [{"courseId": "54f14d400c8ad60378b0382c", "teetime": "2026-05-03T21:00:00.000Z", "backNine": false, "rates": [{"_id": -62234
+
+GET https://phx-api-be-east-1b.kenna.io/course/54f14d400c8ad60378b0382c/tee-time/locks?localDate=2026-05-03
+  status: 200  body_file: 08.json
+  preview: []
+
+POST https://events.launchdarkly.com/events/bulk/669e7388f078f70f6bd4efd2
+  status: 202  body_file: -
+  post_data: [{"kind":"identify","context":{"key":"commonground-golf-course","kind":"user"},"creationDate":1777593289313},{"startDate":1777593290187,"endDate":1777593290811,"features":{"enable-pro-account":{"default":true,"counters":[{"value":true,"count":2,"variation":0,"version":17}],"contextKinds":["user"]},"
+
+================================================================================
+OTHER
+================================================================================
+GET 200 https://commonground-golf-course.book.teeitup.com/?course=5275&date=2026-05-03&max=999999
+POST 200 https://commonground-golf-course.book.teeitup.com/cdn-cgi/challenge-platform/h/b/jsd/oneshot/0b8fb825cb67/0.36380305516005396:1777591708:vAyqyclIeBo3XX7q6KaDxyFPhg1fj7HBbsgLANaJhpA/9f4a79479bb3d215
+GET 200 https://commonground-golf-course.book.teeitup.com/course/info?_rsc=1l1mm
+GET 200 https://commonground-golf-course.book.teeitup.com/store?_rsc=1l1mm
+GET 200 https://commonground-golf-course.book.teeitup.com/teetimes?_rsc=1l1mm
+POST 200 https://www.google.com/ccm/collect?rcb=9&_ng=1&frm=0&ae=g&en=page_view&dl=https%3A%2F%2Fcommonground-golf-course.book.teeitup.com%2F&scrsrc=www.googletagmanager.com&rnd=887521837.1777593290&dt=Tee%20Times&auid=1174609827.1777593290&navt=n&npa=0&ep.ads_data_redaction=0&gtm=45He64t1h1v9199481449za200zd9199481449xea&gcd=13l3l3l3l1l1&dma=0&tag_exp=0~115616985~115938466~115938468~117384405~118694324&apve=1&apvf=f&apvc=1&tft=1777593290238&tfd=1577

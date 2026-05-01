@@ -1,0 +1,24 @@
+[
+  {
+    "id": 5275,
+    "courseId": "54f14d400c8ad60378b0382c",
+    "checkinInstructions": "",
+    "isSimulator": false,
+    "name": "CommonGround Golf Course",
+    "timeZone": "America/Denver",
+    "address": "10300 East Golfers Way, Aurora, CO 80010, US",
+    "locality": "Aurora",
+    "region": "CO",
+    "country": "US",
+    "location": [
+      -104.881231,
+      39.72274
+    ],
+    "currency": "USD",
+    "phone": "(303) 340-1520",
+    "email": "bpennymon@commongroundgc.com",
+    "description": "Designed by Tom Doak for the CGA, the name \"CommonGround\" was chosen not simply to name the golf course, but to declare a mission:\n\n\"To provide everyone in the state with a first-class environment in which to comfortably learn, enjoy, and support this amazing game and all that it offers.\"",
+    "policy": "\nAdvanced Tee Time Cancellations \u2013 If you need to cancel tee times that were booked using the Advanced Booking option, you are required to cancel these times prior to entering the seven-day booking period for standard tee times. Advanced tee times canceled within this seven-day window will be refunded the round fee but not the $20 Advanced Booking Fee.\n\nStandard Tee Time Cancellations and No Shows - In the event that you need to cancel your tee time reservation(s), we request that it be canceled at least 24 hours in advance as of your tee time. Tee times canceled within this 24 hour window will be refunded for the round minus a $20 No Show Fee. Any player who does not show up for a tee time forfeits all fees paid for their round(s) of golf. Annual Passholders who do not show up for their round will be charged the $20 No Show Fee.",
+    "image": "https://exddilid.cdn.imgeng.in/app/ttf/image/hdm/5275.jpg"
+  }
+]

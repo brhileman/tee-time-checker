@@ -22,6 +22,7 @@ from dataclasses import dataclass
 from tee_time_checker.adapters.base import Adapter, Target
 from tee_time_checker.adapters.cps import CPSAdapter
 from tee_time_checker.adapters.membersports import MemberSportsAdapter
+from tee_time_checker.adapters.teeitup import TeeItUpAdapter
 from tee_time_checker.domain import SearchCriteria, TeeTime
 
 
@@ -36,6 +37,7 @@ def build_default_registry() -> dict[str, Adapter]:
     return {
         "cps": CPSAdapter(),
         "membersports": MemberSportsAdapter(),
+        "teeitup": TeeItUpAdapter(),
     }
 
 

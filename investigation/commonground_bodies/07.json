@@ -1,0 +1,747 @@
+[
+  {
+    "dayInfo": {
+      "dawn": "2026-05-03T11:29:00.000Z",
+      "sunrise": "2026-05-03T11:58:00.000Z",
+      "sunset": "2026-05-04T01:53:00.000Z",
+      "dusk": "2026-05-04T02:25:00.000Z"
+    },
+    "teetimes": [
+      {
+        "courseId": "54f14d400c8ad60378b0382c",
+        "teetime": "2026-05-03T21:00:00.000Z",
+        "backNine": false,
+        "rates": [
+          {
+            "_id": -622342609,
+            "name": "18 Holes",
+            "externalId": "-622342609",
+            "allowedPlayers": [
+              1
+            ],
+            "holes": 18,
+            "icons": [],
+            "tags": [],
+            "golfnow": {
+              "TTTeeTimeId": -622342609,
+              "GolfCourseId": 160225,
+              "GolfFacilityId": 5275
+            },
+            "trade": false,
+            "acceptCreditCard": false,
+            "showAsHotDeal": false,
+            "isSimulator": false,
+            "dueOnlineWalking": 0,
+            "greenFeeWalking": 9157,
+            "transactionFees": 0,
+            "showTransactionFees": false
+          },
+          {
+            "_id": -622342641,
+            "name": "9 Holes",
+            "externalId": "-622342641",
+            "allowedPlayers": [
+              1
+            ],
+            "holes": 9,
+            "icons": [],
+            "tags": [],
+            "golfnow": {
+              "TTTeeTimeId": -622342641,
+              "GolfCourseId": 160218,
+              "GolfFacilityId": 5275
+            },
+            "trade": false,
+            "acceptCreditCard": false,
+            "showAsHotDeal": false,
+            "isSimulator": false,
+            "dueOnlineWalking": 0,
+            "greenFeeWalking": 4627,
+            "transactionFees": 0,
+            "showTransactionFees": false
+          }
+        ],
+        "bookedPlayers": 3,
+        "minPlayers": 1,
+        "maxPlayers": 1,
+        "players": [],
+        "source": "API-2.1",
+        "fromCache": false,
+        "rollTimeOffer": null
+      },
+      {
+        "courseId": "54f14d400c8ad60378b0382c",
+        "teetime": "2026-05-03T22:10:00.000Z",
+        "backNine": false,
+        "rates": [
+          {
+            "_id": -622342602,
+            "name": "18 Holes",
+            "externalId": "-622342602",
+            "allowedPlayers": [
+              1
+            ],
+            "holes": 18,
+            "icons": [],
+            "tags": [],
+            "golfnow": {
+              "TTTeeTimeId": -622342602,
+              "GolfCourseId": 160225,
+              "GolfFacilityId": 5275
+            },
+            "trade": false,
+            "acceptCreditCard": false,
+            "showAsHotDeal": false,
+            "isSimulator": false,
+            "dueOnlineWalking": 0,
+            "greenFeeWalking": 9157,
+            "transactionFees": 0,
+            "showTransactionFees": false
+          },
+          {
+            "_id": -622342634,
+            "name": "9 Holes",
+            "externalId": "-622342634",
+            "allowedPlayers": [
+              1
+            ],
+            "holes": 9,
+            "icons": [],
+            "tags": [],
+            "golfnow": {
+              "TTTeeTimeId": -622342634,
+              "GolfCourseId": 160218,
+              "GolfFacilityId": 5275
+            },
+            "trade": false,
+            "acceptCreditCard": false,
+            "showAsHotDeal": false,
+            "isSimulator": false,
+            "dueOnlineWalking": 0,
+            "greenFeeWalking": 4627,
+            "transactionFees": 0,
+            "showTransactionFees": false
+          }
+        ],
+        "bookedPlayers": 3,
+        "minPlayers": 1,
+        "maxPlayers": 1,
+        "players": [],
+        "source": "API-2.1",
+        "fromCache": false,
+        "rollTimeOffer": null
+      },
+      {
+        "courseId": "54f14d400c8ad60378b0382c",
+        "teetime": "2026-05-03T22:20:00.000Z",
+        "backNine": false,
+        "rates": [
+          {
+            "_id": -622342601,
+            "name": "18 Holes",
+            "externalId": "-622342601",
+            "allowedPlayers": [
+              1,
+              2
+            ],
+            "holes": 18,
+            "icons": [],
+            "tags": [],
+            "golfnow": {
+              "TTTeeTimeId": -622342601,
+              "GolfCourseId": 160225,
+              "GolfFacilityId": 5275
+            },
+            "trade": false,
+            "acceptCreditCard": false,
+            "showAsHotDeal": false,
+            "isSimulator": false,
+            "dueOnlineWalking": 0,
+            "greenFeeWalking": 9157,
+            "transactionFees": 0,
+            "showTransactionFees": false
+          },
+          {
+            "_id": -622342633,
+            "name": "9 Holes",
+            "externalId": "-622342633",
+            "allowedPlayers": [
+              1,
+              2
+            ],
+            "holes": 9,
+            "icons": [],
+            "tags": [],
+            "golfnow": {
+              "TTTeeTimeId": -622342633,
+              "GolfCourseId": 160218,
+              "GolfFacilityId": 5275
+            },
+            "trade": false,
+            "acceptCreditCard": false,
+            "showAsHotDeal": false,
+            "isSimulator": false,
+            "dueOnlineWalking": 0,
+            "greenFeeWalking": 4627,
+            "transactionFees": 0,
+            "showTransactionFees": false
+          }
+        ],
+        "bookedPlayers": 2,
+        "minPlayers": 1,
+        "maxPlayers": 2,
+        "players": [],
+        "source": "API-2.1",
+        "fromCache": false,
+        "rollTimeOffer": null
+      },
+      {
+        "courseId": "54f14d400c8ad60378b0382c",
+        "teetime": "2026-05-03T22:30:00.000Z",
+        "backNine": false,
+        "rates": [
+          {
+            "_id": -622342600,
+            "name": "18 Holes",
+            "externalId": "-622342600",
+            "allowedPlayers": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "holes": 18,
+            "icons": [],
+            "tags": [],
+            "golfnow": {
+              "TTTeeTimeId": -622342600,
+              "GolfCourseId": 160225,
+              "GolfFacilityId": 5275
+            },
+            "trade": false,
+            "acceptCreditCard": false,
+            "showAsHotDeal": false,
+            "isSimulator": false,
+            "dueOnlineWalking": 0,
+            "greenFeeWalking": 9157,
+            "transactionFees": 0,
+            "showTransactionFees": false
+          },
+          {
+            "_id": -622342632,
+            "name": "9 Holes",
+            "externalId": "-622342632",
+            "allowedPlayers": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "holes": 9,
+            "icons": [],
+            "tags": [],
+            "golfnow": {
+              "TTTeeTimeId": -622342632,
+              "GolfCourseId": 160218,
+              "GolfFacilityId": 5275
+            },
+            "trade": false,
+            "acceptCreditCard": false,
+            "showAsHotDeal": false,
+            "isSimulator": false,
+            "dueOnlineWalking": 0,
+            "greenFeeWalking": 4627,
+            "transactionFees": 0,
+            "showTransactionFees": false
+          }
+        ],
+        "bookedPlayers": 0,
+        "minPlayers": 1,
+        "maxPlayers": 4,
+        "players": [],
+        "source": "API-2.1",
+        "fromCache": false,
+        "rollTimeOffer": null
+      },
+      {
+        "courseId": "54f14d400c8ad60378b0382c",
+        "teetime": "2026-05-03T22:40:00.000Z",
+        "backNine": false,
+        "rates": [
+          {
+            "_id": -622342599,
+            "name": "18 Holes",
+            "externalId": "-622342599",
+            "allowedPlayers": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "holes": 18,
+            "icons": [],
+            "tags": [],
+            "golfnow": {
+              "TTTeeTimeId": -622342599,
+              "GolfCourseId": 160225,
+              "GolfFacilityId": 5275
+            },
+            "trade": false,
+            "acceptCreditCard": false,
+            "showAsHotDeal": false,
+            "isSimulator": false,
+            "dueOnlineWalking": 0,
+            "greenFeeWalking": 9157,
+            "transactionFees": 0,
+            "showTransactionFees": false
+          },
+          {
+            "_id": -622342631,
+            "name": "9 Holes",
+            "externalId": "-622342631",
+            "allowedPlayers": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "holes": 9,
+            "icons": [],
+            "tags": [],
+            "golfnow": {
+              "TTTeeTimeId": -622342631,
+              "GolfCourseId": 160218,
+              "GolfFacilityId": 5275
+            },
+            "trade": false,
+            "acceptCreditCard": false,
+            "showAsHotDeal": false,
+            "isSimulator": false,
+            "dueOnlineWalking": 0,
+            "greenFeeWalking": 4627,
+            "transactionFees": 0,
+            "showTransactionFees": false
+          }
+        ],
+        "bookedPlayers": 0,
+        "minPlayers": 1,
+        "maxPlayers": 4,
+        "players": [],
+        "source": "API-2.1",
+        "fromCache": false,
+        "rollTimeOffer": null
+      },
+      {
+        "courseId": "54f14d400c8ad60378b0382c",
+        "teetime": "2026-05-03T22:50:00.000Z",
+        "backNine": false,
+        "rates": [
+          {
+            "_id": -622342598,
+            "name": "18 Holes",
+            "externalId": "-622342598",
+            "allowedPlayers": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "holes": 18,
+            "icons": [],
+            "tags": [],
+            "golfnow": {
+              "TTTeeTimeId": -622342598,
+              "GolfCourseId": 160225,
+              "GolfFacilityId": 5275
+            },
+            "trade": false,
+            "acceptCreditCard": false,
+            "showAsHotDeal": false,
+            "isSimulator": false,
+            "dueOnlineWalking": 0,
+            "greenFeeWalking": 9157,
+            "transactionFees": 0,
+            "showTransactionFees": false
+          },
+          {
+            "_id": -622342630,
+            "name": "9 Holes",
+            "externalId": "-622342630",
+            "allowedPlayers": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "holes": 9,
+            "icons": [],
+            "tags": [],
+            "golfnow": {
+              "TTTeeTimeId": -622342630,
+              "GolfCourseId": 160218,
+              "GolfFacilityId": 5275
+            },
+            "trade": false,
+            "acceptCreditCard": false,
+            "showAsHotDeal": false,
+            "isSimulator": false,
+            "dueOnlineWalking": 0,
+            "greenFeeWalking": 4627,
+            "transactionFees": 0,
+            "showTransactionFees": false
+          }
+        ],
+        "bookedPlayers": 0,
+        "minPlayers": 1,
+        "maxPlayers": 4,
+        "players": [],
+        "source": "API-2.1",
+        "fromCache": false,
+        "rollTimeOffer": null
+      },
+      {
+        "courseId": "54f14d400c8ad60378b0382c",
+        "teetime": "2026-05-03T23:00:00.000Z",
+        "backNine": false,
+        "rates": [
+          {
+            "_id": -622342597,
+            "name": "18 Holes",
+            "externalId": "-622342597",
+            "allowedPlayers": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "holes": 18,
+            "icons": [],
+            "tags": [],
+            "golfnow": {
+              "TTTeeTimeId": -622342597,
+              "GolfCourseId": 160225,
+              "GolfFacilityId": 5275
+            },
+            "trade": false,
+            "acceptCreditCard": false,
+            "showAsHotDeal": false,
+            "isSimulator": false,
+            "dueOnlineWalking": 0,
+            "greenFeeWalking": 9157,
+            "transactionFees": 0,
+            "showTransactionFees": false
+          },
+          {
+            "_id": -622342629,
+            "name": "9 Holes",
+            "externalId": "-622342629",
+            "allowedPlayers": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "holes": 9,
+            "icons": [],
+            "tags": [],
+            "golfnow": {
+              "TTTeeTimeId": -622342629,
+              "GolfCourseId": 160218,
+              "GolfFacilityId": 5275
+            },
+            "trade": false,
+            "acceptCreditCard": false,
+            "showAsHotDeal": false,
+            "isSimulator": false,
+            "dueOnlineWalking": 0,
+            "greenFeeWalking": 4627,
+            "transactionFees": 0,
+            "showTransactionFees": false
+          }
+        ],
+        "bookedPlayers": 0,
+        "minPlayers": 1,
+        "maxPlayers": 4,
+        "players": [],
+        "source": "API-2.1",
+        "fromCache": false,
+        "rollTimeOffer": null
+      },
+      {
+        "courseId": "54f14d400c8ad60378b0382c",
+        "teetime": "2026-05-03T23:10:00.000Z",
+        "backNine": false,
+        "rates": [
+          {
+            "_id": -622342596,
+            "name": "18 Holes",
+            "externalId": "-622342596",
+            "allowedPlayers": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "holes": 18,
+            "icons": [],
+            "tags": [],
+            "golfnow": {
+              "TTTeeTimeId": -622342596,
+              "GolfCourseId": 160225,
+              "GolfFacilityId": 5275
+            },
+            "trade": false,
+            "acceptCreditCard": false,
+            "showAsHotDeal": false,
+            "isSimulator": false,
+            "dueOnlineWalking": 0,
+            "greenFeeWalking": 9157,
+            "transactionFees": 0,
+            "showTransactionFees": false
+          },
+          {
+            "_id": -622342628,
+            "name": "9 Holes",
+            "externalId": "-622342628",
+            "allowedPlayers": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "holes": 9,
+            "icons": [],
+            "tags": [],
+            "golfnow": {
+              "TTTeeTimeId": -622342628,
+              "GolfCourseId": 160218,
+              "GolfFacilityId": 5275
+            },
+            "trade": false,
+            "acceptCreditCard": false,
+            "showAsHotDeal": false,
+            "isSimulator": false,
+            "dueOnlineWalking": 0,
+            "greenFeeWalking": 4627,
+            "transactionFees": 0,
+            "showTransactionFees": false
+          }
+        ],
+        "bookedPlayers": 0,
+        "minPlayers": 1,
+        "maxPlayers": 4,
+        "players": [],
+        "source": "API-2.1",
+        "fromCache": false,
+        "rollTimeOffer": null
+      },
+      {
+        "courseId": "54f14d400c8ad60378b0382c",
+        "teetime": "2026-05-03T23:20:00.000Z",
+        "backNine": false,
+        "rates": [
+          {
+            "_id": -622342595,
+            "name": "18 Holes",
+            "externalId": "-622342595",
+            "allowedPlayers": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "holes": 18,
+            "icons": [],
+            "tags": [],
+            "golfnow": {
+              "TTTeeTimeId": -622342595,
+              "GolfCourseId": 160225,
+              "GolfFacilityId": 5275
+            },
+            "trade": false,
+            "acceptCreditCard": false,
+            "showAsHotDeal": false,
+            "isSimulator": false,
+            "dueOnlineWalking": 0,
+            "greenFeeWalking": 9157,
+            "transactionFees": 0,
+            "showTransactionFees": false
+          },
+          {
+            "_id": -622342627,
+            "name": "9 Holes",
+            "externalId": "-622342627",
+            "allowedPlayers": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "holes": 9,
+            "icons": [],
+            "tags": [],
+            "golfnow": {
+              "TTTeeTimeId": -622342627,
+              "GolfCourseId": 160218,
+              "GolfFacilityId": 5275
+            },
+            "trade": false,
+            "acceptCreditCard": false,
+            "showAsHotDeal": false,
+            "isSimulator": false,
+            "dueOnlineWalking": 0,
+            "greenFeeWalking": 4627,
+            "transactionFees": 0,
+            "showTransactionFees": false
+          }
+        ],
+        "bookedPlayers": 0,
+        "minPlayers": 1,
+        "maxPlayers": 4,
+        "players": [],
+        "source": "API-2.1",
+        "fromCache": false,
+        "rollTimeOffer": null
+      },
+      {
+        "courseId": "54f14d400c8ad60378b0382c",
+        "teetime": "2026-05-03T23:30:00.000Z",
+        "backNine": false,
+        "rates": [
+          {
+            "_id": -622342594,
+            "name": "18 Holes",
+            "externalId": "-622342594",
+            "allowedPlayers": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "holes": 18,
+            "icons": [],
+            "tags": [],
+            "golfnow": {
+              "TTTeeTimeId": -622342594,
+              "GolfCourseId": 160225,
+              "GolfFacilityId": 5275
+            },
+            "trade": false,
+            "acceptCreditCard": false,
+            "showAsHotDeal": false,
+            "isSimulator": false,
+            "dueOnlineWalking": 0,
+            "greenFeeWalking": 9157,
+            "transactionFees": 0,
+            "showTransactionFees": false
+          },
+          {
+            "_id": -622342626,
+            "name": "9 Holes",
+            "externalId": "-622342626",
+            "allowedPlayers": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "holes": 9,
+            "icons": [],
+            "tags": [],
+            "golfnow": {
+              "TTTeeTimeId": -622342626,
+              "GolfCourseId": 160218,
+              "GolfFacilityId": 5275
+            },
+            "trade": false,
+            "acceptCreditCard": false,
+            "showAsHotDeal": false,
+            "isSimulator": false,
+            "dueOnlineWalking": 0,
+            "greenFeeWalking": 4627,
+            "transactionFees": 0,
+            "showTransactionFees": false
+          }
+        ],
+        "bookedPlayers": 0,
+        "minPlayers": 1,
+        "maxPlayers": 4,
+        "players": [],
+        "source": "API-2.1",
+        "fromCache": false,
+        "rollTimeOffer": null
+      },
+      {
+        "courseId": "54f14d400c8ad60378b0382c",
+        "teetime": "2026-05-03T23:40:00.000Z",
+        "backNine": false,
+        "rates": [
+          {
+            "_id": -622342593,
+            "name": "18 Holes",
+            "externalId": "-622342593",
+            "allowedPlayers": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "holes": 18,
+            "icons": [],
+            "tags": [],
+            "golfnow": {
+              "TTTeeTimeId": -622342593,
+              "GolfCourseId": 160225,
+              "GolfFacilityId": 5275
+            },
+            "trade": false,
+            "acceptCreditCard": false,
+            "showAsHotDeal": false,
+            "isSimulator": false,
+            "dueOnlineWalking": 0,
+            "greenFeeWalking": 9157,
+            "transactionFees": 0,
+            "showTransactionFees": false
+          },
+          {
+            "_id": -622342625,
+            "name": "9 Holes",
+            "externalId": "-622342625",
+            "allowedPlayers": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "holes": 9,
+            "icons": [],
+            "tags": [],
+            "golfnow": {
+              "TTTeeTimeId": -622342625,
+              "GolfCourseId": 160218,
+              "GolfFacilityId": 5275
+            },
+            "trade": false,
+            "acceptCreditCard": false,
+            "showAsHotDeal": false,
+            "isSimulator": false,
+            "dueOnlineWalking": 0,
+            "greenFeeWalking": 4627,
+            "transactionFees": 0,
+            "showTransactionFees": false
+          }
+        ],
+        "bookedPlayers": 0,
+        "minPlayers": 1,
+        "maxPlayers": 4,
+        "players": [],
+        "source": "API-2.1",
+        "fromCache": false,
+        "rollTimeOffer": null
+      }
+    ],
+    "courseId": "54f14d400c8ad60378b0382c",
+    "totalAvailableTeetimes": 11,
+    "fromCache": false
+  }
+]
