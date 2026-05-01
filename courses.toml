@@ -126,6 +126,27 @@ booking_url = "https://commonground-golf-course.book.teeitup.com/"
   facility_id = 5275
 
 # ──────────────────────────────────────────────────────────────────────
+# Quick18  (`*.quick18.com`)
+# ──────────────────────────────────────────────────────────────────────
+# HTML form POST; slots extracted via regex over booking-link URLs.
+
+[[targets]]
+slug = "thorncreek"
+name = "Thorncreek"
+adapter = "quick18"
+timezone = "America/Denver"
+booking_url = "https://thorncreek.quick18.com/teetimes/searchmatrix"
+
+  [targets.params]
+  host = "thorncreek.quick18.com"
+  course_id = 693                # 18-hole course id; 9-hole searches use virtual id -9
+  # Suffix applied to target.name when a slot is at one of these
+  # 9-hole sub-courses. Keys must be strings (TOML int-key restriction).
+  [targets.params.nine_hole_suffixes]
+  "694" = " (back 9)"
+  "705" = " (front 9)"
+
+# ──────────────────────────────────────────────────────────────────────
 # Other platforms — added as their adapters land.
 # IDs already discovered during recon (see investigation/*_summary.txt):
 #
@@ -133,7 +154,3 @@ booking_url = "https://commonground-golf-course.book.teeitup.com/"
 #     - Broadlands: course_id "CO_The_Broadlands"
 #       (POST booking-engine.noteefy.app/tee-times/availability — needs
 #        curl_cffi Chrome impersonation for Cloudflare TLS)
-#
-#   Quick18:
-#     - Thorncreek: form POST to thorncreek.quick18.com/teetimes/searchmatrix
-#       (CourseId=693, regex extract from response HTML)
