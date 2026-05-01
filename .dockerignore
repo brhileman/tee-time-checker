@@ -1,0 +1,39 @@
+# Keep the build context lean — anything not needed at runtime stays out
+# of `docker build`'s upload to the daemon.
+
+# Local environments and caches
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Local secrets / data — never bake into an image
+.env
+.env.*
+*.db
+*.db-wal
+*.db-shm
+*.sqlite*
+
+# Source control + editor noise
+.git/
+.gitignore
+.vscode/
+.idea/
+.DS_Store
+.claude/
+
+# Build outputs and packaging artifacts
+dist/
+build/
+*.egg-info/
+
+# Recon / investigation artifacts (large + not needed in production)
+investigation/
+
+# Project-level docs that aren't needed in the image
+README.md
+.env.example
+
+# Fly itself (we run via the Dockerfile)
+fly.toml

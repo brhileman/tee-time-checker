@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import logging
 import os
 import sys
 from datetime import date, datetime, timedelta
@@ -32,6 +33,15 @@ from tee_time_checker.summary import format_sms_summary
 # every shell. Production deploys (Fly.io secrets) override this naturally
 # since `load_dotenv` doesn't overwrite existing env vars by default.
 load_dotenv()
+
+# Format log output for both Fly.io (which captures stdout/stderr) and
+# local terminals. INFO is the default; bump to DEBUG via LOG_LEVEL=DEBUG
+# in env when diagnosing a specific issue.
+logging.basicConfig(
+    level=os.environ.get("LOG_LEVEL", "INFO"),
+    format="%(asctime)s %(levelname)-7s %(name)s: %(message)s",
+    datefmt="%Y-%m-%dT%H:%M:%S%z",
+)
 
 
 def main(argv: list[str] | None = None) -> int:

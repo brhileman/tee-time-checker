@@ -1,0 +1,77 @@
+# fly.toml — Fly.io app config.
+#
+# `fly launch` will overwrite the `app` field with the user's chosen
+# app name on first deploy; everything else here should be kept as-is.
+
+# App name is set on first launch via `fly launch --name <something>`.
+# Leaving as-is causes fly to prompt for a name interactively.
+app = "tee-time-checker"
+
+# Virginia — same datacenter zone as Twilio's primary US infrastructure.
+# Round-trip from Twilio webhook delivery to our reply is <50ms.
+primary_region = "iad"
+
+[build]
+  dockerfile = "Dockerfile"
+
+# ────────────────────────────────────────────────────────────────────
+# Tiny VM — our workload is sub-second per webhook, no GPU needed.
+# CX22-equivalent shape (1 shared CPU, 256MB RAM). Bump to 512MB if the
+# scheduler starts paging during peak (it shouldn't — curl_cffi + sqlite
+# is light).
+# ────────────────────────────────────────────────────────────────────
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"
+
+# ────────────────────────────────────────────────────────────────────
+# Persistent state. SQLite lives on this volume so watches survive
+# deploys. The TEE_TIME_DB_PATH env var (set in the Dockerfile) points
+# state.py at /data/tee_time_checker.db.
+#
+# Volume must be created once before the first deploy:
+#   fly volumes create tee_time_data --region iad --size 1
+# ────────────────────────────────────────────────────────────────────
+[[mounts]]
+  source = "tee_time_data"
+  destination = "/data"
+
+# ────────────────────────────────────────────────────────────────────
+# HTTP exposure — Fly auto-provisions HTTPS at <app>.fly.dev.
+# Twilio webhooks need HTTPS; that's covered automatically.
+#
+# auto_stop_machines = "off" because the in-process scheduler must
+# stay alive between requests to fire watch checks. Default Fly
+# behavior would scale to zero between webhooks and break polling.
+# ────────────────────────────────────────────────────────────────────
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "off"
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ["app"]
+
+# ────────────────────────────────────────────────────────────────────
+# Liveness probe — Fly restarts the machine if /healthz fails repeatedly.
+# 30s/5s is conservative; our endpoint is a constant-time JSON response
+# so anything finer is just noise.
+# ────────────────────────────────────────────────────────────────────
+[[http_service.checks]]
+  interval = "30s"
+  timeout = "5s"
+  grace_period = "10s"
+  method = "GET"
+  path = "/healthz"
+
+# ────────────────────────────────────────────────────────────────────
+# Required secrets (set via `fly secrets set KEY=value ...`):
+#
+#   ANTHROPIC_API_KEY      — Claude API key (parser)
+#   TWILIO_ACCOUNT_SID     — Twilio account SID (outbound SMS)
+#   TWILIO_AUTH_TOKEN      — Twilio auth token (outbound + signature verification)
+#   TWILIO_FROM_NUMBER     — Twilio phone number messages come from (E.164, e.g. +13035551234)
+#
+# Optional:
+#   TICK_SECONDS           — how often the scheduler wakes up (default 60)
+# ────────────────────────────────────────────────────────────────────
