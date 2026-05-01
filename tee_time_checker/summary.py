@@ -1,27 +1,27 @@
 """SMS-style summary formatter for a SearchResult.
 
-Designed to fit within Twilio's per-segment character budget (160 chars
-GSM-7 / 70 chars UCS-2; using emoji forces UCS-2). Real-world target:
-keep summaries under ~320 chars (2 segments) when 1–3 courses match,
-gracefully degrade to "top courses + count" form for larger results.
-
 Output shape:
 
     ✅ Sun 5/3 afternoon, 2p (18h)
-    • Legacy Ridge — 9 slots, 4:20p–6:00p · 7 may finish after dark ⚠️
-    • Walnut Creek — 8 slots, 2:30p–5:50p · 5 ⚠️
-    Tap to book:
-      cityofwestminster.cps.golf/onlineresweb/search-teetime
+    • Legacy Ridge — 9 slots, 4:20p–6:00p · ⚠️ 7 after dark
+    • Walnut Creek — 8 slots, 2:30p–5:50p · ⚠️ 5 after dark
 
-Or for the no-match case:
+No-match case:
 
     ❌ No tee times: Sun 5/3 afternoon, 2p (18h)
     Searched: Westminster, Riverdale, Wellshire, ...
     Reply WATCH to keep checking, or CHANGE to adjust.
 
-Daylight risk is computed per slot — see daylight.py — and aggregated
-into per-course counts. We don't drop "after dark" slots; the user
-might have lights on a sim or want a twilight rate.
+Lists every matching course (the user wants completeness; long messages
+just span more SMS segments). Sorted by slot count desc — best options
+at the top — with alphabetical tiebreaker.
+
+Booking URLs are deliberately omitted; users already have these
+bookmarked, and they balloon segment count.
+
+Daylight risk is computed per slot via daylight.py and rolled up into
+a single per-course flag. We don't drop "after dark" slots — the user
+might want a twilight round on purpose.
 """
 
 from __future__ import annotations
@@ -59,57 +59,24 @@ _WINDOW_LABEL = {
 def _format_match(result: "SearchResult") -> str:
     """Compose the match-found summary.
 
-    Length-sensitive: 1 SMS segment is 67 chars (UCS-2 multi-part) and
-    each segment costs the user another billable message. We cap the
-    output to the top courses by slot count and only attach URLs to a
-    couple of them, falling back to a count of unlisted courses.
+    Always lists every course with matching slots — the user wants
+    completeness over brevity. Booking URLs are intentionally omitted:
+    users already have those bookmarked.
+
+    Sort order: most-slots first, then alphabetical as a tiebreaker —
+    surfaces the best options at the top of long messages.
     """
-    # Group slots by course display name.
     groups: dict[str, list[TeeTime]] = {}
     for tt in result.tee_times:
         groups.setdefault(tt.course_name, []).append(tt)
     for slots in groups.values():
         slots.sort(key=lambda t: t.start_time)
 
-    # Sort courses by slot count desc — best options first.
     by_count = sorted(groups.items(), key=lambda kv: (-len(kv[1]), kv[0].lower()))
 
-    header = _header_line(result.criteria)
-    course_lines: list[str] = []
-    listed_urls: list[str] = []
-
-    # Build all course lines, then pick how many to include based on length.
+    out_lines = [_header_line(result.criteria)]
     for name, slots in by_count:
-        course_lines.append((name, _course_line(name, slots, result.criteria.holes), slots))
-
-    # Greedy: keep adding courses while the running total stays inside
-    # the budget (UCS-2 multi-part SMS = 67 chars/segment; aim for ≤3).
-    # Always include at least the top 2 courses even if it pushes us
-    # one segment longer.
-    LENGTH_BUDGET = 230
-    MIN_COURSES = 2
-    out_lines = [header]
-    included = 0
-    for name, line, slots in course_lines:
-        candidate = "\n".join(out_lines + [line])
-        if included < MIN_COURSES or len(candidate) <= LENGTH_BUDGET:
-            out_lines.append(line)
-            included += 1
-            url = next((s.booking_url for s in slots if s.booking_url), None)
-            if url and url not in listed_urls:
-                listed_urls.append(url)
-        else:
-            break
-
-    remaining = len(course_lines) - included
-    if remaining > 0:
-        out_lines.append(f"…+{remaining} more course{'s' if remaining != 1 else ''} with slots")
-
-    # Show only the first booking URL — adding more pushes us into a
-    # third segment quickly and the user can re-search if they want
-    # other courses' links.
-    if listed_urls:
-        out_lines.append(f"Book: {listed_urls[0]}")
+        out_lines.append(_course_line(name, slots, result.criteria.holes))
 
     return "\n".join(out_lines)
 
