@@ -128,6 +128,22 @@ def main(argv: list[str] | None = None) -> int:
         help="How often to check for due watches (default: 60s).",
     )
 
+    p_sms = sub.add_parser("sms", help="SMS handler — simulate or inspect message flow")
+    sms_sub = p_sms.add_subparsers(dest="sms_command", required=True)
+    p_sms_reply = sms_sub.add_parser(
+        "reply",
+        help="Simulate one inbound SMS — runs the handler and prints any replies.",
+    )
+    p_sms_reply.add_argument("--phone", default="+15551234567", help="Sender phone number")
+    p_sms_reply.add_argument("text", help="Message body")
+
+    p_server = sub.add_parser(
+        "server",
+        help="Run the FastAPI webhook + watch scheduler (the production entry point).",
+    )
+    p_server.add_argument("--host", default="0.0.0.0")
+    p_server.add_argument("--port", type=int, default=8080)
+
     args = parser.parse_args(argv)
 
     if args.command == "search":
@@ -140,6 +156,10 @@ def main(argv: list[str] | None = None) -> int:
         return _cmd_chat(args)
     if args.command == "watch":
         return _cmd_watch(args)
+    if args.command == "sms":
+        return _cmd_sms(args)
+    if args.command == "server":
+        return _cmd_server(args)
     return 2
 
 
@@ -508,6 +528,71 @@ def _cmd_watch_run(args: argparse.Namespace) -> int:
         f"Add watches via 'tt watch start' from another shell. Ctrl-C to stop."
     )
     watcher.run_forever(tick_seconds=args.tick_seconds)
+    return 0
+
+
+def _cmd_sms(args: argparse.Namespace) -> int:
+    """Dispatcher for `tt sms <subcmd>`."""
+    if args.sms_command == "reply":
+        return _cmd_sms_reply(args)
+    return 2
+
+
+def _cmd_sms_reply(args: argparse.Namespace) -> int:
+    """Simulate one inbound SMS against the real handler.
+
+    Runs `sms.handle_sms()` with a recording notifier so all the SMS
+    replies surface in stdout. Exercises the same code paths the
+    production webhook will, against the real SQLite state — so
+    multi-turn flows persist between calls.
+    """
+    from tee_time_checker import sms as sms_mod
+
+    if (rc := _require_anthropic_key()) is not None:
+        return rc
+
+    rec = sms_mod.RecordingNotifier()
+    sms_mod.handle_sms(args.phone, args.text, notifier=rec)
+
+    if not rec.sent:
+        print("(handler produced no reply)")
+        return 0
+    for to, body in rec.sent:
+        print(f"━━━ [SMS to {to}] ━━━")
+        print(body)
+        print(f"━━━ ({len(body)} chars, {(len(body) // 70) + 1} segment(s)) ━━━")
+        print()
+    return 0
+
+
+def _cmd_server(args: argparse.Namespace) -> int:
+    """Run the FastAPI app — Twilio webhook + watch scheduler in one process.
+
+    This is what `fly deploy` boots. Locally, it's how you'd test against
+    a real Twilio number via ngrok or similar.
+    """
+    import uvicorn
+
+    print(
+        f"Starting tee-time-checker server on {args.host}:{args.port}\n"
+        f"  • POST /sms      Twilio webhook\n"
+        f"  • GET  /healthz  liveness probe\n"
+        f"  • watch scheduler ticks every {os.environ.get('TICK_SECONDS', '60')}s",
+    )
+    if not all(
+        os.environ.get(k)
+        for k in ("TWILIO_ACCOUNT_SID", "TWILIO_AUTH_TOKEN", "TWILIO_FROM_NUMBER")
+    ):
+        print(
+            "  ⚠️  Twilio creds missing — outbound SMS will print to stdout instead.",
+            file=sys.stderr,
+        )
+    uvicorn.run(
+        "tee_time_checker.web:app",
+        host=args.host,
+        port=args.port,
+        log_level="info",
+    )
     return 0
 
 

@@ -25,6 +25,7 @@ notifier to `process_due()` / `run_forever()`.
 from __future__ import annotations
 
 import logging
+import os
 import random
 import time
 from dataclasses import dataclass
@@ -78,6 +79,51 @@ class PrintNotifier:
         print(body)
         print(f"━━━ ({len(body)} chars, {(len(body) // 70) + 1} segment(s)) ━━━")
         print()
+
+
+class TwilioNotifier:
+    """Production notifier — sends real SMS via the Twilio REST API.
+
+    Reads `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, and
+    `TWILIO_FROM_NUMBER` from the environment lazily on first
+    instantiation. Errors from Twilio (rate limits, invalid numbers)
+    propagate up — the caller (process_due / sms.handle) catches them
+    so one bad send doesn't kill a tick or a webhook handler.
+    """
+
+    def __init__(
+        self,
+        *,
+        account_sid: str | None = None,
+        auth_token: str | None = None,
+        from_number: str | None = None,
+    ) -> None:
+        # Lazy imports keeps `tt search` / CLI commands that don't need
+        # Twilio from paying its (modest) import cost.
+        from twilio.rest import Client
+
+        sid = account_sid or os.environ["TWILIO_ACCOUNT_SID"]
+        tok = auth_token or os.environ["TWILIO_AUTH_TOKEN"]
+        self._from = from_number or os.environ["TWILIO_FROM_NUMBER"]
+        self._client = Client(sid, tok)
+
+    def notify(self, phone: str, body: str) -> None:
+        self._client.messages.create(to=phone, from_=self._from, body=body)
+
+
+def default_notifier() -> Notifier:
+    """Pick the production notifier when Twilio creds exist, dev otherwise.
+
+    Lets the same entry points (`tt watch run`, `tt server`) work in both
+    environments without a flag — Fly secrets supply the creds in prod;
+    locally, the absence of those vars naturally falls back to print.
+    """
+    if all(
+        os.environ.get(k)
+        for k in ("TWILIO_ACCOUNT_SID", "TWILIO_AUTH_TOKEN", "TWILIO_FROM_NUMBER")
+    ):
+        return TwilioNotifier()
+    return PrintNotifier()
 
 
 # ──────────────────────────────────────────────────────────────────────
@@ -193,7 +239,7 @@ def run_forever(*, notifier: Notifier | None = None, tick_seconds: int = 60) -> 
     add other periodic jobs (purge_expired_pending, adapter health
     pings) without rolling our own loop.
     """
-    notifier = notifier or PrintNotifier()
+    notifier = notifier or default_notifier()
     scheduler = BackgroundScheduler(timezone="UTC")
     scheduler.add_job(
         lambda: process_due(notifier),
