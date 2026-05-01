@@ -97,6 +97,37 @@ def main(argv: list[str] | None = None) -> int:
         help="Multi-turn REPL — type messages, get responses. Simulates SMS dialog.",
     )
 
+    p_watch = sub.add_parser("watch", help="Manage 24h tee time watches (one per phone)")
+    watch_sub = p_watch.add_subparsers(dest="watch_command", required=True)
+
+    p_w_start = watch_sub.add_parser("start", help="Start a watch from a natural-language message")
+    p_w_start.add_argument("text", help="The SMS-style message")
+    p_w_start.add_argument(
+        "--phone",
+        default="+15551234567",
+        help="Phone number to associate with the watch (default: test number)",
+    )
+
+    p_w_list = watch_sub.add_parser("list", help="List active watches")
+    p_w_cancel = watch_sub.add_parser("cancel", help="Cancel a phone's active watch")
+    p_w_cancel.add_argument("--phone", default="+15551234567")
+
+    watch_sub.add_parser(
+        "tick",
+        help="Run one polling cycle now (process all due watches). Useful for testing.",
+    )
+
+    p_w_run = watch_sub.add_parser(
+        "run",
+        help="Run the scheduler in foreground until Ctrl-C (local development).",
+    )
+    p_w_run.add_argument(
+        "--tick-seconds",
+        type=int,
+        default=60,
+        help="How often to check for due watches (default: 60s).",
+    )
+
     args = parser.parse_args(argv)
 
     if args.command == "search":
@@ -107,6 +138,8 @@ def main(argv: list[str] | None = None) -> int:
         return _cmd_ask(args)
     if args.command == "chat":
         return _cmd_chat(args)
+    if args.command == "watch":
+        return _cmd_watch(args)
     return 2
 
 
@@ -329,6 +362,153 @@ def _cmd_ask(args: argparse.Namespace) -> int:
         _print_result(result)
 
     return 0 if not result.errors else 1
+
+
+def _cmd_watch(args: argparse.Namespace) -> int:
+    """Dispatcher for `tt watch <subcmd>`."""
+    sub = args.watch_command
+    if sub == "start":
+        return _cmd_watch_start(args)
+    if sub == "list":
+        return _cmd_watch_list(args)
+    if sub == "cancel":
+        return _cmd_watch_cancel(args)
+    if sub == "tick":
+        return _cmd_watch_tick(args)
+    if sub == "run":
+        return _cmd_watch_run(args)
+    return 2
+
+
+def _cmd_watch_start(args: argparse.Namespace) -> int:
+    """Start a watch from a natural-language message.
+
+    Mirrors how the SMS layer will respond to a "WATCH" reply: parse the
+    request, run a search to confirm there's nothing right now, then
+    persist a 24h watch with that criteria.
+    """
+    from tee_time_checker import state as state_mod
+    from tee_time_checker.parser import parse
+
+    if (rc := _require_anthropic_key()) is not None:
+        return rc
+
+    registry = build_default_registry()
+    targets = load_targets(known_adapters=set(registry.keys()))
+    course_display_names = {t.slug: t.name for t in targets}
+
+    parsed = parse(
+        args.text,
+        today=date.today(),
+        course_display_names=course_display_names,
+    )
+    if parsed.needs_clarification:
+        msg = parsed.clarification_message or "Need more info to start a watch."
+        print(f"Can't start watch — clarification needed:\n  {msg}", file=sys.stderr)
+        return 1
+    if parsed.date is None or parsed.players is None:
+        print("Parser returned an incomplete parse without asking back; aborting.", file=sys.stderr)
+        return 1
+
+    criteria = SearchCriteria(
+        date=parsed.date,
+        players=parsed.players,
+        window=TimeWindow(parsed.window or "any"),
+        holes=parsed.holes or 18,
+        course_filter=parsed.courses,
+    )
+
+    # Sanity check: confirm nothing's available right now. If something
+    # IS, we surface it instead of starting a useless watch.
+    pre_check = search(criteria, targets, registry)
+    if pre_check.tee_times:
+        print("Slots already exist — no watch needed:")
+        print()
+        print(format_sms_summary(pre_check))
+        return 0
+
+    watch = state_mod.start_watch(args.phone, criteria)
+    print(
+        f"Watch started for {args.phone}.\n"
+        f"  criteria: {criteria.date} · {criteria.players} players · "
+        f"{criteria.window.value} · {criteria.holes} holes"
+        + (f" · courses={criteria.course_filter}" if criteria.course_filter else "")
+        + f"\n  expires: {watch.expires_at.isoformat(timespec='minutes')}\n"
+        f"  next check: now (use 'tt watch tick' to fire it manually, "
+        f"or 'tt watch run' to schedule)"
+    )
+    return 0
+
+
+def _cmd_watch_list(args: argparse.Namespace) -> int:
+    """Show all active watches."""
+    from tee_time_checker import state as state_mod
+
+    watches = state_mod.list_active_watches()
+    if not watches:
+        print("(no active watches)")
+        return 0
+    for w in watches:
+        c = w.criteria
+        print(
+            f"{w.phone}  {c.date} · {c.players}p · {c.window.value} · {c.holes}h"
+            + (f" · courses={c.course_filter}" if c.course_filter else "")
+            + f"\n  expires: {w.expires_at.isoformat(timespec='minutes')}"
+            f"  next: {w.next_check_at.isoformat(timespec='minutes')}"
+            + (
+                f"  last_seen={w.last_seen_slot_count}"
+                if w.last_seen_slot_count is not None
+                else ""
+            )
+        )
+    return 0
+
+
+def _cmd_watch_cancel(args: argparse.Namespace) -> int:
+    """Cancel the user's active watch (if any)."""
+    from tee_time_checker import state as state_mod
+
+    cancelled = state_mod.cancel_watch(args.phone)
+    print(
+        f"Cancelled watch for {args.phone}."
+        if cancelled
+        else f"No active watch for {args.phone}."
+    )
+    return 0
+
+
+def _cmd_watch_tick(args: argparse.Namespace) -> int:
+    """Run one polling cycle now — process every due watch.
+
+    Equivalent to one wake-up of the foreground scheduler. Useful for
+    forcing a check immediately, or after manually setting the next-
+    check time forward in the DB during testing.
+    """
+    from tee_time_checker import watcher
+
+    result = watcher.process_due()
+    print(
+        f"tick: checked={result.checked}, fired={result.fired}, "
+        f"expired={result.expired}, errors={result.errors}"
+    )
+    return 0 if result.errors == 0 else 1
+
+
+def _cmd_watch_run(args: argparse.Namespace) -> int:
+    """Foreground scheduler — runs until Ctrl-C.
+
+    Production-like: ticks every N seconds, processes due watches,
+    notifies via PrintNotifier. The Twilio version replaces the
+    notifier in phase 10.
+    """
+    from tee_time_checker import watcher
+
+    print(
+        f"Watcher running (tick every {args.tick_seconds}s). "
+        f"Add watches via 'tt watch start' from another shell. Ctrl-C to stop."
+    )
+    watcher.run_forever(tick_seconds=args.tick_seconds)
+    return 0
 
 
 def _cmd_chat(args: argparse.Namespace) -> int:

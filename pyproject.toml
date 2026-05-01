@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "anthropic>=0.97.0",
+    "apscheduler>=3.11.2",
     "astral>=3.2",
     "curl-cffi>=0.15.0",
     "pydantic>=2.13.3",
