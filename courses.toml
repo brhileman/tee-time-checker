@@ -28,9 +28,29 @@ booking_url = "https://cityofwestminster.cps.golf/onlineresweb/search-teetime"
   # Legacy Ridge (1), Walnut Creek (2), Legacy Ridge Back 9 (4)
   course_ids = [1, 2, 4]
 
-# TODO: Fossil Trace — needs a 30s recon run against fossiltrace.cps.golf
-# to capture its website_id / api_key / site_id / course_ids. See
-# investigation/capture.py.
+[[targets]]
+slug = "fossil-trace"
+name = "Fossil Trace"
+adapter = "cps"
+timezone = "America/Denver"
+booking_url = "https://fossiltrace.cps.golf/onlineresweb/search-teetime"
+
+  [targets.params]
+  tenant = "fossiltrace"
+  website_id = "b6c22f3a-944a-46e9-020e-08da90168fb2"
+  # Anonymous calls work; the static apikey value doesn't appear to be
+  # tenant-validated, so we reuse Westminster's. (The SPA does a
+  # token-flow at /myconnect/token/short for its own purposes, but it
+  # isn't required for /TeeTimes.)
+  api_key = "8ea2914e-cac2-48a7-a3e5-e0f41350bf3a"
+  site_id = 1
+  # course_ids on this tenant are tee-sheet variants of Fossil Trace:
+  # 1 = "18 Holes", 2 = "Twilight" (also 18-hole), 3 = "9 Holes".
+  # Per-slot isContain*HoleItems flags filter by user's holes choice.
+  course_ids = [1, 2, 3]
+  # The slot courseName here is just a tee-sheet label ("18 Holes"
+  # etc.), not a course name; show "Fossil Trace (18 Holes)" instead.
+  prepend_target_name = true
 
 # ──────────────────────────────────────────────────────────────────────
 # MemberSports (`api.membersports.com`)

@@ -117,9 +117,16 @@ class CPSAdapter:
         if not payload.get("isSuccess"):
             return []
 
+        # When there are no tee times available CPS returns `content` as
+        # a message dict (messageKey: NO_TEETIMES, messageDetail: HTML...)
+        # rather than an empty list. Treat that as zero results.
+        content = payload.get("content", [])
+        if not isinstance(content, list):
+            return []
+
         return [
             tt
-            for slot in payload.get("content", [])
+            for slot in content
             if (tt := _parse_slot(slot, target, criteria)) is not None
         ]
 
@@ -177,8 +184,22 @@ def _parse_slot(slot: dict[str, Any], target: Target, criteria: SearchCriteria) 
         tzinfo=ZoneInfo(target.timezone)
     )
 
+    # Slot courseName is the per-tee-sheet label. For some tenants this
+    # IS the physical course name (e.g. Westminster: "Legacy Ridge",
+    # "Walnut Creek") and the user wants to see it directly. For others
+    # it's a generic label like "18 Holes" / "Twilight" / "9 Holes" that
+    # only makes sense alongside the tenant name (Fossil Trace). The
+    # `prepend_target_name` param opts a target into the latter shape.
+    slot_name = slot.get("courseName")
+    if target.params.get("prepend_target_name") and slot_name:
+        course_name = f"{target.name} ({slot_name})"
+    elif slot_name:
+        course_name = slot_name
+    else:
+        course_name = target.name
+
     return TeeTime(
-        course_name=slot.get("courseName") or target.name,
+        course_name=course_name,
         course_slug=target.slug,
         start_time=start_local,
         min_players=min_players,

@@ -1,0 +1,11 @@
+{
+  "transactionId": "9466c44e-93fd-dea5-5cc7-ec938a0bfe8d",
+  "isSuccess": true,
+  "content": {
+    "messageKey": "NO_TEETIMES",
+    "messageTemplate": "No tee times available",
+    "messageAppearance": "Appears on the tee sheet when there are no tee times available on a selected day",
+    "messageDetail": "<h2>No tee times are currently available that match your search</h2><p><br></p><h3>Advance booking for 2026 Season is available now</h3><h4><strong>Early Season:</strong> March 13 \u2013 May 7</h4><h4><strong>Peak Season:</strong> May 8 \u2013 October 18</h4><h4><strong>Late Season:</strong> October 19 \u2013 November 15</h4><p><br></p><p><a href=\"https://fossiltrace.noteefy.app/\" rel=\"noopener noreferrer\" target=\"_blank\">Join the tee time waitlist</a> to be notified if something opens up. Call the Golf Shop at 303.277.8750.</p><p><br></p><h3><br></h3>",
+    "messageType": "Attention"
+  }
+}

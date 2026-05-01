@@ -1,0 +1,57 @@
+{
+  "bookingRuleByClass": [
+    {
+      "classCode": "R",
+      "bookingRuleByCourse": [
+        {
+          "bookingRuleId": 67,
+          "courseId": 1,
+          "daysInAdvance": 330,
+          "daysInAdvanceWeekend": 0,
+          "time": "2026-02-24T00:00:00"
+        },
+        {
+          "bookingRuleId": 68,
+          "courseId": 2,
+          "daysInAdvance": 7,
+          "daysInAdvanceWeekend": 0,
+          "time": "2026-02-24T00:00:00"
+        },
+        {
+          "bookingRuleId": 69,
+          "courseId": 3,
+          "daysInAdvance": 7,
+          "daysInAdvanceWeekend": 0,
+          "time": "2026-02-24T00:00:00"
+        }
+      ]
+    }
+  ],
+  "bookingRuleByCourses": [
+    {
+      "bookingRuleId": 1,
+      "courseId": 1,
+      "courseDesc": "18 Holes",
+      "noShowLimit": 8,
+      "maximumDailyBookings": 20,
+      "daysInAdvance": 330
+    },
+    {
+      "bookingRuleId": 6,
+      "courseId": 2,
+      "courseDesc": "Twilight",
+      "noShowLimit": 8,
+      "maximumDailyBookings": 20,
+      "daysInAdvance": 7
+    },
+    {
+      "bookingRuleId": 7,
+      "courseId": 3,
+      "courseDesc": "9 Holes",
+      "noShowLimit": 8,
+      "maximumDailyBookings": 20,
+      "daysInAdvance": 7
+    }
+  ],
+  "webSiteId": "00000000-0000-0000-0000-000000000000"
+}

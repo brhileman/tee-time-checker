@@ -1,0 +1,23 @@
+{
+  "clientId": "onlineresweb",
+  "production": true,
+  "authorityBaseUrl": "https://fossiltrace.cps.golf/identityapi",
+  "onlineResBaseUrl": "https://fossiltrace.cps.golf/onlineres",
+  "onlineApi": "https://fossiltrace.cps.golf/onlineres/onlineapi/api/v1/onlinereservation",
+  "emailApi": "https://fossiltrace.cps.golf/onlineres/emailapi/api/email",
+  "saleApi": "https://fossiltrace.cps.golf/onlineres/saleapi/api/v1/sale",
+  "referencesApi": "https://fossiltrace.cps.golf/onlineres/referencesapi/api/v1/references",
+  "buildNumber": "26.1.1.23635412016\n",
+  "websiteId": "00000000-0000-0000-0000-000000000000",
+  "courseId": 0,
+  "siteName": "fossiltrace",
+  "parentSiteName": "",
+  "prefixVersion": "",
+  "suffixVersion": "",
+  "identityApi": "/identityapi",
+  "onlineRes": "/onlineres",
+  "redirectUrl": "https://redirectportal.cps.golf/",
+  "pathBase": "/onlineresweb/",
+  "useHttps": true,
+  "routeCacheEnabled": true
+}

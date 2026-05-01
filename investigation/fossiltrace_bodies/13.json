@@ -1,0 +1,11 @@
+[
+  {
+    "id": 2,
+    "promotionTitle": "Waitlist",
+    "courseId": 1,
+    "bodyBlurb": "Can't find a tee time? Get notified if a time becomes available",
+    "bottomLabel": "Join Waitlist",
+    "cellUrl": "https://fossiltrace.noteefy.app/",
+    "cellColor": "#a26a10"
+  }
+]

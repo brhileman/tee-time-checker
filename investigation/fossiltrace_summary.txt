@@ -1,0 +1,98 @@
+slug: fossiltrace
+total interesting requests: 19
+  JSON: 15    other: 4
+
+API hosts:
+   15  fossiltrace.cps.golf
+
+================================================================================
+JSON CALLS
+================================================================================
+
+GET https://fossiltrace.cps.golf/onlineresweb/Home/Configuration
+  status: 200  body_file: 01.json
+  preview: {"clientId": "onlineresweb", "production": true, "authorityBaseUrl": "https://fossiltrace.cps.golf/identityapi", "onlineResBaseUrl": "https://fossiltrace.cps.golf/onlineres", "onlineApi": "https://fossiltrace.cps.golf/onlineres/onlineapi/api/v1/onlinereservation", "emailApi": "https://fossiltrace.cp
+
+POST https://fossiltrace.cps.golf/identityapi/myconnect/token/short
+  status: 200  body_file: 02.json
+  post_data: ------WebKitFormBoundaryMfyD9fcJO9lOubnb
+Content-Disposition: form-data; name="client_id"
+
+onlinereswebshortlived
+------WebKitFormBoundaryMfyD9fcJO9lOubnb--
+
+  preview: {"access_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjIyMkY3QzY3MTZGRkY5N0U5QzNGNzIyMjZGMDBBM0NEQkVGNTlEOEFSUzI1NiIsInR5cCI6ImF0K2p3dCIsIng1dCI6IklpOThaeGJfLVg2Y1AzSWlid0NqemI3MW5ZbyJ9.eyJuYmYiOjE3Nzc1OTQ2MDQsImV4cCI6MTc3NzU5NTIwNCwiaXNzIjoiaHR0cHM6Ly9mb3NzaWx0cmFjZS5jcHMuZ29sZi9pZGVudGl0eWFwaSIsImF1ZCI6W
+
+GET https://fossiltrace.cps.golf/onlineres/referencesapi/api/Options/Online/SiteLanguages
+  status: 200  body_file: 03.json
+  authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjIyMkY3QzY3MTZGRkY5N0U5QzNGNzIyMjZGMDBBM0NEQ...
+  preview: [{"code": "en", "description": "English"}, {"code": "fr", "description": "French"}, {"code": "nl", "description": "Dutch"}]
+
+GET https://fossiltrace.cps.golf/onlineres/onlineapi/api/v1/onlinereservation/GetAllOptions/fossiltrace?version=26.1.1.23635412016%0A&product=3
+  status: 200  body_file: 04.json
+  authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjIyMkY3QzY3MTZGRkY5N0U5QzNGNzIyMjZGMDBBM0NEQ...
+  preview: {"shRules": [{"ruleId": 613, "name": "UseRestrictReservation", "value": "True", "type": "RestrictReservation", "siteId": 1, "courseId": 1}, {"ruleId": 614, "name": "ApplyToOnline", "value": "True", "type": "RestrictReservation", "siteId": 1, "courseId": 1}, {"ruleId": 4648, "name": "UseCapacityPrici
+
+GET https://fossiltrace.cps.golf/assets/i18n/en.json
+  status: 200  body_file: 05.json
+  authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjIyMkY3QzY3MTZGRkY5N0U5QzNGNzIyMjZGMDBBM0NEQ...
+  preview: {"auctionType": {"flashDeal": "Flash Deal", "backward": "Backward", "forward": "ForwardAuction", "valuePackage": "ValuePackage", "off": "OFF"}, "rate": {"cartIncluded": "CART INCLUDED", "cartRate": "CART RATE", "walkingRate": "WALKING RATE"}, "endUserAgreement": {"byClickingNext": "By clicking Next,
+
+GET https://fossiltrace.cps.golf/onlineresweb/assets/version.json?t=1777594605126
+  status: 200  body_file: 06.json
+  authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjIyMkY3QzY3MTZGRkY5N0U5QzNGNzIyMjZGMDBBM0NEQ...
+  preview: {"version": "0.0.0", "hash": "afa7c7b97c4c3c01"}
+
+GET https://fossiltrace.cps.golf/identityapi/.well-known/openid-configuration
+  status: 200  body_file: 07.json
+  authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjIyMkY3QzY3MTZGRkY5N0U5QzNGNzIyMjZGMDBBM0NEQ...
+  preview: {"issuer": "https://fossiltrace.cps.golf/identityapi", "jwks_uri": "https://fossiltrace.cps.golf/identityapi/.well-known/openid-configuration/jwks", "authorization_endpoint": "https://fossiltrace.cps.golf/identityapi/connect/authorize", "token_endpoint": "https://fossiltrace.cps.golf/identityapi/con
+
+GET https://fossiltrace.cps.golf/onlineres/onlineapi/api/v1/onlinereservation/FavIcon
+  status: 200  body_file: 08.json
+  authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjIyMkY3QzY3MTZGRkY5N0U5QzNGNzIyMjZGMDBBM0NEQ...
+  preview: "iVBORw0KGgoAAAANSUhEUgAAB4cAAAbiCAYAAAFZMsTMAAAACXBIWXMAAC4jAAAuIwF4pT92AAAABGdBTUEAALGOfPtRkwAAACBjSFJNAAB6JQAAgIMAAPn/AACA6QAAdTAAAOpgAAA6mAAAF2+SX8VGAAJENklEQVR42mL8//8/wygYBaNg6AKAAGIaDYJRMAqGNgAIoNFMPApGwRAHAAE0molHwSgY4gAggEYz8SgYBUMcAATQaCYeBaNgiAOAABrNxKNgFAxxABBAo5l4FIyCIQ4AAmg0E4+CUTDEAUA
+
+GET https://fossiltrace.cps.golf/identityapi/.well-known/openid-configuration/jwks
+  status: 200  body_file: 09.json
+  authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjIyMkY3QzY3MTZGRkY5N0U5QzNGNzIyMjZGMDBBM0NEQ...
+  preview: {"keys": [{"kty": "RSA", "use": "sig", "kid": "222F7C6716FFF97E9C3F72226F00A3CDBEF59D8ARS256", "x5t": "Ii98Zxb_-X6cP3IibwCjzb71nYo", "e": "AQAB", "n": "mpxzaBIrAKpS7ymNAaqwn8SeJ3Qh3vdX5e9TBMWxOfc4zkMwKClESZSpxVVDhxJbssVoomBrllj-m4dJt80DNIB3pXu36t9V87fjD-6QelNP_6T434L9lERWzaEDoCf5YyCLvpYMuHOX5f8u-69E
+
+POST https://fossiltrace.cps.golf/onlineres/onlineapi/api/v1/onlinereservation/RegisterTransactionId
+  status: 200  body_file: 10.json
+  post_data: {"transactionId":"9466c44e-93fd-dea5-5cc7-ec938a0bfe8d"}
+  authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjIyMkY3QzY3MTZGRkY5N0U5QzNGNzIyMjZGMDBBM0NEQ...
+  preview: true
+
+GET https://fossiltrace.cps.golf/onlineres/onlineapi/api/v1/onlinereservation/OnlineCourses
+  status: 200  body_file: 11.json
+  authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjIyMkY3QzY3MTZGRkY5N0U5QzNGNzIyMjZGMDBBM0NEQ...
+  preview: [{"isDefaultSelected": true, "websiteId": "b6c22f3a-944a-46e9-020e-08da90168fb2", "timezoneId": "America/Denver", "onlineCourseName": "18 Holes", "isSetOnlineCourseName": true, "courseId": 1, "courseName": "18 Holes", "siteId": 1, "courseTypeId": 1, "holes": 18, "courseColor": -14513374, "confirmati
+
+GET https://fossiltrace.cps.golf/onlineres/onlineapi/api/v1/onlinereservation/TeeSheetNotes?courseIds=1%2C3%2C2&courseDate=Thu%20Apr%2030%202026
+  status: 200  body_file: 12.json
+  authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjIyMkY3QzY3MTZGRkY5N0U5QzNGNzIyMjZGMDBBM0NEQ...
+  preview: []
+
+GET https://fossiltrace.cps.golf/onlineres/onlineapi/api/v1/onlinereservation/InformationCell?courseIds=1&courseIds=3&courseIds=2
+  status: 200  body_file: 13.json
+  authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjIyMkY3QzY3MTZGRkY5N0U5QzNGNzIyMjZGMDBBM0NEQ...
+  preview: [{"id": 2, "promotionTitle": "Waitlist", "courseId": 1, "bodyBlurb": "Can't find a tee time? Get notified if a time becomes available", "bottomLabel": "Join Waitlist", "cellUrl": "https://fossiltrace.noteefy.app/", "cellColor": "#a26a10"}]
+
+GET https://fossiltrace.cps.golf/onlineres/onlineapi/api/v1/onlinereservation/BookingRuleModels?classcode=R&courseIds=1%2C3%2C2&searchDate=Thu%20Apr%2030%202026
+  status: 200  body_file: 14.json
+  authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjIyMkY3QzY3MTZGRkY5N0U5QzNGNzIyMjZGMDBBM0NEQ...
+  preview: {"bookingRuleByClass": [{"classCode": "R", "bookingRuleByCourse": [{"bookingRuleId": 67, "courseId": 1, "daysInAdvance": 330, "daysInAdvanceWeekend": 0, "time": "2026-02-24T00:00:00"}, {"bookingRuleId": 68, "courseId": 2, "daysInAdvance": 7, "daysInAdvanceWeekend": 0, "time": "2026-02-24T00:00:00"},
+
+GET https://fossiltrace.cps.golf/onlineres/onlineapi/api/v1/onlinereservation/TeeTimes?searchDate=Thu%20Apr%2030%202026&holes=0&numberOfPlayer=0&courseIds=1%2C3%2C2&searchTimeType=0&transactionId=9466c44e-93fd-dea5-5cc7-ec938a0bfe8d&teeOffTimeMin=0&teeOffTimeMax=23&isChangeTeeOffTime=true&teeSheetSearchView=5&classCode=R&defaultOnlineRate=N&isUseCapacityPricing=false&memberStoreId=1&searchType=1
+  status: 200  body_file: 15.json
+  authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjIyMkY3QzY3MTZGRkY5N0U5QzNGNzIyMjZGMDBBM0NEQ...
+  preview: {"transactionId": "9466c44e-93fd-dea5-5cc7-ec938a0bfe8d", "isSuccess": true, "content": {"messageKey": "NO_TEETIMES", "messageTemplate": "No tee times available", "messageAppearance": "Appears on the tee sheet when there are no tee times available on a selected day", "messageDetail": "<h2>No tee tim
+
+================================================================================
+OTHER
+================================================================================
+GET 200 https://fossiltrace.cps.golf/onlineresweb/search-teetime?TeeOffTimeMin=0&TeeOffTimeMax=23.999722222222225
+POST 200 https://fossiltrace.cps.golf/onlineres/referencesapi/api/v1/CSPreports/ReportCSP
+POST 204 https://analytics.google.com/g/collect?v=2&tid=G-2TQ5TP7JY2&gtm=45je64t1v876386579z8830812838za20gzb830812838zd830812838&_p=1777594605127&_gaz=1&gcd=13l3l3l3l1l1&npa=0&_ng=1&dma=0&_eu=AAAAAGA&are=1&cid=935273694.1777594606&frm=0&pscdl=noapi&rcb=3&sr=1280x900&uaa=x86&uab=64&uafvl=HeadlessChrome%3B147.0.7727.15%7CNot.A%252FBrand%3B8.0.0.0%7CChromium%3B147.0.7727.15&uam=&uamb=0&uap=macOS&uapv=10.15.7&uaw=0&ul=en-us&gaf=2&_s=1&tag_exp=0~115616985~115938466~115938468~118289195~118579595&sid=1777594605&sct=1&seg=0&dl=https%3A%2F%2Ffossiltrace.cps.golf%2Fonlineresweb%2Fsearch-teetime%3FTeeOffTimeMin%3D0%26TeeOffTimeMax%3D23&dt=Fossil%20Trace%20Golf%20Club%20Online%20Booking%20Engine&en=page_view&_fv=1&_nsi=1&_ss=1&tfd=1835
+POST 200 https://fossiltrace.cps.golf/onlineres/referencesapi/api/v1/CSPreports/ReportCSP
