@@ -123,8 +123,12 @@ booking_url = "https://app.membersports.com/tee-times/3807/4902/0"
 # ──────────────────────────────────────────────────────────────────────
 # Each course is its own facility on Kenna; one HTTP call per target.
 
+# Riverdale's site at riverdalegolf.com fronts two distinct 18-hole
+# courses (Dunes and Knolls) on separate Kenna facility IDs. Modeled
+# as separate targets so users can opt into either or both.
+
 [[targets]]
-slug = "riverdale"
+slug = "riverdale-dunes"
 name = "Riverdale Dunes"
 adapter = "teeitup"
 timezone = "America/Denver"
@@ -133,6 +137,17 @@ booking_url = "https://www.riverdalegolf.com/teetimes/"
   [targets.params]
   alias = "riverdale"
   facility_id = 1016
+
+[[targets]]
+slug = "riverdale-knolls"
+name = "Riverdale Knolls"
+adapter = "teeitup"
+timezone = "America/Denver"
+booking_url = "https://www.riverdalegolf.com/teetimes/"
+
+  [targets.params]
+  alias = "riverdale"
+  facility_id = 1017
 
 [[targets]]
 slug = "commonground"
