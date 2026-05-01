@@ -8,11 +8,14 @@ build and verify the core against before any external services
 Usage examples:
     tt search --date 2026-05-03 --players 2 --window afternoon
     tt search --date sunday --players 4 --window any --course westminster
+    tt parse "tee time tomorrow afternoon for 2"
+    tt ask "tee time tomorrow afternoon for 2 at westminster"
 """
 
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from datetime import date, datetime, timedelta
 
@@ -62,10 +65,32 @@ def main(argv: list[str] | None = None) -> int:
         help="Output format. 'sms' previews the SMS-ready summary.",
     )
 
+    p_parse = sub.add_parser(
+        "parse",
+        help="Parse a natural-language request via Claude API (debug only — no search)",
+    )
+    p_parse.add_argument("text", help="The SMS-style message to parse")
+
+    p_ask = sub.add_parser(
+        "ask",
+        help="Parse a natural-language request and run the search (mirrors SMS flow)",
+    )
+    p_ask.add_argument("text", help="The SMS-style message")
+    p_ask.add_argument(
+        "--format",
+        choices=["verbose", "sms"],
+        default="sms",
+        help="Output format (default: sms — what the user would receive)",
+    )
+
     args = parser.parse_args(argv)
 
     if args.command == "search":
         return _cmd_search(args)
+    if args.command == "parse":
+        return _cmd_parse(args)
+    if args.command == "ask":
+        return _cmd_ask(args)
     return 2
 
 
@@ -174,6 +199,95 @@ def _print_result(result: SearchResult) -> None:
         print("Errors:")
         for e in result.errors:
             print(f"  {e.target.slug}: {e.error}")
+
+
+def _cmd_parse(args: argparse.Namespace) -> int:
+    """Parse-only path — useful for inspecting what the model would extract.
+
+    Doesn't touch the search/booking adapters. The output is the raw
+    Pydantic model from the parser, dumped as JSON so it's easy to
+    eyeball or pipe.
+    """
+    # Lazy import so search-only invocations don't pay the anthropic
+    # SDK import cost.
+    from tee_time_checker.parser import parse
+
+    targets = load_targets(known_adapters=set(build_default_registry().keys()))
+    course_display_names = {t.slug: t.name for t in targets}
+
+    parsed = parse(
+        args.text,
+        today=date.today(),
+        course_display_names=course_display_names,
+    )
+
+    # Use mode='json' so date objects serialize as ISO strings.
+    print(json.dumps(parsed.model_dump(mode="json"), indent=2))
+    return 0
+
+
+def _cmd_ask(args: argparse.Namespace) -> int:
+    """End-to-end SMS-style flow: parse the message, then search (or ask back).
+
+    Mirrors what the Twilio webhook will eventually do — exact same code
+    path except the input is argv text instead of an SMS body and the
+    output is stdout instead of an outbound message.
+    """
+    from tee_time_checker.parser import parse
+
+    registry = build_default_registry()
+    targets = load_targets(known_adapters=set(registry.keys()))
+    course_display_names = {t.slug: t.name for t in targets}
+
+    parsed = parse(
+        args.text,
+        today=date.today(),
+        course_display_names=course_display_names,
+    )
+
+    if parsed.needs_clarification:
+        # Send the clarification message verbatim — the parser already
+        # phrased it for SMS consumption.
+        msg = parsed.clarification_message or "Sorry, can you rephrase?"
+        print(msg)
+        print()
+        print(f"[length: {len(msg)} chars, {(len(msg) // 70) + 1} SMS segment(s) UCS-2]")
+        return 0
+
+    # Translate the parsed result into our internal SearchCriteria. The
+    # parser leaves Nones where the user didn't specify; we fill in the
+    # same defaults the explicit-args path uses.
+    if parsed.date is None or parsed.players is None:
+        # Defensive — should have been caught by needs_clarification.
+        print("Parser returned no date/players but didn't ask back; aborting.", file=sys.stderr)
+        return 1
+
+    criteria = SearchCriteria(
+        date=parsed.date,
+        players=parsed.players,
+        window=TimeWindow(parsed.window or "any"),
+        holes=parsed.holes or 18,
+        course_filter=parsed.courses,
+    )
+
+    print(
+        f"Parsed: {criteria.date} · {criteria.players} players · "
+        f"{criteria.window.value} · {criteria.holes} holes"
+        + (f" · courses={criteria.course_filter}" if criteria.course_filter else "")
+    )
+    print()
+
+    result = search(criteria, targets, registry)
+
+    if args.format == "sms":
+        body = format_sms_summary(result)
+        print(body)
+        print()
+        print(f"[length: {len(body)} chars, {(len(body) // 70) + 1} SMS segment(s) UCS-2]")
+    else:
+        _print_result(result)
+
+    return 0 if not result.errors else 1
 
 
 def _format_players(min_p: int, max_p: int) -> str:

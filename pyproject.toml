@@ -5,8 +5,10 @@ description = "SMS-driven tee time availability checker across multiple booking 
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "anthropic>=0.97.0",
     "astral>=3.2",
     "curl-cffi>=0.15.0",
+    "pydantic>=2.13.3",
 ]
 
 [project.scripts]
