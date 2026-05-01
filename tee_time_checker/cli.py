@@ -19,6 +19,7 @@ from datetime import date, datetime, timedelta
 from tee_time_checker.config import load_targets
 from tee_time_checker.domain import SearchCriteria, TimeWindow
 from tee_time_checker.search import SearchResult, build_default_registry, search
+from tee_time_checker.summary import format_sms_summary
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -54,6 +55,12 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help="Restrict to this target slug. Repeatable.",
     )
+    p_search.add_argument(
+        "--format",
+        choices=["verbose", "sms"],
+        default="verbose",
+        help="Output format. 'sms' previews the SMS-ready summary.",
+    )
 
     args = parser.parse_args(argv)
 
@@ -84,7 +91,14 @@ def _cmd_search(args: argparse.Namespace) -> int:
     print()
 
     result = search(criteria, targets, registry)
-    _print_result(result)
+
+    if args.format == "sms":
+        body = format_sms_summary(result)
+        print(body)
+        print()
+        print(f"[length: {len(body)} chars, {(len(body) // 70) + 1} SMS segment(s) UCS-2]")
+    else:
+        _print_result(result)
 
     if result.errors:
         return 1
