@@ -9,6 +9,7 @@ dependencies = [
     "astral>=3.2",
     "curl-cffi>=0.15.0",
     "pydantic>=2.13.3",
+    "python-dotenv>=1.2.2",
 ]
 
 [project.scripts]

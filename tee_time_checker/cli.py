@@ -16,13 +16,22 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from datetime import date, datetime, timedelta
+
+from dotenv import load_dotenv
 
 from tee_time_checker.config import load_targets
 from tee_time_checker.domain import SearchCriteria, TimeWindow
 from tee_time_checker.search import SearchResult, build_default_registry, search
 from tee_time_checker.summary import format_sms_summary
+
+# Auto-load a project-root .env if present. Lets devs keep ANTHROPIC_API_KEY
+# (and later Twilio creds) in a gitignored file instead of exporting in
+# every shell. Production deploys (Fly.io secrets) override this naturally
+# since `load_dotenv` doesn't overwrite existing env vars by default.
+load_dotenv()
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -201,6 +210,25 @@ def _print_result(result: SearchResult) -> None:
             print(f"  {e.target.slug}: {e.error}")
 
 
+def _require_anthropic_key() -> int | None:
+    """Pre-flight check for the Claude API key.
+
+    Returns an exit code to short-circuit the command, or None if the
+    env var is set and we should proceed. Friendlier than letting the
+    SDK raise its generic auth error.
+    """
+    if os.environ.get("ANTHROPIC_API_KEY"):
+        return None
+    print(
+        "ANTHROPIC_API_KEY not set.\n"
+        "  Quick fix:  ANTHROPIC_API_KEY=sk-ant-... uv run tt ask '...'\n"
+        "  Or:         echo 'ANTHROPIC_API_KEY=sk-ant-...' >> .env\n"
+        "  (.env is gitignored; auto-loaded on every CLI run.)",
+        file=sys.stderr,
+    )
+    return 2
+
+
 def _cmd_parse(args: argparse.Namespace) -> int:
     """Parse-only path — useful for inspecting what the model would extract.
 
@@ -211,6 +239,9 @@ def _cmd_parse(args: argparse.Namespace) -> int:
     # Lazy import so search-only invocations don't pay the anthropic
     # SDK import cost.
     from tee_time_checker.parser import parse
+
+    if (rc := _require_anthropic_key()) is not None:
+        return rc
 
     targets = load_targets(known_adapters=set(build_default_registry().keys()))
     course_display_names = {t.slug: t.name for t in targets}
@@ -234,6 +265,9 @@ def _cmd_ask(args: argparse.Namespace) -> int:
     output is stdout instead of an outbound message.
     """
     from tee_time_checker.parser import parse
+
+    if (rc := _require_anthropic_key()) is not None:
+        return rc
 
     registry = build_default_registry()
     targets = load_targets(known_adapters=set(registry.keys()))
