@@ -167,10 +167,28 @@ booking_url = "https://thorncreek.quick18.com/teetimes/searchmatrix"
   "705" = " (front 9)"
 
 # ──────────────────────────────────────────────────────────────────────
-# Other platforms — added as their adapters land.
-# IDs already discovered during recon (see investigation/*_summary.txt):
-#
-#   Noteefy:
-#     - Broadlands: course_id "CO_The_Broadlands"
-#       (POST booking-engine.noteefy.app/tee-times/availability — needs
-#        curl_cffi Chrome impersonation for Cloudflare TLS)
+# Noteefy  (`booking-engine.noteefy.app`)
+# ──────────────────────────────────────────────────────────────────────
+# Cloudflare-fronted; the adapter handles the TLS-fingerprint headers.
+
+[[targets]]
+slug = "broadlands"
+name = "Broadlands"
+adapter = "noteefy"
+timezone = "America/Denver"
+# Slot booking_urls are per-date ChronoGolf deep links and override
+# this generic value at search time. Kept here as a fallback.
+booking_url = "https://www.chronogolf.com/club/broadlands-golf-course"
+
+  [targets.params]
+  course_id = "CO_The_Broadlands"
+  # Public_id from the Broadlands waitlist page; populates the referer
+  # header so Cloudflare doesn't get suspicious.
+  public_id = "ba16828e-77e6-425f-b63d-ac27e785f69d"
+  # Course-specific player rate filter UUIDs. Get these for a new
+  # Noteefy course by inspecting any /tee-times/availability POST in
+  # the booking page's network tab.
+  player_type_ids = [
+    "049dfe76-2006-4994-acce-f99454e07be3",
+    "1835383c-60be-461e-9cda-d037f760dd29",
+  ]
