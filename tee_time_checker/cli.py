@@ -92,6 +92,11 @@ def main(argv: list[str] | None = None) -> int:
         help="Output format (default: sms — what the user would receive)",
     )
 
+    sub.add_parser(
+        "chat",
+        help="Multi-turn REPL — type messages, get responses. Simulates SMS dialog.",
+    )
+
     args = parser.parse_args(argv)
 
     if args.command == "search":
@@ -100,6 +105,8 @@ def main(argv: list[str] | None = None) -> int:
         return _cmd_parse(args)
     if args.command == "ask":
         return _cmd_ask(args)
+    if args.command == "chat":
+        return _cmd_chat(args)
     return 2
 
 
@@ -322,6 +329,86 @@ def _cmd_ask(args: argparse.Namespace) -> int:
         _print_result(result)
 
     return 0 if not result.errors else 1
+
+
+def _cmd_chat(args: argparse.Namespace) -> int:
+    """Multi-turn REPL — simulates the SMS dialog flow against in-memory state.
+
+    Each turn parses with the previous partial as context, so a follow-up
+    "2" after "walnut saturday morning" produces a complete search rather
+    than another clarification. State lives only in this process — quit
+    and you start fresh; persistent per-phone state arrives with the
+    SQLite layer in the WATCH phase.
+
+    Commands inside the REPL:
+      reset    clear pending state (start a fresh request)
+      exit     leave the REPL (Ctrl-D also works)
+    """
+    from tee_time_checker.parser import ParsedSearch, parse
+
+    if (rc := _require_anthropic_key()) is not None:
+        return rc
+
+    registry = build_default_registry()
+    targets = load_targets(known_adapters=set(registry.keys()))
+    course_display_names = {t.slug: t.name for t in targets}
+
+    print("Multi-turn chat. Type 'exit' or Ctrl-D to quit, 'reset' to clear state.")
+    print()
+
+    pending: ParsedSearch | None = None
+
+    while True:
+        try:
+            text = input("> ").strip()
+        except (EOFError, KeyboardInterrupt):
+            print()
+            break
+
+        if not text:
+            continue
+        if text.lower() in ("exit", "quit"):
+            break
+        if text.lower() == "reset":
+            pending = None
+            print("(state cleared)")
+            print()
+            continue
+
+        parsed = parse(
+            text,
+            today=date.today(),
+            course_display_names=course_display_names,
+            previous=pending,
+        )
+
+        if parsed.needs_clarification:
+            # Hold the partial — next turn merges into it.
+            pending = parsed
+            print(parsed.clarification_message or "Sorry, can you rephrase?")
+            print()
+            continue
+
+        # Search runs — state is consumed.
+        pending = None
+
+        if parsed.date is None or parsed.players is None:
+            # Defensive — shouldn't happen if needs_clarification was honored.
+            print("Parser returned an incomplete parse without asking back; aborting.", file=sys.stderr)
+            continue
+
+        criteria = SearchCriteria(
+            date=parsed.date,
+            players=parsed.players,
+            window=TimeWindow(parsed.window or "any"),
+            holes=parsed.holes or 18,
+            course_filter=parsed.courses,
+        )
+        result = search(criteria, targets, registry)
+        print(format_sms_summary(result))
+        print()
+
+    return 0
 
 
 def _format_players(min_p: int, max_p: int) -> str:

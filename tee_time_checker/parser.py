@@ -30,6 +30,7 @@ Design notes:
 
 from __future__ import annotations
 
+import json
 from datetime import date as date_cls
 from typing import Literal
 
@@ -134,6 +135,19 @@ NON-SEARCH MESSAGES:
 "I help find golf tee times. Try: 'tee time tomorrow afternoon for 2'."
 - Don't try to extract anything from non-search messages.
 
+PRIOR PARTIAL PARSE (multi-turn dialog):
+- If the user turn contains a "Previous partial parse" line, the user \
+already supplied those values in earlier message(s). Carry every \
+non-null field forward into your output unless the new SMS clearly \
+overrides it (e.g. they said "saturday" before, now they say "actually \
+sunday" — use sunday).
+- Once all required fields (date, players) are filled, run the search — \
+do NOT ask back again. A bare "2" in reply to a previous "how many \
+players?" should produce a complete parse, not another clarification.
+- If the user changes the subject (asks something unrelated to tee \
+times), discard the prior partial and treat the new message as a fresh \
+request.
+
 EXAMPLES:
 
 User SMS: "tee time for 2 saturday afternoon"
@@ -164,6 +178,7 @@ def parse(
     *,
     today: date_cls,
     course_display_names: dict[str, str],
+    previous: ParsedSearch | None = None,
     client: anthropic.Anthropic | None = None,
     model: str = MODEL_ID,
 ) -> ParsedSearch:
@@ -173,10 +188,15 @@ def parse(
     into the cached system prompt. Mutating this dict invalidates the
     cache on the next call.
 
+    `previous` carries forward fields the user supplied in earlier dialog
+    turns. The model sees any non-null fields from the prior partial and
+    merges them with the new message — a bare "2" after "walnut saturday
+    morning" produces a complete search rather than another clarification.
+
     Caching: the system prompt is `cache_control`-marked, so subsequent
     calls within the (default ~5 min) TTL pay the read price (~10% of
-    input cost) instead of the full cost. Today's date is intentionally
-    placed in the user turn so it doesn't affect the cached prefix.
+    input cost) instead of the full cost. Today's date and the prior
+    partial are placed in the user turn so they don't affect the prefix.
     """
     client = client or anthropic.Anthropic()
 
@@ -184,9 +204,25 @@ def parse(
         course_list=_render_course_list(course_display_names)
     )
 
-    # Volatile content (today's date, user message) belongs in the user
-    # turn, AFTER the cached system prompt — see prompt-caching guidance.
-    user_msg = f"Today's date: {today.isoformat()}\n\nUser SMS: {text}"
+    # Volatile content (today's date, prior partial, user message) belongs
+    # in the user turn AFTER the cached system prompt — see prompt-caching
+    # guidance.
+    user_lines = [f"Today's date: {today.isoformat()}"]
+    if previous is not None:
+        # Strip the dialog-control fields and null values; show the model
+        # only what's actually been gathered.
+        prior_data = previous.model_dump(
+            mode="json",
+            exclude={"needs_clarification", "clarification_message"},
+        )
+        prior_filled = {k: v for k, v in prior_data.items() if v is not None}
+        if prior_filled:
+            user_lines.append(
+                "Previous partial parse (carry forward unless overridden): "
+                + json.dumps(prior_filled)
+            )
+    user_lines.append(f"User SMS: {text}")
+    user_msg = "\n".join(user_lines)
 
     response = client.messages.parse(
         model=model,
