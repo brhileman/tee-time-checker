@@ -113,7 +113,16 @@ OPTIONAL with sensible defaults — leave null if the user didn't say:
 - `holes` — 9 or 18.
 - `courses` — list of slugs from below. Null means search all.
 
-CONFIGURED COURSES (slug → display name):
+AREA / COURSE CLARIFICATION:
+- If the user did NOT mention any course name or area, set \
+`needs_clarification=true` and ask: \
+"Where abouts? Name a part of town (northwest, northeast, southwest, \
+southeast), a specific course, or say 'anywhere' if you don't give a shit."
+- If they say "anywhere", "any", "don't care", "don't give a shit", \
+"idgaf", or similar → leave `courses` null and proceed.
+- Do NOT ask for location if they already specified a course or area.
+
+CONFIGURED COURSES (slug → display name → area):
 {course_list}
 
 COURSE MATCHING RULES:
@@ -129,6 +138,19 @@ riverdale dunes") — return all matching slugs.
 - If a user mentions a course we don't have, set \
 `needs_clarification=true` and list the configured course display names \
 in the message.
+
+AREA MATCHING RULES:
+- Users may request courses by area/location instead of by name. \
+Resolve any geographic reference (e.g. "north side", "near downtown", \
+"south Denver", "west suburbs", "close to Thornton") to the slugs whose \
+area tag best matches. Return all matching slugs.
+- Area tags in use: "northwest", "northeast", "southwest", "southeast". \
+Use common sense to map vague references — "north side" could match both \
+"northwest" and "northeast", in which case return all slugs from both. \
+"west side" matches "northwest" and "southwest", etc.
+- If both a course name AND an area are mentioned, union the results.
+- If the area reference is too vague to map confidently, ask back with the \
+area options.
 
 NON-SEARCH MESSAGES:
 - Greetings, thanks, random text → set `needs_clarification=true` with: \
@@ -178,6 +200,7 @@ def parse(
     *,
     today: date_cls,
     course_display_names: dict[str, str],
+    course_areas: dict[str, str] | None = None,
     previous: ParsedSearch | None = None,
     client: anthropic.Anthropic | None = None,
     model: str = MODEL_ID,
@@ -201,7 +224,7 @@ def parse(
     client = client or anthropic.Anthropic()
 
     system_prompt = _SYSTEM_PROMPT_TEMPLATE.format(
-        course_list=_render_course_list(course_display_names)
+        course_list=_render_course_list(course_display_names, course_areas)
     )
 
     # Volatile content (today's date, prior partial, user message) belongs
@@ -241,13 +264,15 @@ def parse(
     return response.parsed_output
 
 
-def _render_course_list(course_display_names: dict[str, str]) -> str:
-    """Render the slug→name list block deterministically.
+def _render_course_list(course_display_names: dict[str, str], course_areas: dict[str, str] | None = None) -> str:
+    """Render the slug→name→area list block deterministically.
 
     Sorts by slug to keep the rendered prompt bytes stable across calls —
     non-deterministic ordering would silently kill the prompt cache.
     """
-    return "\n".join(
-        f"- {slug}: {course_display_names[slug]}"
-        for slug in sorted(course_display_names)
-    )
+    lines = []
+    for slug in sorted(course_display_names):
+        area = (course_areas or {}).get(slug)
+        area_str = f" (area: {area})" if area else ""
+        lines.append(f"- {slug}: {course_display_names[slug]}{area_str}")
+    return "\n".join(lines)

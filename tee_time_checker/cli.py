@@ -585,16 +585,13 @@ def _cmd_server(args: argparse.Namespace) -> int:
 
     print(
         f"Starting tee-time-checker server on {args.host}:{args.port}\n"
-        f"  • POST /sms      Twilio webhook\n"
+        f"  • Discord bot    listens for messages\n"
         f"  • GET  /healthz  liveness probe\n"
         f"  • watch scheduler ticks every {os.environ.get('TICK_SECONDS', '60')}s",
     )
-    if not all(
-        os.environ.get(k)
-        for k in ("TWILIO_ACCOUNT_SID", "TWILIO_AUTH_TOKEN", "TWILIO_FROM_NUMBER")
-    ):
+    if not os.environ.get("DISCORD_BOT_TOKEN"):
         print(
-            "  ⚠️  Twilio creds missing — outbound SMS will print to stdout instead.",
+            "  WARNING: DISCORD_BOT_TOKEN not set — bot will not connect.",
             file=sys.stderr,
         )
     uvicorn.run(

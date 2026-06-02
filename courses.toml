@@ -18,6 +18,7 @@ slug = "westminster"
 name = "Westminster (Legacy Ridge + Walnut Creek)"
 adapter = "cps"
 timezone = "America/Denver"
+area = "northwest"
 booking_url = "https://cityofwestminster.cps.golf/onlineresweb/search-teetime"
 
   [targets.params]
@@ -33,6 +34,7 @@ slug = "fossil-trace"
 name = "Fossil Trace"
 adapter = "cps"
 timezone = "America/Denver"
+area = "southwest"
 booking_url = "https://fossiltrace.cps.golf/onlineresweb/search-teetime"
 
   [targets.params]
@@ -63,6 +65,7 @@ slug = "city-park"
 name = "City Park"
 adapter = "membersports"
 timezone = "America/Denver"
+area = "northeast"
 booking_url = "https://app.membersports.com/tee-times/3660/4711/1"
 
   [targets.params]
@@ -75,6 +78,7 @@ slug = "wellshire"
 name = "Wellshire"
 adapter = "membersports"
 timezone = "America/Denver"
+area = "southeast"
 booking_url = "https://app.membersports.com/tee-times/3831/4928/1"
 
   [targets.params]
@@ -87,6 +91,7 @@ slug = "willis-case"
 name = "Willis Case"
 adapter = "membersports"
 timezone = "America/Denver"
+area = "northwest"
 booking_url = "https://app.membersports.com/tee-times/3833/4932/1"
 
   [targets.params]
@@ -99,6 +104,7 @@ slug = "fox-hollow"
 name = "Fox Hollow"
 adapter = "membersports"
 timezone = "America/Denver"
+area = "southwest"
 booking_url = "https://app.membersports.com/tee-times/3703/20589/0"
 
   [targets.params]
@@ -111,6 +117,7 @@ slug = "homestead"
 name = "Homestead"
 adapter = "membersports"
 timezone = "America/Denver"
+area = "southwest"
 booking_url = "https://app.membersports.com/tee-times/3807/4902/0"
 
   [targets.params]
@@ -132,6 +139,7 @@ slug = "riverdale-dunes"
 name = "Riverdale Dunes"
 adapter = "teeitup"
 timezone = "America/Denver"
+area = "northeast"
 booking_url = "https://www.riverdalegolf.com/teetimes/"
 
   [targets.params]
@@ -143,6 +151,7 @@ slug = "riverdale-knolls"
 name = "Riverdale Knolls"
 adapter = "teeitup"
 timezone = "America/Denver"
+area = "northeast"
 booking_url = "https://www.riverdalegolf.com/teetimes/"
 
   [targets.params]
@@ -154,6 +163,7 @@ slug = "commonground"
 name = "CommonGround"
 adapter = "teeitup"
 timezone = "America/Denver"
+area = "southeast"
 booking_url = "https://commonground-golf-course.book.teeitup.com/"
 
   [targets.params]
@@ -170,6 +180,7 @@ slug = "thorncreek"
 name = "Thorncreek"
 adapter = "quick18"
 timezone = "America/Denver"
+area = "northeast"
 booking_url = "https://thorncreek.quick18.com/teetimes/searchmatrix"
 
   [targets.params]
@@ -191,6 +202,7 @@ slug = "broadlands"
 name = "Broadlands"
 adapter = "noteefy"
 timezone = "America/Denver"
+area = "northwest"
 # Slot booking_urls are per-date ChronoGolf deep links and override
 # this generic value at search time. Kept here as a fallback.
 booking_url = "https://www.chronogolf.com/club/broadlands-golf-course"

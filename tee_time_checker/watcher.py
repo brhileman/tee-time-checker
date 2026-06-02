@@ -49,6 +49,19 @@ log = logging.getLogger(__name__)
 _NEXT_CHECK_MIN_MINUTES = 8
 _NEXT_CHECK_MAX_MINUTES = 13
 
+# Check-in schedule: minutes after watch creation to send a "still looking" message.
+# Pattern: 30m, 1h, then every 2h up to 22h.
+_CHECKIN_SCHEDULE_MINUTES = [30, 60] + list(range(120, 23 * 60, 120))
+
+_CHECKIN_MESSAGES = [
+    "Still huntin'. Nothing yet — but I don't give up easy.",
+    "Grip it and rip it — still on the case. No slots yet.",
+    "I can find it if it's out there. Still looking.",
+    "Like a lion stalking the jungle. Still watching.",
+    "Nicotine, caffeine, and determination. Still on it.",
+    "I've screwed up a lot, but I won't screw this up. Still hunting.",
+]
+
 
 # ──────────────────────────────────────────────────────────────────────
 # Notifier protocol
@@ -81,48 +94,60 @@ class PrintNotifier:
         print()
 
 
-class TwilioNotifier:
-    """Production notifier — sends real SMS via the Twilio REST API.
+class DiscordNotifier:
+    """Production notifier — sends messages via the Discord bot.
 
-    Reads `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, and
-    `TWILIO_FROM_NUMBER` from the environment lazily on first
-    instantiation. Errors from Twilio (rate limits, invalid numbers)
-    propagate up — the caller (process_due / sms.handle) catches them
-    so one bad send doesn't kill a tick or a webhook handler.
+    Needs a live discord.Client to resolve channels. Call set_client()
+    once the bot is ready before any notify() calls reach this instance.
+
+    user_key format: "{discord_user_id}:{discord_channel_id}"
+    Guild channels get a @mention so the reply is clearly addressed;
+    DMs skip the mention.
     """
 
-    def __init__(
-        self,
-        *,
-        account_sid: str | None = None,
-        auth_token: str | None = None,
-        from_number: str | None = None,
-    ) -> None:
-        # Lazy imports keeps `tt search` / CLI commands that don't need
-        # Twilio from paying its (modest) import cost.
-        from twilio.rest import Client
+    def __init__(self) -> None:
+        self._client: object | None = None  # discord.Client, typed as object to avoid import
 
-        sid = account_sid or os.environ["TWILIO_ACCOUNT_SID"]
-        tok = auth_token or os.environ["TWILIO_AUTH_TOKEN"]
-        self._from = from_number or os.environ["TWILIO_FROM_NUMBER"]
-        self._client = Client(sid, tok)
+    def set_client(self, client: object) -> None:
+        self._client = client
 
-    def notify(self, phone: str, body: str) -> None:
-        self._client.messages.create(to=phone, from_=self._from, body=body)
+    def notify(self, user_key: str, body: str) -> None:
+        import asyncio
+
+        import discord
+
+        if self._client is None:
+            log.error("DiscordNotifier: client not set — message dropped")
+            return
+
+        try:
+            user_id_str, channel_id_str = user_key.split(":", 1)
+        except ValueError:
+            log.error("DiscordNotifier: invalid user_key %r", user_key)
+            return
+
+        client: discord.Client = self._client  # type: ignore[assignment]
+        channel = client.get_channel(int(channel_id_str))
+        if channel is None:
+            log.error("DiscordNotifier: channel %s not in cache (bot may not be ready)", channel_id_str)
+            return
+
+        content = body if isinstance(channel, discord.DMChannel) else f"<@{user_id_str}> {body}"
+
+        future = asyncio.run_coroutine_threadsafe(channel.send(content), client.loop)
+        try:
+            future.result(timeout=30)
+        except Exception:
+            log.exception("DiscordNotifier: failed to send to channel %s", channel_id_str)
 
 
 def default_notifier() -> Notifier:
-    """Pick the production notifier when Twilio creds exist, dev otherwise.
+    """Return a PrintNotifier for local dev use.
 
-    Lets the same entry points (`tt watch run`, `tt server`) work in both
-    environments without a flag — Fly secrets supply the creds in prod;
-    locally, the absence of those vars naturally falls back to print.
+    The real DiscordNotifier requires a live discord.Client and is wired
+    up in web.py's lifespan — it can't be constructed standalone here.
+    CLI commands (`tt watch run`, `tt watch tick`) use the print path.
     """
-    if all(
-        os.environ.get(k)
-        for k in ("TWILIO_ACCOUNT_SID", "TWILIO_AUTH_TOKEN", "TWILIO_FROM_NUMBER")
-    ):
-        return TwilioNotifier()
     return PrintNotifier()
 
 
@@ -185,6 +210,31 @@ def process_due(
     return TickResult(checked=len(due), fired=fired, expired=expired, errors=errors)
 
 
+def _due_checkin(watch: Watch, now: datetime) -> datetime | None:
+    """Return the earliest check-in time that's now due but not yet sent, or None."""
+    for minutes in _CHECKIN_SCHEDULE_MINUTES:
+        checkin_time = watch.created_at + timedelta(minutes=minutes)
+        if checkin_time > now:
+            break
+        if watch.last_checkin_at is None or checkin_time > watch.last_checkin_at:
+            return checkin_time
+    return None
+
+
+def _checkin_message(watch: Watch, now: datetime) -> str:
+    elapsed = now - watch.created_at
+    hours = int(elapsed.total_seconds() // 3600)
+    minutes = int((elapsed.total_seconds() % 3600) // 60)
+    elapsed_str = f"{hours}h {minutes}m" if hours else f"{minutes}m"
+    idx = len(_CHECKIN_MESSAGES) - 1
+    for i, m in enumerate(_CHECKIN_SCHEDULE_MINUTES):
+        if watch.created_at + timedelta(minutes=m) > now:
+            idx = min(i, len(_CHECKIN_MESSAGES) - 1)
+            break
+    msg = _CHECKIN_MESSAGES[idx % len(_CHECKIN_MESSAGES)]
+    return f"{msg} ({elapsed_str} in)"
+
+
 def _process_one(
     watch: Watch,
     *,
@@ -200,8 +250,8 @@ def _process_one(
         state.mark_watch_expired(watch.phone, expired_at=now)
         notifier.notify(
             watch.phone,
-            "Watched 24h with no luck — nothing matching your search came up. "
-            "Reply with a new request to start over.",
+            "I hunted for 24h and came up empty. Even I can't find 'em if they ain't there. "
+            "Send a new request whenever you're ready.",
         )
         return "expired"
 
@@ -213,7 +263,12 @@ def _process_one(
         notifier.notify(watch.phone, format_sms_summary(result))
         return "fired"
 
-    # Miss — schedule next check with fresh jitter.
+    # Miss — send a check-in if one is due, then schedule next search tick.
+    checkin_time = _due_checkin(watch, now)
+    if checkin_time is not None:
+        notifier.notify(watch.phone, _checkin_message(watch, now))
+        state.record_checkin(watch.phone, checkin_at=checkin_time)
+
     next_at = now + timedelta(
         minutes=random.uniform(_NEXT_CHECK_MIN_MINUTES, _NEXT_CHECK_MAX_MINUTES)
     )

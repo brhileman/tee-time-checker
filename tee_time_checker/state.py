@@ -48,7 +48,8 @@ CREATE TABLE IF NOT EXISTS watches (
     next_check_at       TEXT NOT NULL,
     last_checked_at     TEXT,
     last_seen_slot_count INTEGER,
-    notified_at         TEXT
+    notified_at         TEXT,
+    last_checkin_at     TEXT
 );
 
 CREATE INDEX IF NOT EXISTS watches_status_next_idx
@@ -81,6 +82,11 @@ def connect() -> Iterator[sqlite3.Connection]:
     conn.execute("PRAGMA journal_mode = WAL")
     try:
         conn.executescript(_SCHEMA)
+        # Additive migration: add last_checkin_at if upgrading from an older DB.
+        try:
+            conn.execute("ALTER TABLE watches ADD COLUMN last_checkin_at TEXT")
+        except sqlite3.OperationalError:
+            pass  # column already exists
         conn.execute("BEGIN")
         yield conn
         conn.execute("COMMIT")
@@ -114,6 +120,7 @@ class Watch:
     last_checked_at: datetime | None = None
     last_seen_slot_count: int | None = None
     notified_at: datetime | None = None
+    last_checkin_at: datetime | None = None
 
 
 def start_watch(
@@ -156,7 +163,8 @@ def start_watch(
                 next_check_at   = excluded.next_check_at,
                 last_checked_at = NULL,
                 last_seen_slot_count = NULL,
-                notified_at     = NULL
+                notified_at     = NULL,
+                last_checkin_at = NULL
             """,
             (
                 phone,
@@ -240,6 +248,16 @@ def record_check(
                 _dt_iso(next_check_at),
                 phone,
             ),
+        )
+
+
+def record_checkin(phone: str, *, checkin_at: datetime | None = None) -> None:
+    """Record that a periodic 'still looking' check-in was sent."""
+    checkin_at = checkin_at or datetime.now(tz=ZoneInfo("UTC"))
+    with connect() as c:
+        c.execute(
+            "UPDATE watches SET last_checkin_at = ? WHERE phone = ? AND status = 'active'",
+            (_dt_iso(checkin_at), phone),
         )
 
 
@@ -403,6 +421,11 @@ def _row_to_watch(row: sqlite3.Row) -> Watch:
         notified_at=(
             datetime.fromisoformat(row["notified_at"])
             if row["notified_at"]
+            else None
+        ),
+        last_checkin_at=(
+            datetime.fromisoformat(row["last_checkin_at"])
+            if row["last_checkin_at"]
             else None
         ),
     )

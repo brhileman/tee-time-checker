@@ -1,34 +1,28 @@
-"""FastAPI app — Twilio webhook + lifespan-managed watch scheduler.
+"""FastAPI app + Discord bot + watch scheduler — all in one process.
 
-One process serves both responsibilities: the HTTP server that handles
-inbound SMS webhooks AND the periodic watch poller. They share the
-same SQLite file and the same notifier, so a watch firing while a
-webhook is in flight goes through the same outbound path.
+Architecture:
 
-Inbound flow:
-
-    Twilio POST /sms (form-encoded)
-        ↓ signature check
-    schedule background task to handle the message
-        ↓ (returns empty TwiML to Twilio immediately)
-    sms.handle_sms(phone, body, notifier=...)
+    Discord gateway (websocket)
+        ↓  on_message
+    TeeTimeBot.on_message()
+        ↓  asyncio.to_thread (keeps the event loop free)
+    sms.handle_sms(user_key, body, notifier=...)
         ↓
-    notifier.notify(phone, reply)  → Twilio REST API → user's phone
+    notifier.notify(user_key, reply)  →  channel.send()  →  Discord
 
-Returning fast keeps Twilio's 15-second webhook timeout from biting
-when the search or NL parse has tail latency.
-
-Outbound flow (watches):
-
-    BackgroundScheduler tick (every tick_seconds)
+    BackgroundScheduler (APScheduler, daemon thread) tick every N seconds
         ↓
     watcher.process_due(notifier=...)
         ↓
-    notifier.notify(phone, summary or expiry message)
+    notifier.notify(user_key, summary)  →  channel.send()
+
+user_key encodes both the author and the channel: "{user_id}:{channel_id}".
+DiscordNotifier unpacks it to send the reply to the right place.
 """
 
 from __future__ import annotations
 
+import asyncio
 import logging
 import os
 from contextlib import asynccontextmanager
@@ -36,37 +30,79 @@ from datetime import datetime
 from typing import AsyncIterator
 from zoneinfo import ZoneInfo
 
+import discord
 from apscheduler.schedulers.background import BackgroundScheduler
-from fastapi import BackgroundTasks, FastAPI, HTTPException, Request, Response
+from fastapi import FastAPI, Response
 
 from tee_time_checker import sms, state, watcher
+from tee_time_checker.watcher import DiscordNotifier
 
 log = logging.getLogger(__name__)
 
-# Tick interval for the watch scheduler. The scheduler reads only watches
-# that are *due* (next_check_at <= now), so this just controls how often
-# we wake up to look — actual per-watch cadence is the 8-13 min jitter
-# stored in next_check_at by the watcher itself.
 _TICK_SECONDS = int(os.environ.get("TICK_SECONDS", "60"))
+# Optional: restrict the bot to one channel. If unset, responds everywhere it's invited.
+_DISCORD_CHANNEL_ID = os.environ.get("DISCORD_CHANNEL_ID")
+
+
+class TeeTimeBot(discord.Client):
+    """Discord client that routes inbound messages through the SMS handler."""
+
+    def __init__(self, notifier: DiscordNotifier) -> None:
+        intents = discord.Intents.default()
+        intents.message_content = True
+        super().__init__(intents=intents)
+        self._notifier = notifier
+
+    async def on_ready(self) -> None:
+        log.info("Discord bot ready: %s (id=%s)", self.user, self.user.id if self.user else "?")
+
+    async def on_message(self, message: discord.Message) -> None:
+        if message.author == self.user or message.author.bot:
+            return
+
+        in_thread = isinstance(message.channel, discord.Thread)
+
+        if _DISCORD_CHANNEL_ID:
+            # Accept messages in the configured channel, and in threads spawned from it.
+            parent_id = str(message.channel.parent_id) if in_thread else None
+            if str(message.channel.id) != _DISCORD_CHANNEL_ID and parent_id != _DISCORD_CHANNEL_ID:
+                return
+
+        body = message.content.strip()
+        if not body:
+            return
+
+        # Messages in a thread continue that thread's conversation.
+        # Messages in a regular channel spawn a new thread for the reply.
+        if in_thread:
+            reply_channel_id = message.channel.id
+        else:
+            thread = await message.create_thread(
+                name=f"Tee time — {message.author.display_name}",
+                auto_archive_duration=60,
+            )
+            reply_channel_id = thread.id
+
+        user_key = f"{message.author.id}:{reply_channel_id}"
+        notifier = self._notifier
+        await asyncio.to_thread(lambda: sms.handle_sms(user_key, body, notifier=notifier))
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
-    """Run the watch poller alongside the HTTP server.
+    """Start the Discord bot and watch scheduler; shut both down on exit."""
+    notifier = DiscordNotifier()
+    bot = TeeTimeBot(notifier)
+    notifier.set_client(bot)
 
-    BackgroundScheduler runs in a daemon thread — async/await on the
-    web side stays cooperative; the scheduler ticks happen on its own
-    thread. SQLite handles the concurrency (we use WAL mode in state.py).
-    """
-    notifier = watcher.default_notifier()
     scheduler = BackgroundScheduler(timezone="UTC")
     scheduler.add_job(
         lambda: watcher.process_due(notifier),
         trigger="interval",
         seconds=_TICK_SECONDS,
-        next_run_time=datetime.now(tz=ZoneInfo("UTC")),  # fire once on boot
+        next_run_time=datetime.now(tz=ZoneInfo("UTC")),
         id="process_due",
-        max_instances=1,  # don't pile up if a tick runs longer than the interval
+        max_instances=1,
     )
     scheduler.add_job(
         state.purge_expired_pending,
@@ -76,11 +112,23 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         max_instances=1,
     )
     scheduler.start()
-    log.info("scheduler started: tick=%ds, notifier=%s", _TICK_SECONDS, type(notifier).__name__)
+    log.info("scheduler started: tick=%ds", _TICK_SECONDS)
+
+    token = os.environ.get("DISCORD_BOT_TOKEN", "")
+    if token:
+        bot_task = asyncio.create_task(bot.start(token))
+        log.info("Discord bot connecting…")
+    else:
+        bot_task = None
+        log.warning("DISCORD_BOT_TOKEN not set — bot will not connect (scheduler still runs)")
+
     try:
         yield
     finally:
         scheduler.shutdown(wait=False)
+        if bot_task is not None:
+            await bot.close()
+            bot_task.cancel()
 
 
 app = FastAPI(lifespan=lifespan)
@@ -88,73 +136,4 @@ app = FastAPI(lifespan=lifespan)
 
 @app.get("/healthz")
 def healthz() -> dict[str, str]:
-    """Simple liveness probe — Fly.io / monitors hit this."""
     return {"status": "ok"}
-
-
-@app.post("/sms")
-async def sms_webhook(request: Request, background: BackgroundTasks) -> Response:
-    """Twilio POSTs here when an SMS arrives at our number.
-
-    Validates the request signature, then schedules the actual handling
-    on a background task and immediately returns an empty TwiML response.
-    The reply goes back to the user via the Twilio REST API (not via
-    this response body) — that decouples our work from Twilio's
-    15-second webhook timeout.
-    """
-    form = await request.form()
-    _validate_twilio_signature(request, form)
-
-    phone = (form.get("From") or "").strip()
-    body = (form.get("Body") or "").strip()
-    if phone and body:
-        notifier = watcher.default_notifier()
-        background.add_task(_handle_sms_safe, phone, body, notifier)
-
-    # Empty TwiML response — we send the reply async via the REST API.
-    return Response(content="<Response/>", media_type="text/xml")
-
-
-def _handle_sms_safe(phone: str, body: str, notifier) -> None:
-    """Wrap the handler so background-task exceptions don't get swallowed silently.
-
-    FastAPI's BackgroundTasks only logs to its own logger by default —
-    explicit logging here makes diagnosis easy when something blows up
-    server-side and the user just sees no reply.
-    """
-    try:
-        sms.handle_sms(phone, body, notifier=notifier)
-    except Exception:
-        log.exception("sms.handle_sms failed for %s", phone)
-
-
-def _validate_twilio_signature(request: Request, form: object) -> None:
-    """Reject webhooks that aren't signed by Twilio.
-
-    `TWILIO_AUTH_TOKEN` is the HMAC key. The validator hashes
-    `request.url + sorted(form_kv_pairs)` and compares to the
-    `X-Twilio-Signature` header. Skipped only when SKIP_TWILIO_VERIFY=1
-    is set (used by the simulated-webhook CLI command for local testing).
-    """
-    if os.environ.get("SKIP_TWILIO_VERIFY") == "1":
-        return
-
-    auth_token = os.environ.get("TWILIO_AUTH_TOKEN")
-    if not auth_token:
-        # Fail closed — refuse to accept webhooks if we can't verify them.
-        raise HTTPException(
-            status_code=503,
-            detail="TWILIO_AUTH_TOKEN not configured; webhook signature can't be verified",
-        )
-
-    from twilio.request_validator import RequestValidator
-
-    validator = RequestValidator(auth_token)
-    signature = request.headers.get("X-Twilio-Signature", "")
-    # Twilio signs the public URL; if we're behind a proxy, trust
-    # X-Forwarded-* via the trusted-host config. For Fly.io the URL
-    # passed through is already canonical.
-    url = str(request.url)
-
-    if not validator.validate(url, dict(form), signature):
-        raise HTTPException(status_code=403, detail="invalid Twilio signature")

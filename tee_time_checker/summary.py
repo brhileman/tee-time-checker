@@ -74,7 +74,7 @@ def _format_match(result: "SearchResult") -> str:
 
     by_count = sorted(groups.items(), key=lambda kv: (-len(kv[1]), kv[0].lower()))
 
-    out_lines = [_header_line(result.criteria)]
+    out_lines = [_header_line(result.criteria), ""]
     for name, slots in by_count:
         out_lines.append(_course_line(name, slots, result.criteria.holes))
 
@@ -82,26 +82,23 @@ def _format_match(result: "SearchResult") -> str:
 
 
 def _format_no_match(result: "SearchResult") -> str:
-    header = (
-        f"❌ No tee times: {_criteria_phrase(result.criteria)}"
-    )
+    header = f"❌ **No tee times — {_criteria_phrase(result.criteria)}**"
     course_names = sorted(t.name for t in result.targets_searched)
     if not course_names:
-        return f"{header}\n(no courses configured for that filter)"
+        return f"{header}\n\n(no courses configured for that filter)"
 
-    # Keep the searched-courses line tight — list initials when too long.
     listed = ", ".join(course_names)
     if len(listed) > 120:
-        listed = ", ".join(course_names[:5]) + f" …+{len(course_names) - 5}"
+        listed = ", ".join(course_names[:5]) + f" +{len(course_names) - 5} more"
     return (
-        f"{header}\n"
-        f"Searched: {listed}\n"
-        f"Reply WATCH to keep checking, or CHANGE to adjust."
+        f"{header}\n\n"
+        f"Searched: {listed}\n\n"
+        f"Nothin' there. Reply **WATCH** and I'll keep huntin' — I don't give up easy."
     )
 
 
 def _header_line(criteria: SearchCriteria) -> str:
-    return f"✅ {_criteria_phrase(criteria)}"
+    return f"🏌️ **Grip it and rip it — {_criteria_phrase(criteria)}**"
 
 
 def _criteria_phrase(criteria: SearchCriteria) -> str:
@@ -126,7 +123,7 @@ def _course_line(name: str, slots: list[TeeTime], holes: int) -> str:
     after_dark = risks.get(DaylightRisk.AFTER_DARK, 0)
     twilight = risks.get(DaylightRisk.TWILIGHT, 0)
 
-    main = f"• {name} — {len(slots)} slot{'s' if len(slots) != 1 else ''}, {range_str}"
+    main = f"• **{name}** — {len(slots)} slot{'s' if len(slots) != 1 else ''}, {range_str}"
 
     risk_part: str | None = None
     if after_dark:

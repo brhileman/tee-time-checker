@@ -44,13 +44,13 @@ log = logging.getLogger(__name__)
 
 
 _HELP_TEXT = (
-    "Reply with what you're looking for, e.g.:\n"
+    "Grip it and rip it, baby. Tell me what you need:\n"
     "  tee time tomorrow afternoon for 2\n"
     "  saturday morning for 4 at westminster\n\n"
     "Commands:\n"
-    "  WATCH — keep checking for 24h after a no-match reply\n"
-    "  STOP  — cancel any active watch\n"
-    "  HELP  — show this message"
+    "  WATCH — I'll keep hunting for 24h. Like a lion.\n"
+    "  STOP  — call off the hunt\n"
+    "  HELP  — you're lookin' at it"
 )
 
 
@@ -117,7 +117,7 @@ def _handle_command(cmd: str, phone: str, *, notifier: "Notifier") -> None:
         state.clear_pending(phone)
         notifier.notify(
             phone,
-            "Watch cancelled." if cancelled else "No active watch to cancel.",
+            "Watch cancelled. Go light a cigarette." if cancelled else "No active watch — you're already in the fairway.",
         )
         return
 
@@ -134,9 +134,9 @@ def _handle_command(cmd: str, phone: str, *, notifier: "Notifier") -> None:
         ):
             notifier.notify(
                 phone,
-                "I don't have a complete search to watch yet. "
-                "Send a request like 'tee time tomorrow afternoon for 2' "
-                "first; if nothing's available, reply WATCH.",
+                "Easy there — I need a tee time request first. "
+                "Try somethin' like 'tee time tomorrow afternoon for 2'. "
+                "If nothing's there, reply WATCH and I'll hunt for 24h.",
             )
             return
 
@@ -148,8 +148,8 @@ def _handle_command(cmd: str, phone: str, *, notifier: "Notifier") -> None:
 
         notifier.notify(
             phone,
-            "Watching for the next 24h. I'll text when something opens up. "
-            "Reply STOP to cancel.",
+            "I'm on it. Watching for the next 24h like a lion stalking the jungle. "
+            "I'll holler when something opens up. Reply STOP to call it off.",
         )
         return
 
@@ -169,6 +169,7 @@ def _handle_natural_language(
     registry = build_default_registry()
     targets = load_targets(known_adapters=set(registry.keys()))
     course_display_names = {t.slug: t.name for t in targets}
+    course_areas = {t.slug: t.area for t in targets if t.area}
 
     prior = state.get_pending(phone)
 
@@ -176,6 +177,7 @@ def _handle_natural_language(
         body,
         today=today,
         course_display_names=course_display_names,
+        course_areas=course_areas,
         previous=prior,
     )
 
