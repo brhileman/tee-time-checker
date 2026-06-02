@@ -2,7 +2,6 @@
 name = "tee-time-checker"
 version = "0.1.0"
 description = "SMS-driven tee time availability checker across multiple booking platforms"
-readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "anthropic>=0.97.0",
