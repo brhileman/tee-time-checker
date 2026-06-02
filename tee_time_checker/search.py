@@ -25,6 +25,7 @@ from tee_time_checker.adapters.membersports import MemberSportsAdapter
 from tee_time_checker.adapters.noteefy import NoteefyAdapter
 from tee_time_checker.adapters.quick18 import Quick18Adapter
 from tee_time_checker.adapters.teeitup import TeeItUpAdapter
+from tee_time_checker.daylight import DaylightRisk, assess
 from tee_time_checker.domain import SearchCriteria, TeeTime
 
 
@@ -91,7 +92,13 @@ def search(
             continue
 
         # Apply the window filter centrally — adapters return full-day data.
-        all_slots.extend(s for s in slots if criteria.window.contains(s.start_time))
+        # Also drop slots where a round won't finish before dark.
+        for s in slots:
+            if not criteria.window.contains(s.start_time):
+                continue
+            if assess(s.start_time, criteria.holes).risk in (DaylightRisk.TWILIGHT, DaylightRisk.AFTER_DARK):
+                continue
+            all_slots.append(s)
 
     # Stable ordering: by course alphabetically, then by start time.
     all_slots.sort(key=lambda t: (t.course_name.lower(), t.start_time))

@@ -34,7 +34,9 @@ class Target:
     timezone: str       # IANA tz name, e.g. "America/Denver"
     booking_url: str    # deep-link the user opens to actually book
     params: dict[str, Any]
-    area: str | None = None  # geographic area tag, e.g. "northwest", "central"
+    area: str | None = None  # geographic area tag e.g. "northwest"
+    lat: float | None = None  # course latitude for proximity search
+    lng: float | None = None  # course longitude for proximity search
 
 
 class Adapter(Protocol):

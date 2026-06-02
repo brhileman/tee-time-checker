@@ -61,6 +61,24 @@ CREATE TABLE IF NOT EXISTS pending_conversations (
     expires_at   TEXT NOT NULL,
     updated_at   TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS last_searches (
+    phone        TEXT PRIMARY KEY,
+    parsed_json  TEXT NOT NULL,
+    expires_at   TEXT NOT NULL,
+    updated_at   TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS user_profiles (
+    phone              TEXT PRIMARY KEY,
+    zipcode            TEXT,
+    favorite_slugs     TEXT,
+    excluded_slugs     TEXT,
+    max_drive_minutes  INTEGER,
+    onboarding_step    TEXT NOT NULL DEFAULT 'done',
+    created_at         TEXT NOT NULL,
+    updated_at         TEXT NOT NULL
+);
 """
 
 
@@ -86,7 +104,11 @@ def connect() -> Iterator[sqlite3.Connection]:
         try:
             conn.execute("ALTER TABLE watches ADD COLUMN last_checkin_at TEXT")
         except sqlite3.OperationalError:
-            pass  # column already exists
+            pass
+        try:
+            conn.execute("ALTER TABLE user_profiles ADD COLUMN excluded_slugs TEXT")
+        except sqlite3.OperationalError:
+            pass
         conn.execute("BEGIN")
         yield conn
         conn.execute("COMMIT")
@@ -365,6 +387,126 @@ def purge_expired_pending(*, now: datetime | None = None) -> int:
             (_dt_iso(now),),
         )
         return cur.rowcount
+
+
+# ──────────────────────────────────────────────────────────────────────
+# User profiles
+# ──────────────────────────────────────────────────────────────────────
+
+
+@dataclass(slots=True)
+class UserProfile:
+    phone: str
+    zipcode: str | None
+    favorite_slugs: list[str]    # empty = no specific favorites
+    excluded_slugs: list[str]    # courses to never show
+    max_drive_minutes: int | None
+    onboarding_step: str         # 'zip' | 'courses' | 'done'
+    created_at: datetime
+    updated_at: datetime
+
+
+def get_profile(phone: str) -> UserProfile | None:
+    with connect() as c:
+        row = c.execute(
+            "SELECT * FROM user_profiles WHERE phone = ?", (phone,)
+        ).fetchone()
+    return _row_to_profile(row) if row else None
+
+
+def upsert_profile(
+    phone: str,
+    *,
+    zipcode: str | None = None,
+    favorite_slugs: list[str] | None = None,
+    excluded_slugs: list[str] | None = None,
+    max_drive_minutes: int | None = None,
+    onboarding_step: str = "done",
+    now: datetime | None = None,
+) -> UserProfile:
+    now = now or datetime.now(tz=ZoneInfo("UTC"))
+    with connect() as c:
+        c.execute(
+            """
+            INSERT INTO user_profiles (phone, zipcode, favorite_slugs, excluded_slugs, max_drive_minutes, onboarding_step, created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(phone) DO UPDATE SET
+                zipcode            = COALESCE(excluded.zipcode, zipcode),
+                favorite_slugs     = excluded.favorite_slugs,
+                excluded_slugs     = excluded.excluded_slugs,
+                max_drive_minutes  = COALESCE(excluded.max_drive_minutes, max_drive_minutes),
+                onboarding_step    = excluded.onboarding_step,
+                updated_at         = excluded.updated_at
+            """,
+            (
+                phone,
+                zipcode,
+                json.dumps(favorite_slugs or []),
+                json.dumps(excluded_slugs or []),
+                max_drive_minutes,
+                onboarding_step,
+                _dt_iso(now),
+                _dt_iso(now),
+            ),
+        )
+    return get_profile(phone)  # type: ignore[return-value]
+
+
+def _row_to_profile(row: sqlite3.Row) -> UserProfile:
+    return UserProfile(
+        phone=row["phone"],
+        zipcode=row["zipcode"],
+        favorite_slugs=json.loads(row["favorite_slugs"] or "[]"),
+        excluded_slugs=json.loads(row["excluded_slugs"] or "[]"),
+        max_drive_minutes=row["max_drive_minutes"],
+        onboarding_step=row["onboarding_step"],
+        created_at=datetime.fromisoformat(row["created_at"]),
+        updated_at=datetime.fromisoformat(row["updated_at"]),
+    )
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Last searches (completed search context for follow-up refinements)
+# ──────────────────────────────────────────────────────────────────────
+
+
+def save_last_search(
+    phone: str,
+    parsed: ParsedSearch,
+    *,
+    ttl_minutes: int = 120,
+    now: datetime | None = None,
+) -> None:
+    """Persist the last completed search so follow-ups have context."""
+    now = now or datetime.now(tz=ZoneInfo("UTC"))
+    expires = now + timedelta(minutes=ttl_minutes)
+    with connect() as c:
+        c.execute(
+            """
+            INSERT INTO last_searches (phone, parsed_json, expires_at, updated_at)
+            VALUES (?, ?, ?, ?)
+            ON CONFLICT(phone) DO UPDATE SET
+                parsed_json = excluded.parsed_json,
+                expires_at  = excluded.expires_at,
+                updated_at  = excluded.updated_at
+            """,
+            (phone, parsed.model_dump_json(), _dt_iso(expires), _dt_iso(now)),
+        )
+
+
+def get_last_search(phone: str, *, now: datetime | None = None) -> ParsedSearch | None:
+    """Return the last completed search for this user, or None if expired/missing."""
+    now = now or datetime.now(tz=ZoneInfo("UTC"))
+    with connect() as c:
+        row = c.execute(
+            "SELECT parsed_json, expires_at FROM last_searches WHERE phone = ?",
+            (phone,),
+        ).fetchone()
+    if not row:
+        return None
+    if datetime.fromisoformat(row["expires_at"]) <= now:
+        return None
+    return ParsedSearch.model_validate_json(row["parsed_json"])
 
 
 # ──────────────────────────────────────────────────────────────────────

@@ -26,11 +26,9 @@ might want a twilight round on purpose.
 
 from __future__ import annotations
 
-from collections import Counter
 from datetime import datetime
 from typing import TYPE_CHECKING
 
-from tee_time_checker.daylight import DaylightRisk, assess
 from tee_time_checker.domain import SearchCriteria, TeeTime, TimeWindow
 
 if TYPE_CHECKING:
@@ -102,11 +100,11 @@ def _header_line(criteria: SearchCriteria) -> str:
 
 
 def _criteria_phrase(criteria: SearchCriteria) -> str:
-    """Compact human description: 'Sun 5/3 afternoon, 2p (18h)'."""
-    date_str = criteria.date.strftime("%a %-m/%-d")
+    date_str = criteria.date.strftime("%A, %B %-d")
     window = _WINDOW_LABEL[criteria.window]
-    holes = "9h" if criteria.holes == 9 else "18h"
-    return f"{date_str} {window}, {criteria.players}p ({holes})"
+    holes = "9 holes" if criteria.holes == 9 else "18 holes"
+    players = "1 player" if criteria.players == 1 else f"{criteria.players} players"
+    return f"{date_str} · {window} · {players} · {holes}"
 
 
 def _course_line(name: str, slots: list[TeeTime], holes: int) -> str:
@@ -118,25 +116,7 @@ def _course_line(name: str, slots: list[TeeTime], holes: int) -> str:
     latest = _short_time(slots[-1].start_time)
     range_str = earliest if earliest == latest else f"{earliest}–{latest}"
 
-    # Daylight risk roll-up.
-    risks = Counter(assess(s.start_time, holes).risk for s in slots)
-    after_dark = risks.get(DaylightRisk.AFTER_DARK, 0)
-    twilight = risks.get(DaylightRisk.TWILIGHT, 0)
-
     main = f"• **{name}** — {len(slots)} slot{'s' if len(slots) != 1 else ''}, {range_str}"
-
-    risk_part: str | None = None
-    if after_dark:
-        risk_part = (
-            "all after dark" if len(slots) == after_dark else f"{after_dark} after dark"
-        )
-    elif twilight:
-        risk_part = (
-            "all finish at dusk" if len(slots) == twilight else f"{twilight} at dusk"
-        )
-
-    if risk_part:
-        return f"{main} · ⚠️ {risk_part}"
     return main
 
 

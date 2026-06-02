@@ -83,9 +83,12 @@ class TeeTimeBot(discord.Client):
             )
             reply_channel_id = thread.id
 
-        user_key = f"{message.author.id}:{reply_channel_id}"
-        notifier = self._notifier
-        await asyncio.to_thread(lambda: sms.handle_sms(user_key, body, notifier=notifier))
+        # State is keyed by user ID alone so profile/watch persists across threads.
+        # Channel ID is passed to the notifier separately so replies go to the right place.
+        user_id = str(message.author.id)
+        watch_key = f"{user_id}:{reply_channel_id}"
+        channel_notifier = self._notifier.for_channel(reply_channel_id, user_id)
+        await asyncio.to_thread(lambda: sms.handle_sms(user_id, body, notifier=channel_notifier, watch_key=watch_key))
 
 
 @asynccontextmanager

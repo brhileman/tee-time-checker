@@ -30,9 +30,11 @@ import logging
 from datetime import date as date_cls
 from typing import TYPE_CHECKING
 
+from tee_time_checker import profile as profile_mod
 from tee_time_checker import state
 from tee_time_checker.config import load_targets
 from tee_time_checker.domain import SearchCriteria, TimeWindow
+from tee_time_checker.geo import drive_minutes, zip_coords
 from tee_time_checker.parser import ParsedSearch, parse
 from tee_time_checker.search import build_default_registry, search
 from tee_time_checker.summary import format_sms_summary
@@ -60,26 +62,39 @@ def handle_sms(
     *,
     notifier: "Notifier",
     today: date_cls | None = None,
+    watch_key: str | None = None,
 ) -> None:
     """Process one inbound SMS. Sends replies via the notifier.
 
-    Idempotent on its own state writes: the same body delivered twice
-    won't double-fire (Twilio occasionally retries on transient errors).
+    `phone` is the stable user identifier (Discord user ID) used for
+    profile, pending, and last_search state. `watch_key` encodes the
+    reply channel as "{user_id}:{channel_id}" so the watcher knows
+    where to send notifications when a watch fires.
     """
     body = body.strip()
     if not body:
-        return  # Twilio sometimes delivers empty bodies on edge cases.
+        return
     today = today or date_cls.today()
+    wkey = watch_key or phone  # key used for watch storage (encodes reply channel)
 
-    # Commands first — exact-match short keywords. Long messages skip the
-    # command check so "stop trying to find me a foursome" doesn't trigger
-    # the cancel branch.
+    # New or mid-onboarding user — handle setup before anything else.
+    if profile_mod.needs_onboarding(phone):
+        registry = build_default_registry()
+        targets = load_targets(known_adapters=set(registry.keys()))
+        step = profile_mod.onboarding_step(phone)
+        if step == "zip" and state.get_profile(phone) is None:
+            profile_mod.start_onboarding(phone, notifier=notifier)
+            return
+        if profile_mod.handle_onboarding(phone, body, notifier=notifier, targets=targets):
+            return
+
+    # Commands first — exact-match short keywords.
     cmd = _detect_command(body)
     if cmd is not None:
-        _handle_command(cmd, phone, notifier=notifier)
+        _handle_command(cmd, phone, notifier=notifier, watch_key=wkey)
         return
 
-    _handle_natural_language(phone, body, today=today, notifier=notifier)
+    _handle_natural_language(phone, body, today=today, notifier=notifier, watch_key=wkey)
 
 
 # ──────────────────────────────────────────────────────────────────────
@@ -107,13 +122,13 @@ def _detect_command(body: str) -> str | None:
     return None
 
 
-def _handle_command(cmd: str, phone: str, *, notifier: "Notifier") -> None:
+def _handle_command(cmd: str, phone: str, *, notifier: "Notifier", watch_key: str) -> None:
     if cmd == "HELP":
         notifier.notify(phone, _HELP_TEXT)
         return
 
     if cmd == "STOP":
-        cancelled = state.cancel_watch(phone)
+        cancelled = state.cancel_watch(watch_key)
         state.clear_pending(phone)
         notifier.notify(
             phone,
@@ -122,9 +137,6 @@ def _handle_command(cmd: str, phone: str, *, notifier: "Notifier") -> None:
         return
 
     if cmd == "WATCH":
-        # The user can reply WATCH only after sending a complete search
-        # that found nothing — we stash that ParsedSearch in pending and
-        # use it here.
         pending = state.get_pending(phone)
         if (
             pending is None
@@ -141,9 +153,7 @@ def _handle_command(cmd: str, phone: str, *, notifier: "Notifier") -> None:
             return
 
         criteria = _build_criteria(pending)
-        # Delay first re-check by 8-13 min — we already searched on the
-        # original turn and got nothing, no value in immediately re-running.
-        state.start_watch(phone, criteria, initial_check_delay_minutes=10)
+        state.start_watch(watch_key, criteria, initial_check_delay_minutes=10)
         state.clear_pending(phone)
 
         notifier.notify(
@@ -165,13 +175,22 @@ def _handle_natural_language(
     *,
     today: date_cls,
     notifier: "Notifier",
+    watch_key: str,
 ) -> None:
     registry = build_default_registry()
     targets = load_targets(known_adapters=set(registry.keys()))
     course_display_names = {t.slug: t.name for t in targets}
     course_areas = {t.slug: t.area for t in targets if t.area}
 
+    user_profile = state.get_profile(phone)
     prior = state.get_pending(phone)
+    last_search = state.get_last_search(phone)
+
+    has_location_default = (
+        user_profile is not None and (
+            bool(user_profile.favorite_slugs) or user_profile.zipcode is not None
+        )
+    )
 
     parsed = parse(
         body,
@@ -179,6 +198,8 @@ def _handle_natural_language(
         course_display_names=course_display_names,
         course_areas=course_areas,
         previous=prior,
+        last_search=last_search,
+        has_location_default=has_location_default,
     )
 
     # Still missing required fields → save partial, ask back.
@@ -196,20 +217,74 @@ def _handle_natural_language(
         notifier.notify(phone, "Sorry, can you rephrase?")
         return
 
-    # Complete parse — run the search.
     criteria = _build_criteria(parsed)
+
+    # Apply profile exclusions regardless of whether user specified courses.
+    if user_profile is not None and user_profile.excluded_slugs:
+        excluded = set(user_profile.excluded_slugs)
+        effective_filter = [
+            t.slug for t in targets
+            if t.slug not in excluded
+            and (criteria.course_filter is None or t.slug in criteria.course_filter)
+        ]
+        criteria = SearchCriteria(
+            date=criteria.date,
+            players=criteria.players,
+            window=criteria.window,
+            holes=criteria.holes,
+            course_filter=effective_filter,
+        )
+
+    # Apply profile defaults when the user didn't specify courses/area.
+    if criteria.course_filter is None and user_profile is not None:
+        if user_profile.favorite_slugs:
+            criteria = SearchCriteria(
+                date=criteria.date,
+                players=criteria.players,
+                window=criteria.window,
+                holes=criteria.holes,
+                course_filter=user_profile.favorite_slugs,
+            )
+        elif user_profile.zipcode:
+            coords = zip_coords(user_profile.zipcode)
+            if coords:
+                user_lat, user_lng = coords
+                nearby = [
+                    t.slug for t in targets
+                    if t.lat is not None and t.lng is not None
+                    and drive_minutes(user_lat, user_lng, t.lat, t.lng) <= (user_profile.max_drive_minutes or 60)
+                ]
+                if nearby:
+                    criteria = SearchCriteria(
+                        date=criteria.date,
+                        players=criteria.players,
+                        window=criteria.window,
+                        holes=criteria.holes,
+                        course_filter=nearby,
+                    )
+
+    # If this is a refinement and there's an active watch, update the watch.
+    if parsed.is_refinement and state.get_active_watch(watch_key) is not None:
+        state.cancel_watch(watch_key)
+        state.start_watch(watch_key, criteria, initial_check_delay_minutes=10)
+        state.clear_pending(phone)
+        state.save_last_search(phone, parsed)
+        notifier.notify(
+            phone,
+            "Got it — watch updated. I'm on the new criteria. Reply STOP to cancel.",
+        )
+        return
+
+    # Complete parse — run the search.
     result = search(criteria, targets, registry)
+    state.save_last_search(phone, parsed)
 
     if result.tee_times:
-        # Hit. Clear any partial state and reply with the summary.
         state.clear_pending(phone)
         notifier.notify(phone, format_sms_summary(result))
         return
 
-    # Miss. Save the COMPLETE parse so a follow-up `WATCH` reply can
-    # turn it into a watch — see `_handle_command(cmd='WATCH')`. Reuses
-    # the pending_conversations table (parsed_json + 30-min TTL) since
-    # the shape is identical.
+    # Miss. Save the COMPLETE parse so a follow-up `WATCH` reply can use it.
     state.save_pending(phone, parsed)
     notifier.notify(phone, format_sms_summary(result))
 

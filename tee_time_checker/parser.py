@@ -91,6 +91,14 @@ class ParsedSearch(BaseModel):
             "when needs_clarification is true."
         ),
     )
+    is_refinement: bool = Field(
+        False,
+        description=(
+            "True when the user is refining or modifying a previous search "
+            "rather than starting a fresh one (e.g. 'nothing earlier?', "
+            "'change to afternoon', 'try southwest instead')."
+        ),
+    )
 
 
 _SYSTEM_PROMPT_TEMPLATE = """\
@@ -114,13 +122,7 @@ OPTIONAL with sensible defaults — leave null if the user didn't say:
 - `courses` — list of slugs from below. Null means search all.
 
 AREA / COURSE CLARIFICATION:
-- If the user did NOT mention any course name or area, set \
-`needs_clarification=true` and ask: \
-"Where abouts? Name a part of town (northwest, northeast, southwest, \
-southeast), a specific course, or say 'anywhere' if you don't give a shit."
-- If they say "anywhere", "any", "don't care", "don't give a shit", \
-"idgaf", or similar → leave `courses` null and proceed.
-- Do NOT ask for location if they already specified a course or area.
+{location_clarification}
 
 CONFIGURED COURSES (slug → display name → area):
 {course_list}
@@ -156,6 +158,22 @@ NON-SEARCH MESSAGES:
 - Greetings, thanks, random text → set `needs_clarification=true` with: \
 "I help find golf tee times. Try: 'tee time tomorrow afternoon for 2'."
 - Don't try to extract anything from non-search messages.
+
+FOLLOW-UP REFINEMENTS:
+- If the user turn contains a "Last completed search" line, the user \
+previously ran a full search with those criteria. Use it as context \
+for follow-up messages.
+- If the new message is clearly a refinement of that search \
+("nothing earlier?", "what about morning?", "try the southwest courses", \
+"change to afternoon", "any 9-hole options?", "how about tomorrow instead?") \
+→ set `is_refinement=true`, carry forward all non-overridden fields from \
+the last search, and apply the change. Do NOT ask for location again if \
+the last search already had a course/area preference.
+- If the user has an active watch and says something like "change it to \
+afternoon" or "watch southwest instead" → set `is_refinement=true` and \
+update the relevant criteria field.
+- A clearly NEW request (different date, completely new topic) → \
+`is_refinement=false`, treat fresh.
 
 PRIOR PARTIAL PARSE (multi-turn dialog):
 - If the user turn contains a "Previous partial parse" line, the user \
@@ -202,6 +220,8 @@ def parse(
     course_display_names: dict[str, str],
     course_areas: dict[str, str] | None = None,
     previous: ParsedSearch | None = None,
+    last_search: ParsedSearch | None = None,
+    has_location_default: bool = False,
     client: anthropic.Anthropic | None = None,
     model: str = MODEL_ID,
 ) -> ParsedSearch:
@@ -223,14 +243,42 @@ def parse(
     """
     client = client or anthropic.Anthropic()
 
+    if has_location_default:
+        location_clarification = (
+            "- The user has profile defaults (favorite courses or proximity). "
+            "Do NOT ask for location — leave `courses` null and the search layer will apply their defaults."
+        )
+    else:
+        location_clarification = (
+            "- If the user did NOT mention any course name or area, set "
+            "`needs_clarification=true` and ask: "
+            "\"Where's your usual spot? Name a course, a part of town (northwest, northeast, "
+            "southwest, southeast), or say 'anywhere' if you don't give a shit.\"\n"
+            "- If they say 'anywhere', 'any', 'don't care', 'idgaf', or similar "
+            "→ leave `courses` null and proceed.\n"
+            "- Do NOT ask for location if they already specified a course or area."
+        )
+
     system_prompt = _SYSTEM_PROMPT_TEMPLATE.format(
-        course_list=_render_course_list(course_display_names, course_areas)
+        course_list=_render_course_list(course_display_names, course_areas),
+        location_clarification=location_clarification,
     )
 
     # Volatile content (today's date, prior partial, user message) belongs
     # in the user turn AFTER the cached system prompt — see prompt-caching
     # guidance.
     user_lines = [f"Today's date: {today.isoformat()}"]
+    if last_search is not None:
+        last_data = last_search.model_dump(
+            mode="json",
+            exclude={"needs_clarification", "clarification_message", "is_refinement"},
+        )
+        last_filled = {k: v for k, v in last_data.items() if v is not None}
+        if last_filled:
+            user_lines.append(
+                "Last completed search (use for follow-up refinements): "
+                + json.dumps(last_filled)
+            )
     if previous is not None:
         # Strip the dialog-control fields and null values; show the model
         # only what's actually been gathered.

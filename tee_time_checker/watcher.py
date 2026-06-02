@@ -97,23 +97,26 @@ class PrintNotifier:
 class DiscordNotifier:
     """Production notifier — sends messages via the Discord bot.
 
-    Needs a live discord.Client to resolve channels. Call set_client()
-    once the bot is ready before any notify() calls reach this instance.
+    Needs a live discord.Client. Call set_client() once the bot is ready.
 
-    user_key format: "{discord_user_id}:{discord_channel_id}"
-    Guild channels get a @mention so the reply is clearly addressed;
-    DMs skip the mention.
+    The base notifier doesn't know which channel to send to — call
+    for_channel(channel_id, user_id) to get a bound notifier that does.
+    Watches use the channel_id stored when the watch was created.
     """
 
     def __init__(self) -> None:
-        self._client: object | None = None  # discord.Client, typed as object to avoid import
+        self._client: object | None = None
 
     def set_client(self, client: object) -> None:
         self._client = client
 
-    def notify(self, user_key: str, body: str) -> None:
-        import asyncio
+    def for_channel(self, channel_id: int, user_id: str) -> "_BoundDiscordNotifier":
+        """Return a notifier bound to a specific channel and user."""
+        return _BoundDiscordNotifier(self, channel_id=channel_id, user_id=user_id)
 
+    def notify(self, user_key: str, body: str) -> None:
+        # user_key format for watches: "{user_id}:{channel_id}"
+        import asyncio
         import discord
 
         if self._client is None:
@@ -126,19 +129,40 @@ class DiscordNotifier:
             log.error("DiscordNotifier: invalid user_key %r", user_key)
             return
 
-        client: discord.Client = self._client  # type: ignore[assignment]
-        channel = client.get_channel(int(channel_id_str))
-        if channel is None:
-            log.error("DiscordNotifier: channel %s not in cache (bot may not be ready)", channel_id_str)
+        self._send(int(channel_id_str), user_id_str, body)
+
+    def _send(self, channel_id: int, user_id: str, body: str) -> None:
+        import asyncio
+        import discord
+
+        if self._client is None:
+            log.error("DiscordNotifier: client not set — message dropped")
             return
 
-        content = body if isinstance(channel, discord.DMChannel) else f"<@{user_id_str}> {body}"
+        client: discord.Client = self._client  # type: ignore[assignment]
+        channel = client.get_channel(channel_id)
+        if channel is None:
+            log.error("DiscordNotifier: channel %s not in cache", channel_id)
+            return
 
+        content = body if isinstance(channel, discord.DMChannel) else f"<@{user_id}> {body}"
         future = asyncio.run_coroutine_threadsafe(channel.send(content), client.loop)
         try:
             future.result(timeout=30)
         except Exception:
-            log.exception("DiscordNotifier: failed to send to channel %s", channel_id_str)
+            log.exception("DiscordNotifier: failed to send to channel %s", channel_id)
+
+
+class _BoundDiscordNotifier:
+    """A DiscordNotifier bound to a specific channel — used per-message in the bot."""
+
+    def __init__(self, parent: DiscordNotifier, *, channel_id: int, user_id: str) -> None:
+        self._parent = parent
+        self._channel_id = channel_id
+        self._user_id = user_id
+
+    def notify(self, user_key: str, body: str) -> None:
+        self._parent._send(self._channel_id, self._user_id, body)
 
 
 def default_notifier() -> Notifier:

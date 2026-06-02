@@ -53,6 +53,8 @@ def load_targets(
                 booking_url=entry["booking_url"],
                 params=entry.get("params", {}),
                 area=entry.get("area"),
+                lat=entry.get("lat"),
+                lng=entry.get("lng"),
             )
         except KeyError as e:
             raise ValueError(
