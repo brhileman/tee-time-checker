@@ -29,6 +29,7 @@ from __future__ import annotations
 import logging
 import re
 from datetime import date as date_cls
+from datetime import time as time_cls
 from typing import TYPE_CHECKING
 
 from tee_time_checker import profile as profile_mod
@@ -220,7 +221,11 @@ def _handle_natural_language(
         notifier.notify(phone, "Sorry, can you rephrase?")
         return
 
-    criteria = _build_criteria(parsed)
+    # Time ranges are extracted from the raw message (not the LLM schema) to
+    # keep ParsedSearch lean — the structured-output grammar has a hard
+    # complexity ceiling, and ranges round-tripping through it caused crashes.
+    time_min, time_max = _extract_time_range(body)
+    criteria = _build_criteria(parsed, time_min=time_min, time_max=time_max)
 
     # Apply profile exclusions regardless of whether user specified courses.
     if user_profile is not None and user_profile.excluded_slugs:
@@ -306,29 +311,22 @@ def _handle_natural_language(
 # ──────────────────────────────────────────────────────────────────────
 
 
-def _build_criteria(parsed: ParsedSearch) -> SearchCriteria:
+def _build_criteria(
+    parsed: ParsedSearch,
+    *,
+    time_min: time_cls | None = None,
+    time_max: time_cls | None = None,
+) -> SearchCriteria:
     """Translate a ParsedSearch into a SearchCriteria with sensible defaults.
 
     Only legal to call when `parsed.date` and `parsed.players` are set —
     callers are responsible for the precondition check.
+
+    `time_min`/`time_max` are an explicit clock-time range extracted from the
+    raw message by `_extract_time_range` — kept out of the LLM schema on
+    purpose (see `_handle_natural_language`).
     """
     assert parsed.date is not None and parsed.players is not None
-    from datetime import time as time_cls
-
-    def _parse_hhmm(s: str) -> time_cls:
-        parts = s.strip().split(":")
-        return time_cls(int(parts[0]), int(parts[1]))
-
-    time_min = time_max = target_time = None
-    if parsed.target_time:
-        # Match "HH:MM-HH:MM" — split on the dash between the two times
-        range_match = re.match(r"^(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})$", parsed.target_time.strip())
-        if range_match:
-            time_min = _parse_hhmm(range_match.group(1))
-            time_max = _parse_hhmm(range_match.group(2))
-        else:
-            target_time = parsed.target_time
-            log.debug("target_time unparseable as range, treating as point: %r", parsed.target_time)
 
     return SearchCriteria(
         date=parsed.date,
@@ -336,10 +334,82 @@ def _build_criteria(parsed: ParsedSearch) -> SearchCriteria:
         window=TimeWindow(parsed.window or "any"),
         holes=parsed.holes or 18,
         course_filter=parsed.courses,
-        target_time=target_time,
+        target_time=parsed.target_time,
         time_min=time_min,
         time_max=time_max,
     )
+
+
+def _extract_time_range(text: str) -> tuple[time_cls | None, time_cls | None]:
+    """Pull an explicit clock-time range out of a raw message.
+
+    Handles "9am-2pm", "9 am to 2 pm", "between 10 and 3", "10:30-14:00",
+    "from 11 to 1". Returns (lo, hi) as time objects, or (None, None) if no
+    range is present. Single open-ended bounds are not handled here — those
+    fall through to the LLM's window/target_time.
+    """
+    t = text.lower()
+
+    # Two clock times joined by a range word. "and" is risky (collides with
+    # "4 and 2 players"), so it only counts inside an explicit "between … and …".
+    between = re.compile(
+        r"between\s+(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\s*"
+        r"and\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm)?"
+    )
+    dash = re.compile(
+        r"(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\s*"
+        r"(?:-|–|to|until|thru|through)\s*"
+        r"(\d{1,2})(?::(\d{2}))?\s*(am|pm)?"
+    )
+    m = between.search(t) or dash.search(t)
+    if not m:
+        return None, None
+
+    lo_h, lo_min, lo_ap, hi_h, hi_min, hi_ap = m.groups()
+
+    def _candidates(h: str, mins: str | None, ap: str | None) -> list[time_cls]:
+        """All plausible absolute times for one bare clock figure.
+
+        am/pm fixes it to one reading; an hour ≥13 is already 24h; an
+        ambiguous 1–12 yields both the AM and PM reading so the caller can
+        pick whichever makes a sensible increasing range.
+        """
+        hour = int(h)
+        minute = int(mins) if mins else 0
+        if not 0 <= minute <= 59:
+            return []
+        if ap == "am":
+            hh = 0 if hour == 12 else hour
+            return [time_cls(hh, minute)] if 0 <= hh <= 23 else []
+        if ap == "pm":
+            hh = 12 if hour == 12 else hour + 12
+            return [time_cls(hh, minute)] if 0 <= hh <= 23 else []
+        if hour >= 13:
+            return [time_cls(hour, minute)] if hour <= 23 else []
+        if hour == 0:
+            return [time_cls(0, minute)]
+        # 1–12 with no meridiem: ambiguous, offer both readings
+        am_h = 0 if hour == 12 else hour
+        pm_h = 12 if hour == 12 else hour + 12
+        return [time_cls(am_h, minute), time_cls(pm_h, minute)]
+
+    lo_cands = _candidates(lo_h, lo_min, lo_ap)
+    hi_cands = _candidates(hi_h, hi_min, hi_ap)
+
+    # Pick the increasing pair, preferring readings inside golf daylight hours.
+    GOLF_LO, GOLF_HI = time_cls(5, 0), time_cls(20, 30)
+    best = None  # (not_in_window, lo, hi) — lexicographically smallest wins
+    for lo in lo_cands:
+        for hi in hi_cands:
+            if lo >= hi:
+                continue
+            in_window = GOLF_LO <= lo and hi <= GOLF_HI
+            key = (not in_window, lo, hi)
+            if best is None or key < best[0]:
+                best = (key, lo, hi)
+    if best is None:
+        return None, None
+    return best[1], best[2]
 
 
 def _extract_drive_minutes(text: str) -> int | None:
