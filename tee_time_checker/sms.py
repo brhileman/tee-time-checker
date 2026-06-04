@@ -314,11 +314,19 @@ def _build_criteria(parsed: ParsedSearch) -> SearchCriteria:
     """
     assert parsed.date is not None and parsed.players is not None
     from datetime import time as time_cls
-    def _parse_hhmm(s: str | None):
-        if s is None:
-            return None
+
+    def _parse_hhmm(s: str) -> time_cls:
         h, m = s.split(":")
         return time_cls(int(h), int(m))
+
+    time_min = time_max = target_time = None
+    if parsed.target_time:
+        if "-" in parsed.target_time:
+            lo, hi = parsed.target_time.split("-", 1)
+            time_min = _parse_hhmm(lo)
+            time_max = _parse_hhmm(hi)
+        else:
+            target_time = parsed.target_time
 
     return SearchCriteria(
         date=parsed.date,
@@ -326,9 +334,9 @@ def _build_criteria(parsed: ParsedSearch) -> SearchCriteria:
         window=TimeWindow(parsed.window or "any"),
         holes=parsed.holes or 18,
         course_filter=parsed.courses,
-        target_time=parsed.target_time,
-        time_min=_parse_hhmm(parsed.time_min),
-        time_max=_parse_hhmm(parsed.time_max),
+        target_time=target_time,
+        time_min=time_min,
+        time_max=time_max,
     )
 
 

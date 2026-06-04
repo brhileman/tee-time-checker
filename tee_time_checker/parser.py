@@ -63,9 +63,7 @@ class ParsedSearch(BaseModel):
     needs_clarification: bool = False
     clarification_message: str | None = None
     is_refinement: bool = False
-    target_time: str | None = None
-    time_min: str | None = None
-    time_max: str | None = None
+    target_time: str | None = None  # "HH:MM" or "HH:MM-HH:MM" for a range
 
 
 _SYSTEM_PROMPT_TEMPLATE = """\
@@ -87,17 +85,10 @@ OPTIONAL with sensible defaults — leave null if the user didn't say:
 (2pm–close), "any" (full day).
 - `holes` — 9 or 18.
 - `courses` — list of slugs from below. Null means search all.
-- `target_time` — specific clock time as "HH:MM" (24h) when user mentions \
-an approximate time like "around 4:30", "at 5pm", "before 6". Set the \
-appropriate `window` too (e.g. target_time "16:30" → window "afternoon"). \
-Leave null if user only gave a named window, a range, or no clock time.
-- `time_min` / `time_max` — explicit range bounds as "HH:MM" (24h) when user \
-gives a span like "10am to 3pm", "between noon and 4", "from 11 to 2", \
-"after 10 before 3", "anytime 10-3". Set both when a full range is given; \
-set only one for open-ended bounds ("after 10am", "before 2pm"). \
-When set, leave `target_time` null — the range is more precise. \
-Set `window` to the bucket that best covers the range \
-(e.g. 10am–3pm → "any"; 10am–noon → "morning"; 2pm–5pm → "afternoon").
+- `target_time` — use "HH:MM" (24h) for a specific time ("around 4:30", \
+"at 5pm"), or "HH:MM-HH:MM" for an explicit range ("10am to 3pm", \
+"between noon and 4", "after 10 before 3"). Set `window` to the bucket \
+that best covers it. Leave null if user only gave a named window or no time.
 
 AREA / COURSE CLARIFICATION:
 {location_clarification}
