@@ -99,6 +99,14 @@ class ParsedSearch(BaseModel):
             "'change to afternoon', 'try southwest instead')."
         ),
     )
+    target_time: str | None = Field(
+        None,
+        description=(
+            "Specific clock time the user mentioned, as 'HH:MM' (24h). "
+            "Set when user says 'around 4:30', 'at 5pm', 'before 6', etc. "
+            "Null if they only gave a window (morning/afternoon) with no clock time."
+        ),
+    )
 
 
 _SYSTEM_PROMPT_TEMPLATE = """\
@@ -120,6 +128,10 @@ OPTIONAL with sensible defaults — leave null if the user didn't say:
 (2pm–close), "any" (full day).
 - `holes` — 9 or 18.
 - `courses` — list of slugs from below. Null means search all.
+- `target_time` — specific clock time as "HH:MM" (24h) when user mentions \
+an approximate time like "around 4:30", "at 5pm", "before 6". Set the \
+appropriate `window` too (e.g. target_time "16:30" → window "afternoon"). \
+Leave null if user only gave a named window with no clock time.
 
 AREA / COURSE CLARIFICATION:
 {location_clarification}
@@ -158,6 +170,12 @@ NON-SEARCH MESSAGES:
 - Greetings, thanks, random text → set `needs_clarification=true` with: \
 "I help find golf tee times. Try: 'tee time tomorrow afternoon for 2'."
 - Don't try to extract anything from non-search messages.
+
+VAGUE FOLLOW-UPS (when a "Last completed search" is in context):
+- "Anything else?", "What else?", "Other options?", "Anything?", "Any \
+other courses?" → set `needs_clarification=true` with a response like: \
+"Whatcha looking for — different time, different course, or different day?"
+- Do NOT re-run the same search for these. Ask what they want changed.
 
 FOLLOW-UP REFINEMENTS:
 - If the user turn contains a "Last completed search" line, the user \

@@ -307,6 +307,7 @@ def _build_criteria(parsed: ParsedSearch) -> SearchCriteria:
         window=TimeWindow(parsed.window or "any"),
         holes=parsed.holes or 18,
         course_filter=parsed.courses,
+        target_time=parsed.target_time,
     )
 
 

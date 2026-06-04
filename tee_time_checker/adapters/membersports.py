@@ -28,7 +28,8 @@ Field meanings (learned the hard way):
     window exceeded" for dates beyond the booking horizon.
   - `hide` — UI hides this item; we drop it.
   - `minimumNumberOfPlayers` — lower bound for the party size.
-  - `allowSinglesToBookOnline` — auxiliary flag; we honor minimum directly.
+  - `allowSinglesToBookOnline` — when True, overrides the minimum for
+    1-player parties. Fox Hollow sets min=2 but allows singles this way.
 
 Auth: anonymous. The literal string "Bearer null" is what the SPA sends,
 and the server accepts it.
@@ -165,7 +166,11 @@ def _build_tee_time(
     if remaining <= 0:
         return None
 
-    min_players = max(1, item.get("minimumNumberOfPlayers", 1))
+    raw_min = max(1, item.get("minimumNumberOfPlayers", 1))
+    # `allowSinglesToBookOnline` lets a single golfer book even when the
+    # course's minimum is 2. Honor it so 1-player searches surface these slots.
+    singles_ok = item.get("allowSinglesToBookOnline", False)
+    min_players = 1 if (singles_ok and criteria.players == 1) else raw_min
     max_players = remaining
 
     if not (min_players <= criteria.players <= max_players):

@@ -215,31 +215,114 @@ booking_url = "https://thorncreek.quick18.com/teetimes/searchmatrix"
   "705" = " (front 9)"
 
 # ──────────────────────────────────────────────────────────────────────
-# Noteefy  (`booking-engine.noteefy.app`)
+# ChronoGolf  (`www.chronogolf.com/marketplace/v2/teetimes`)
 # ──────────────────────────────────────────────────────────────────────
-# Cloudflare-fronted; the adapter handles the TLS-fingerprint headers.
+# Public unauthenticated API — no Cloudflare challenge.
+# course_id is the ChronoGolf course UUID (visible in marketplace API
+# responses or the booking page's network traffic).
 
 [[targets]]
 slug = "broadlands"
 name = "Broadlands"
-adapter = "noteefy"
+adapter = "chronogolf"
 timezone = "America/Denver"
 area = "northwest"
 lat = 39.9697
 lng = -105.0514
-# Slot booking_urls are per-date ChronoGolf deep links and override
-# this generic value at search time. Kept here as a fallback.
 booking_url = "https://www.chronogolf.com/club/broadlands-golf-course"
 
   [targets.params]
-  course_id = "CO_The_Broadlands"
-  # Public_id from the Broadlands waitlist page; populates the referer
-  # header so Cloudflare doesn't get suspicious.
-  public_id = "ba16828e-77e6-425f-b63d-ac27e785f69d"
-  # Course-specific player rate filter UUIDs. Get these for a new
-  # Noteefy course by inspecting any /tee-times/availability POST in
-  # the booking page's network tab.
-  player_type_ids = [
-    "049dfe76-2006-4994-acce-f99454e07be3",
-    "1835383c-60be-461e-9cda-d037f760dd29",
-  ]
+  course_id = "1af93d4a-dba3-481b-9980-487e5e516146"
+
+# ──────────────────────────────────────────────────────────────────────
+# Additional CPS tenants  (same shared x-apikey as Westminster)
+# Null websiteId (00000000…) works for unauthenticated tee-time search.
+# ──────────────────────────────────────────────────────────────────────
+
+[[targets]]
+slug = "indian-tree"
+name = "Indian Tree"
+adapter = "cps"
+timezone = "America/Denver"
+area = "northwest"
+lat = 39.8528
+lng = -105.0842
+booking_url = "https://indiantree.cps.golf/onlineresweb/search-teetime"
+
+  [targets.params]
+  tenant = "indiantree"
+  website_id = "00000000-0000-0000-0000-000000000000"
+  api_key = "8ea2914e-cac2-48a7-a3e5-e0f41350bf3a"
+  site_id = 1
+  # 1 = Regulation 18, 2 = Regulation Back 9
+  course_ids = [1, 2]
+
+[[targets]]
+slug = "green-valley-ranch"
+name = "Green Valley Ranch"
+adapter = "cps"
+timezone = "America/Denver"
+area = "northeast"
+lat = 39.8183
+lng = -104.7245
+booking_url = "https://greenvalleyranch.cps.golf/onlineresweb/search-teetime"
+
+  [targets.params]
+  tenant = "greenvalleyranch"
+  website_id = "00000000-0000-0000-0000-000000000000"
+  api_key = "8ea2914e-cac2-48a7-a3e5-e0f41350bf3a"
+  site_id = 1
+  # 1 = 18-hole championship course
+  course_ids = [1]
+
+[[targets]]
+slug = "flatirons"
+name = "Flatirons"
+adapter = "cps"
+timezone = "America/Denver"
+area = "northwest"
+lat = 40.0073
+lng = -105.2172
+booking_url = "https://flatironsgolf.cps.golf/onlineresweb/search-teetime"
+
+  [targets.params]
+  tenant = "flatironsgolf"
+  website_id = "00000000-0000-0000-0000-000000000000"
+  api_key = "8ea2914e-cac2-48a7-a3e5-e0f41350bf3a"
+  site_id = 1
+  course_ids = [1]
+
+# ──────────────────────────────────────────────────────────────────────
+# Additional MemberSports targets
+# ──────────────────────────────────────────────────────────────────────
+
+[[targets]]
+slug = "foothills"
+name = "Foothills"
+adapter = "membersports"
+timezone = "America/Denver"
+area = "southwest"
+lat = 39.6541
+lng = -105.1097
+booking_url = "https://app.membersports.com/tee-times/3697/4759/0"
+
+  [targets.params]
+  group_id = 0
+  club_id = 3697
+  # 4759 = Foothills 18, 4758 = Executive 9, 4757 = Par 3
+  course_id = 4759
+
+[[targets]]
+slug = "coal-creek"
+name = "Coal Creek"
+adapter = "membersports"
+timezone = "America/Denver"
+area = "northwest"
+lat = 39.9808
+lng = -105.1620
+booking_url = "https://app.membersports.com/tee-times/3663/4714/0"
+
+  [targets.params]
+  group_id = 0
+  club_id = 3663
+  course_id = 4714

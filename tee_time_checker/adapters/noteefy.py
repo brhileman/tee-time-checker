@@ -13,10 +13,15 @@ One endpoint:
   }
 
 Cloudflare quirk: the `booking-engine.noteefy.app` host is fronted by
-Cloudflare with TLS-fingerprint detection. Stock httpx/requests get a
-403 "Just a moment..." JS challenge. We use `curl_cffi` everywhere
-already, but need to send the full Chrome-style header set including
-`sec-ch-ua` and a realistic `referer` for CF to wave us through.
+Cloudflare with a managed JS challenge. Stock httpx/requests get a 403
+"Just a moment..." page. We use `curl_cffi` with Chrome impersonation,
+which handles the TLS fingerprint check.
+
+Datacenter IP note: Fly.io (and other datacenter) IPs may still be
+blocked by Cloudflare's bot scoring regardless of TLS fingerprint. Set
+NOTEEFY_PROXY_URL to an HTTP or SOCKS5 residential proxy URL
+(e.g. "http://user:pass@host:port") to route requests through a clean
+IP while keeping curl_cffi's Chrome impersonation.
 
 Slot field meanings:
 
@@ -40,20 +45,19 @@ browser, opening the network tab, and copying the values from any
 
 from __future__ import annotations
 
+import os
 from datetime import datetime
 from typing import Any
 from zoneinfo import ZoneInfo
 
-from curl_cffi import requests
+from curl_cffi import requests as cffi_requests
 
 from tee_time_checker.adapters.base import Target
 from tee_time_checker.domain import SearchCriteria, TeeTime
 
 _ENDPOINT = "https://booking-engine.noteefy.app/tee-times/availability"
 
-# Cloudflare-friendly headers. The exact `sec-ch-ua` + a non-trivial
-# `referer` matter — bare httpx-style headers get a 403 JS challenge.
-_DEFAULT_HEADERS = {
+_HEADERS = {
     "accept": "application/json, text/plain, */*",
     "content-type": "application/json",
     "origin": "https://booking.noteefy.app",
@@ -107,13 +111,20 @@ class NoteefyAdapter:
             if public_id
             else "https://booking.noteefy.app/"
         )
-        headers = {**_DEFAULT_HEADERS, "referer": referer}
+        headers = {**_HEADERS, "referer": referer}
 
-        r = requests.post(
+        # Optional residential proxy to avoid datacenter IP blocks.
+        # Supports http:// and socks5:// URLs. curl_cffi proxies keep
+        # Chrome TLS impersonation intact.
+        proxy_url = os.environ.get("NOTEEFY_PROXY_URL")
+        proxies = {"https": proxy_url} if proxy_url else None
+
+        r = cffi_requests.post(
             _ENDPOINT,
             json=body,
             headers=headers,
             impersonate="chrome",
+            proxies=proxies,
             timeout=self._timeout,
         )
         r.raise_for_status()

@@ -59,6 +59,7 @@ class SearchCriteria:
     window: TimeWindow = TimeWindow.ANY
     holes: int = 18  # 9 or 18; most adapters honor this where supported
     course_filter: list[str] | None = None  # restrict to these target slugs
+    target_time: str | None = None  # "HH:MM" hint when user said "around 4:30"
 
 
 @dataclass(frozen=True, slots=True)

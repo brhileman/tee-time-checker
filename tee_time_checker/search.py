@@ -20,6 +20,7 @@ import sys
 from dataclasses import dataclass
 
 from tee_time_checker.adapters.base import Adapter, Target
+from tee_time_checker.adapters.chronogolf import ChronogolfAdapter
 from tee_time_checker.adapters.cps import CPSAdapter
 from tee_time_checker.adapters.membersports import MemberSportsAdapter
 from tee_time_checker.adapters.noteefy import NoteefyAdapter
@@ -38,6 +39,7 @@ def build_default_registry() -> dict[str, Adapter]:
     Names here are the source of truth for `Target.adapter` in courses.toml.
     """
     return {
+        "chronogolf": ChronogolfAdapter(),
         "cps": CPSAdapter(),
         "membersports": MemberSportsAdapter(),
         "noteefy": NoteefyAdapter(),
