@@ -91,14 +91,6 @@ class ParsedSearch(BaseModel):
             "when needs_clarification is true."
         ),
     )
-    max_drive_minutes: int | None = Field(
-        None,
-        description=(
-            "Drive time limit in minutes when the user requests proximity-based search "
-            "('within 30 minutes', '45 min drive', 'close by' → 20, 'under an hour' → 60). "
-            "Null if the user named a course/area or said 'usual'/'anywhere'."
-        ),
-    )
     is_refinement: bool = Field(
         False,
         description=(

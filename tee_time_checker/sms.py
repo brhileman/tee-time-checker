@@ -27,6 +27,7 @@ anything else routes to the parser. We keep the command vocabulary tight
 from __future__ import annotations
 
 import logging
+import re
 from datetime import date as date_cls
 from typing import TYPE_CHECKING
 
@@ -260,7 +261,7 @@ def _handle_natural_language(
                 nearby = [
                     t.slug for t in targets
                     if t.lat is not None and t.lng is not None
-                    and drive_minutes(user_lat, user_lng, t.lat, t.lng) <= (parsed.max_drive_minutes or 60)
+                    and drive_minutes(user_lat, user_lng, t.lat, t.lng) <= (_extract_drive_minutes(body) or 60)
                 ]
                 if nearby:
                     criteria = SearchCriteria(
@@ -329,6 +330,19 @@ def _build_criteria(parsed: ParsedSearch) -> SearchCriteria:
         time_min=_parse_hhmm(parsed.time_min),
         time_max=_parse_hhmm(parsed.time_max),
     )
+
+
+def _extract_drive_minutes(text: str) -> int | None:
+    text = text.lower()
+    m = re.search(r"(\d+(?:\.\d+)?)\s*hour", text)
+    if m:
+        return int(float(m.group(1)) * 60)
+    m = re.search(r"(\d+)\s*min", text)
+    if m:
+        return int(m.group(1))
+    if re.search(r"\bclose\s*by\b|\bnearby\b", text):
+        return 20
+    return None
 
 
 # ──────────────────────────────────────────────────────────────────────
