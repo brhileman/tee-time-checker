@@ -55,75 +55,17 @@ class ParsedSearch(BaseModel):
     defaults filled in for any None fields).
     """
 
-    date: date_cls | None = Field(
-        None,
-        description="The day to play, ISO YYYY-MM-DD. Null if missing/unclear.",
-    )
-    players: int | None = Field(
-        None,
-        ge=1,
-        le=9,
-        description="Party size, 1-9. Null if missing/unclear.",
-    )
-    window: Window | None = Field(
-        None,
-        description="Time-of-day bucket. Null = any.",
-    )
-    holes: Literal[9, 18] | None = Field(
-        None,
-        description="Round length. Null = 18.",
-    )
-    courses: list[str] | None = Field(
-        None,
-        description=(
-            "Course slugs from the configured list. "
-            "Null = search every configured course."
-        ),
-    )
-    needs_clarification: bool = Field(
-        False,
-        description="True when the parser can't proceed without asking back.",
-    )
-    clarification_message: str | None = Field(
-        None,
-        description=(
-            "One-sentence question to send back to the user "
-            "when needs_clarification is true."
-        ),
-    )
-    is_refinement: bool = Field(
-        False,
-        description=(
-            "True when the user is refining or modifying a previous search "
-            "rather than starting a fresh one (e.g. 'nothing earlier?', "
-            "'change to afternoon', 'try southwest instead')."
-        ),
-    )
-    target_time: str | None = Field(
-        None,
-        description=(
-            "Specific clock time the user mentioned, as 'HH:MM' (24h). "
-            "Set when user says 'around 4:30', 'at 5pm', 'before 6', etc. "
-            "Null if they only gave a window (morning/afternoon) with no clock time. "
-            "Null when time_min/time_max are set (range takes precedence)."
-        ),
-    )
-    time_min: str | None = Field(
-        None,
-        description=(
-            "Start of an explicit time range as 'HH:MM' (24h). "
-            "Set when user says '10am to 3pm', 'between noon and 4', 'from 11 to 2', etc. "
-            "Null if no explicit lower bound was given."
-        ),
-    )
-    time_max: str | None = Field(
-        None,
-        description=(
-            "End of an explicit time range as 'HH:MM' (24h). "
-            "Set when user says '10am to 3pm', 'between noon and 4', 'from 11 to 2', etc. "
-            "Null if no explicit upper bound was given."
-        ),
-    )
+    date: date_cls | None = None
+    players: int | None = Field(None, ge=1, le=9)
+    window: Window | None = None
+    holes: Literal[9, 18] | None = None
+    courses: list[str] | None = None
+    needs_clarification: bool = False
+    clarification_message: str | None = None
+    is_refinement: bool = False
+    target_time: str | None = None
+    time_min: str | None = None
+    time_max: str | None = None
 
 
 _SYSTEM_PROMPT_TEMPLATE = """\
