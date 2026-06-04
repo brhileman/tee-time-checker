@@ -145,13 +145,24 @@ for follow-up messages.
 ("nothing earlier?", "what about morning?", "try the southwest courses", \
 "change to afternoon", "any 9-hole options?", "how about tomorrow instead?") \
 → set `is_refinement=true`, carry forward all non-overridden fields from \
-the last search, and apply the change. Do NOT ask for location again if \
-the last search already had a course/area preference.
+the last search, and apply the change. For a refinement ONLY, do NOT ask \
+for location again if the last search already had a course/area preference \
+— carry it forward.
 - If the user has an active watch and says something like "change it to \
 afternoon" or "watch southwest instead" → set `is_refinement=true` and \
 update the relevant criteria field.
-- A clearly NEW request (different date, completely new topic) → \
-`is_refinement=false`, treat fresh.
+- A message that states BOTH a date AND a party size on its own (e.g. \
+"saturday for 4", "tee time tuesday 2 players", "saturday 9am-3pm for 4") \
+is a fresh standalone search, NOT a refinement → `is_refinement=false`. \
+Do NOT inherit courses/area from the last search. If this message does \
+not itself mention a course, area, drive time, or "anywhere"/"usual", you \
+MUST apply the AREA / COURSE CLARIFICATION rule above and ask the location \
+question — even though a prior search exists. The presence of a "Last \
+completed search" line does NOT make a self-contained request a refinement.
+- Only treat a message as a refinement when it is elliptical — i.e. it \
+leaves out the date or the party size and only makes sense relative to the \
+last search ("nothing earlier?", "how about morning?", "any 9-hole \
+options?", "try the southwest courses").
 
 PRIOR PARTIAL PARSE (multi-turn dialog):
 - If the user turn contains a "Previous partial parse" line, the user \
