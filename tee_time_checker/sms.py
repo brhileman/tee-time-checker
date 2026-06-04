@@ -154,7 +154,10 @@ def _handle_command(cmd: str, phone: str, *, notifier: "Notifier", watch_key: st
             )
             return
 
-        criteria = _build_criteria(pending)
+        # Prefer the resolved criteria saved on the miss (carries the exact
+        # time range and profile-resolved courses); fall back to rebuilding
+        # from the bare parse for older pendings.
+        criteria = state.get_pending_criteria(phone) or _build_criteria(pending)
         state.start_watch(watch_key, criteria, initial_check_delay_minutes=10)
         state.clear_pending(phone)
 
@@ -301,8 +304,10 @@ def _handle_natural_language(
         notifier.notify(phone, format_sms_summary(result))
         return
 
-    # Miss. Save the COMPLETE parse so a follow-up `WATCH` reply can use it.
-    state.save_pending(phone, parsed)
+    # Miss. Save the complete parse (dialog context) AND the resolved criteria
+    # (time range + profile defaults applied) so a follow-up `WATCH` hunts
+    # exactly what was just searched.
+    state.save_pending(phone, parsed, criteria=criteria)
     notifier.notify(phone, format_sms_summary(result))
 
 

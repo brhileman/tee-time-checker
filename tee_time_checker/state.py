@@ -56,10 +56,11 @@ CREATE INDEX IF NOT EXISTS watches_status_next_idx
     ON watches (status, next_check_at);
 
 CREATE TABLE IF NOT EXISTS pending_conversations (
-    phone        TEXT PRIMARY KEY,
-    parsed_json  TEXT NOT NULL,
-    expires_at   TEXT NOT NULL,
-    updated_at   TEXT NOT NULL
+    phone         TEXT PRIMARY KEY,
+    parsed_json   TEXT NOT NULL,
+    criteria_json TEXT,          -- resolved SearchCriteria, set on a search miss for WATCH
+    expires_at    TEXT NOT NULL,
+    updated_at    TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS last_searches (
@@ -107,6 +108,10 @@ def connect() -> Iterator[sqlite3.Connection]:
             pass
         try:
             conn.execute("ALTER TABLE user_profiles ADD COLUMN excluded_slugs TEXT")
+        except sqlite3.OperationalError:
+            pass
+        try:
+            conn.execute("ALTER TABLE pending_conversations ADD COLUMN criteria_json TEXT")
         except sqlite3.OperationalError:
             pass
         conn.execute("BEGIN")
@@ -344,6 +349,7 @@ def save_pending(
     phone: str,
     parsed: ParsedSearch,
     *,
+    criteria: SearchCriteria | None = None,
     ttl_minutes: int = 30,
     now: datetime | None = None,
 ) -> None:
@@ -351,26 +357,53 @@ def save_pending(
 
     Conversation state is short-lived — if the user goes silent for half
     an hour, treat their next message as fresh.
+
+    `criteria` is the fully-resolved SearchCriteria from a search miss
+    (time ranges + profile defaults already applied). It's stored so a
+    follow-up `WATCH` reply hunts exactly what was searched, rather than
+    re-deriving from the bare parse. Leave None for mid-dialog partials.
     """
     now = now or datetime.now(tz=ZoneInfo("UTC"))
     expires = now + timedelta(minutes=ttl_minutes)
     with connect() as c:
         c.execute(
             """
-            INSERT INTO pending_conversations (phone, parsed_json, expires_at, updated_at)
-            VALUES (?, ?, ?, ?)
+            INSERT INTO pending_conversations (phone, parsed_json, criteria_json, expires_at, updated_at)
+            VALUES (?, ?, ?, ?, ?)
             ON CONFLICT(phone) DO UPDATE SET
-                parsed_json = excluded.parsed_json,
-                expires_at  = excluded.expires_at,
-                updated_at  = excluded.updated_at
+                parsed_json   = excluded.parsed_json,
+                criteria_json = excluded.criteria_json,
+                expires_at    = excluded.expires_at,
+                updated_at    = excluded.updated_at
             """,
             (
                 phone,
                 parsed.model_dump_json(),
+                _criteria_to_json(criteria) if criteria is not None else None,
                 _dt_iso(expires),
                 _dt_iso(now),
             ),
         )
+
+
+def get_pending_criteria(phone: str, *, now: datetime | None = None) -> SearchCriteria | None:
+    """Return the resolved criteria saved on the last search miss, or None.
+
+    Mirrors `get_pending`'s expiry semantics — an expired or absent row
+    yields None, and a mid-dialog partial (saved without criteria) yields
+    None too.
+    """
+    now = now or datetime.now(tz=ZoneInfo("UTC"))
+    with connect() as c:
+        row = c.execute(
+            "SELECT criteria_json, expires_at FROM pending_conversations WHERE phone = ?",
+            (phone,),
+        ).fetchone()
+    if not row or row["criteria_json"] is None:
+        return None
+    if datetime.fromisoformat(row["expires_at"]) <= now:
+        return None
+    return _criteria_from_json(row["criteria_json"])
 
 
 def clear_pending(phone: str) -> None:
@@ -518,6 +551,7 @@ def _criteria_to_json(c: SearchCriteria) -> str:
             "window": c.window.value,
             "holes": c.holes,
             "course_filter": c.course_filter,
+            "target_time": c.target_time,
             "time_min": c.time_min.strftime("%H:%M") if c.time_min else None,
             "time_max": c.time_max.strftime("%H:%M") if c.time_max else None,
         }
@@ -539,6 +573,7 @@ def _criteria_from_json(s: str) -> SearchCriteria:
         window=TimeWindow(d["window"]),
         holes=d["holes"],
         course_filter=d["course_filter"],
+        target_time=d.get("target_time"),
         time_min=_parse_t(d.get("time_min")),
         time_max=_parse_t(d.get("time_max")),
     )
