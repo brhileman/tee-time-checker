@@ -283,12 +283,26 @@ def _handle_natural_language(
                         time_max=criteria.time_max,
                     )
 
+    # Per-message course exclusions ("remove flatirons", "but not knolls").
+    # Kept out of the LLM schema (no `exclude` field) — extracted from the raw
+    # text, the same way drive time and time ranges are. Transient: applies to
+    # this search only, never persisted to the profile.
+    excluded_now = _extract_course_exclusions(body, targets)
+    if excluded_now:
+        criteria = _apply_exclusions(
+            criteria, excluded_now, phone, targets, is_refinement=parsed.is_refinement
+        )
+
+    # The resolved course set we actually search — persisted so a follow-up
+    # refinement ("remove X", "nothing earlier") builds on what was searched.
+    searched_slugs = criteria.course_filter
+
     # If this is a refinement and there's an active watch, update the watch.
     if parsed.is_refinement and state.get_active_watch(watch_key) is not None:
         state.cancel_watch(watch_key)
         state.start_watch(watch_key, criteria, initial_check_delay_minutes=10)
         state.clear_pending(phone)
-        state.save_last_search(phone, parsed)
+        state.save_last_search(phone, parsed, searched_slugs=searched_slugs)
         notifier.notify(
             phone,
             "Got it — watch updated. I'm on the new criteria. Reply STOP to cancel.",
@@ -297,7 +311,7 @@ def _handle_natural_language(
 
     # Complete parse — run the search.
     result = search(criteria, targets, registry)
-    state.save_last_search(phone, parsed)
+    state.save_last_search(phone, parsed, searched_slugs=searched_slugs)
 
     if result.tee_times:
         state.clear_pending(phone)
@@ -428,6 +442,69 @@ def _extract_drive_minutes(text: str) -> int | None:
     if re.search(r"\bclose\s*by\b|\bnearby\b", text):
         return 20
     return None
+
+
+# Words that introduce a course to drop. Anything matching a real course name
+# after one of these is treated as an exclusion; the course-match gate keeps
+# benign phrases like "no later than 2" from triggering.
+_EXCLUSION_MARKER = re.compile(
+    r"\b(remove|exclude|drop|without|except|but not|minus|but|not|no|never)\b"
+)
+
+
+def _extract_course_exclusions(body: str, targets: list) -> list[str]:
+    """Return course slugs the user asked to drop ("remove flatirons").
+
+    Splits on the first exclusion marker and matches course names in the
+    tail. Returns [] when nothing after a marker resolves to a course, so
+    non-course uses of "no"/"not" (e.g. "no later than 2") are ignored.
+    """
+    m = _EXCLUSION_MARKER.search(body.lower())
+    if not m:
+        return []
+    tail = body[m.end():]
+    return profile_mod._match_courses(tail, targets)
+
+
+def _apply_exclusions(
+    criteria: SearchCriteria,
+    excluded: list[str],
+    phone: str,
+    targets: list,
+    *,
+    is_refinement: bool,
+) -> SearchCriteria:
+    """Drop `excluded` slugs from the search, this search only.
+
+    Base set logic:
+    - If the user named real include courses beyond the excluded ones
+      ("westminster but not knolls"), honor those minus the exclusions.
+    - A pure "remove X" *refinement* starts from the set the previous search
+      actually covered, minus the exclusions.
+    - A fresh "… but not X" starts from all courses minus the exclusions
+      (don't inherit a stale prior set).
+    """
+    excluded_set = set(excluded)
+    includes = criteria.course_filter
+    real_includes = [s for s in (includes or []) if s not in excluded_set]
+
+    if real_includes:
+        base = real_includes
+    else:
+        prior = state.get_last_searched_slugs(phone) if is_refinement else None
+        base = prior if prior is not None else [t.slug for t in targets]
+        base = [s for s in base if s not in excluded_set]
+
+    return SearchCriteria(
+        date=criteria.date,
+        players=criteria.players,
+        window=criteria.window,
+        holes=criteria.holes,
+        course_filter=base,
+        target_time=criteria.target_time,
+        time_min=criteria.time_min,
+        time_max=criteria.time_max,
+    )
 
 
 # ──────────────────────────────────────────────────────────────────────

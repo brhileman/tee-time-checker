@@ -64,10 +64,11 @@ CREATE TABLE IF NOT EXISTS pending_conversations (
 );
 
 CREATE TABLE IF NOT EXISTS last_searches (
-    phone        TEXT PRIMARY KEY,
-    parsed_json  TEXT NOT NULL,
-    expires_at   TEXT NOT NULL,
-    updated_at   TEXT NOT NULL
+    phone          TEXT PRIMARY KEY,
+    parsed_json    TEXT NOT NULL,
+    searched_slugs TEXT,          -- resolved course set actually searched (null = all)
+    expires_at     TEXT NOT NULL,
+    updated_at     TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS user_profiles (
@@ -112,6 +113,10 @@ def connect() -> Iterator[sqlite3.Connection]:
             pass
         try:
             conn.execute("ALTER TABLE pending_conversations ADD COLUMN criteria_json TEXT")
+        except sqlite3.OperationalError:
+            pass
+        try:
+            conn.execute("ALTER TABLE last_searches ADD COLUMN searched_slugs TEXT")
         except sqlite3.OperationalError:
             pass
         conn.execute("BEGIN")
@@ -502,23 +507,36 @@ def save_last_search(
     phone: str,
     parsed: ParsedSearch,
     *,
+    searched_slugs: list[str] | None = None,
     ttl_minutes: int = 120,
     now: datetime | None = None,
 ) -> None:
-    """Persist the last completed search so follow-ups have context."""
+    """Persist the last completed search so follow-ups have context.
+
+    `searched_slugs` is the resolved course set actually searched (after
+    profile defaults/exclusions). None means "all courses". A follow-up
+    like "remove flatirons" subtracts from this set.
+    """
     now = now or datetime.now(tz=ZoneInfo("UTC"))
     expires = now + timedelta(minutes=ttl_minutes)
     with connect() as c:
         c.execute(
             """
-            INSERT INTO last_searches (phone, parsed_json, expires_at, updated_at)
-            VALUES (?, ?, ?, ?)
+            INSERT INTO last_searches (phone, parsed_json, searched_slugs, expires_at, updated_at)
+            VALUES (?, ?, ?, ?, ?)
             ON CONFLICT(phone) DO UPDATE SET
-                parsed_json = excluded.parsed_json,
-                expires_at  = excluded.expires_at,
-                updated_at  = excluded.updated_at
+                parsed_json    = excluded.parsed_json,
+                searched_slugs = excluded.searched_slugs,
+                expires_at     = excluded.expires_at,
+                updated_at     = excluded.updated_at
             """,
-            (phone, parsed.model_dump_json(), _dt_iso(expires), _dt_iso(now)),
+            (
+                phone,
+                parsed.model_dump_json(),
+                json.dumps(searched_slugs) if searched_slugs is not None else None,
+                _dt_iso(expires),
+                _dt_iso(now),
+            ),
         )
 
 
@@ -535,6 +553,21 @@ def get_last_search(phone: str, *, now: datetime | None = None) -> ParsedSearch 
     if datetime.fromisoformat(row["expires_at"]) <= now:
         return None
     return ParsedSearch.model_validate_json(row["parsed_json"])
+
+
+def get_last_searched_slugs(phone: str, *, now: datetime | None = None) -> list[str] | None:
+    """Return the resolved course set of the last search, or None if all/missing/expired."""
+    now = now or datetime.now(tz=ZoneInfo("UTC"))
+    with connect() as c:
+        row = c.execute(
+            "SELECT searched_slugs, expires_at FROM last_searches WHERE phone = ?",
+            (phone,),
+        ).fetchone()
+    if not row or row["searched_slugs"] is None:
+        return None
+    if datetime.fromisoformat(row["expires_at"]) <= now:
+        return None
+    return json.loads(row["searched_slugs"])
 
 
 # ──────────────────────────────────────────────────────────────────────
