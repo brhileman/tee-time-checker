@@ -186,11 +186,13 @@ def _handle_natural_language(
     prior = state.get_pending(phone)
     last_search = state.get_last_search(phone)
 
-    has_location_default = (
-        user_profile is not None and (
-            bool(user_profile.favorite_slugs) or user_profile.zipcode is not None
-        )
-    )
+    location_defaults_label: str | None = None
+    if user_profile is not None:
+        if user_profile.favorite_slugs:
+            names = [course_display_names.get(s, s) for s in user_profile.favorite_slugs]
+            location_defaults_label = ", ".join(names)
+        elif user_profile.zipcode is not None:
+            location_defaults_label = "whatever's close"
 
     parsed = parse(
         body,
@@ -199,7 +201,7 @@ def _handle_natural_language(
         course_areas=course_areas,
         previous=prior,
         last_search=last_search,
-        has_location_default=has_location_default,
+        location_defaults_label=location_defaults_label,
     )
 
     # Still missing required fields → save partial, ask back.
@@ -233,6 +235,9 @@ def _handle_natural_language(
             window=criteria.window,
             holes=criteria.holes,
             course_filter=effective_filter,
+            target_time=criteria.target_time,
+            time_min=criteria.time_min,
+            time_max=criteria.time_max,
         )
 
     # Apply profile defaults when the user didn't specify courses/area.
@@ -244,6 +249,9 @@ def _handle_natural_language(
                 window=criteria.window,
                 holes=criteria.holes,
                 course_filter=user_profile.favorite_slugs,
+                target_time=criteria.target_time,
+                time_min=criteria.time_min,
+                time_max=criteria.time_max,
             )
         elif user_profile.zipcode:
             coords = zip_coords(user_profile.zipcode)
@@ -252,7 +260,7 @@ def _handle_natural_language(
                 nearby = [
                     t.slug for t in targets
                     if t.lat is not None and t.lng is not None
-                    and drive_minutes(user_lat, user_lng, t.lat, t.lng) <= (user_profile.max_drive_minutes or 60)
+                    and drive_minutes(user_lat, user_lng, t.lat, t.lng) <= (parsed.max_drive_minutes or 60)
                 ]
                 if nearby:
                     criteria = SearchCriteria(
@@ -261,6 +269,9 @@ def _handle_natural_language(
                         window=criteria.window,
                         holes=criteria.holes,
                         course_filter=nearby,
+                        target_time=criteria.target_time,
+                        time_min=criteria.time_min,
+                        time_max=criteria.time_max,
                     )
 
     # If this is a refinement and there's an active watch, update the watch.
@@ -301,6 +312,13 @@ def _build_criteria(parsed: ParsedSearch) -> SearchCriteria:
     callers are responsible for the precondition check.
     """
     assert parsed.date is not None and parsed.players is not None
+    from datetime import time as time_cls
+    def _parse_hhmm(s: str | None):
+        if s is None:
+            return None
+        h, m = s.split(":")
+        return time_cls(int(h), int(m))
+
     return SearchCriteria(
         date=parsed.date,
         players=parsed.players,
@@ -308,6 +326,8 @@ def _build_criteria(parsed: ParsedSearch) -> SearchCriteria:
         holes=parsed.holes or 18,
         course_filter=parsed.courses,
         target_time=parsed.target_time,
+        time_min=_parse_hhmm(parsed.time_min),
+        time_max=_parse_hhmm(parsed.time_max),
     )
 
 

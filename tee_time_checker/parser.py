@@ -91,6 +91,14 @@ class ParsedSearch(BaseModel):
             "when needs_clarification is true."
         ),
     )
+    max_drive_minutes: int | None = Field(
+        None,
+        description=(
+            "Drive time limit in minutes when the user requests proximity-based search "
+            "('within 30 minutes', '45 min drive', 'close by' → 20, 'under an hour' → 60). "
+            "Null if the user named a course/area or said 'usual'/'anywhere'."
+        ),
+    )
     is_refinement: bool = Field(
         False,
         description=(
@@ -104,7 +112,24 @@ class ParsedSearch(BaseModel):
         description=(
             "Specific clock time the user mentioned, as 'HH:MM' (24h). "
             "Set when user says 'around 4:30', 'at 5pm', 'before 6', etc. "
-            "Null if they only gave a window (morning/afternoon) with no clock time."
+            "Null if they only gave a window (morning/afternoon) with no clock time. "
+            "Null when time_min/time_max are set (range takes precedence)."
+        ),
+    )
+    time_min: str | None = Field(
+        None,
+        description=(
+            "Start of an explicit time range as 'HH:MM' (24h). "
+            "Set when user says '10am to 3pm', 'between noon and 4', 'from 11 to 2', etc. "
+            "Null if no explicit lower bound was given."
+        ),
+    )
+    time_max: str | None = Field(
+        None,
+        description=(
+            "End of an explicit time range as 'HH:MM' (24h). "
+            "Set when user says '10am to 3pm', 'between noon and 4', 'from 11 to 2', etc. "
+            "Null if no explicit upper bound was given."
         ),
     )
 
@@ -131,7 +156,14 @@ OPTIONAL with sensible defaults — leave null if the user didn't say:
 - `target_time` — specific clock time as "HH:MM" (24h) when user mentions \
 an approximate time like "around 4:30", "at 5pm", "before 6". Set the \
 appropriate `window` too (e.g. target_time "16:30" → window "afternoon"). \
-Leave null if user only gave a named window with no clock time.
+Leave null if user only gave a named window, a range, or no clock time.
+- `time_min` / `time_max` — explicit range bounds as "HH:MM" (24h) when user \
+gives a span like "10am to 3pm", "between noon and 4", "from 11 to 2", \
+"after 10 before 3", "anytime 10-3". Set both when a full range is given; \
+set only one for open-ended bounds ("after 10am", "before 2pm"). \
+When set, leave `target_time` null — the range is more precise. \
+Set `window` to the bucket that best covers the range \
+(e.g. 10am–3pm → "any"; 10am–noon → "morning"; 2pm–5pm → "afternoon").
 
 AREA / COURSE CLARIFICATION:
 {location_clarification}
@@ -239,7 +271,7 @@ def parse(
     course_areas: dict[str, str] | None = None,
     previous: ParsedSearch | None = None,
     last_search: ParsedSearch | None = None,
-    has_location_default: bool = False,
+    location_defaults_label: str | None = None,
     client: anthropic.Anthropic | None = None,
     model: str = MODEL_ID,
 ) -> ParsedSearch:
@@ -261,10 +293,21 @@ def parse(
     """
     client = client or anthropic.Anthropic()
 
-    if has_location_default:
+    if location_defaults_label is not None:
         location_clarification = (
-            "- The user has profile defaults (favorite courses or proximity). "
-            "Do NOT ask for location — leave `courses` null and the search layer will apply their defaults."
+            f"- The user has saved profile defaults: {location_defaults_label}. "
+            "If they did NOT mention a course name or area in their message, set "
+            "`needs_clarification=true` and ask exactly: "
+            f"\"Your usual spots ({location_defaults_label}), somewhere new, within a drive, or anywhere — what's it gonna be?\"\n"
+            "- If they reply 'usual', 'favorites', 'regular', 'my usual', 'same as always', "
+            "or similar → leave `courses` null (profile defaults will apply) and proceed.\n"
+            "- If they say 'anywhere', 'any', 'don't care', 'idgaf', or similar "
+            "→ leave `courses` null and proceed.\n"
+            "- If they mention a drive time ('within 30 minutes', '45 min drive', 'close by', "
+            "'under an hour') → leave `courses` null (the search layer will filter by drive time "
+            "from their zip) and proceed.\n"
+            "- If they name a course or area → use those slugs.\n"
+            "- Do NOT ask for location if they already specified a course or area."
         )
     else:
         location_clarification = (

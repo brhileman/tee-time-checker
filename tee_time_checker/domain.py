@@ -8,7 +8,7 @@ belong inside the adapters.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import date, datetime
+from datetime import date, datetime, time
 from enum import StrEnum
 from typing import Any
 
@@ -41,7 +41,14 @@ class TimeWindow(StrEnum):
             case TimeWindow.ANY:
                 return (0, 23)
 
-    def contains(self, dt: datetime) -> bool:
+    def contains(self, dt: datetime, time_min: time | None = None, time_max: time | None = None) -> bool:
+        if time_min is not None or time_max is not None:
+            slot_time = dt.time().replace(second=0, microsecond=0)
+            if time_min is not None and slot_time < time_min:
+                return False
+            if time_max is not None and slot_time > time_max:
+                return False
+            return True
         start, end = self.bounds()
         return start <= dt.hour < end
 
@@ -60,6 +67,8 @@ class SearchCriteria:
     holes: int = 18  # 9 or 18; most adapters honor this where supported
     course_filter: list[str] | None = None  # restrict to these target slugs
     target_time: str | None = None  # "HH:MM" hint when user said "around 4:30"
+    time_min: time | None = None  # explicit lower bound, e.g. 10:00 from "10am-3pm"
+    time_max: time | None = None  # explicit upper bound, e.g. 15:00 from "10am-3pm"
 
 
 @dataclass(frozen=True, slots=True)

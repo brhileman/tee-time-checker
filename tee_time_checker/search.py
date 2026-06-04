@@ -96,7 +96,7 @@ def search(
         # Apply the window filter centrally — adapters return full-day data.
         # Also drop slots where a round won't finish before dark.
         for s in slots:
-            if not criteria.window.contains(s.start_time):
+            if not criteria.window.contains(s.start_time, criteria.time_min, criteria.time_max):
                 continue
             if assess(s.start_time, criteria.holes).risk in (DaylightRisk.TWILIGHT, DaylightRisk.AFTER_DARK):
                 continue

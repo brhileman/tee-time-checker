@@ -21,7 +21,7 @@ import os
 import sqlite3
 from contextlib import contextmanager
 from dataclasses import dataclass
-from datetime import date as date_cls, datetime, timedelta
+from datetime import date as date_cls, datetime, time as time_cls, timedelta
 from pathlib import Path
 from typing import Iterator
 from zoneinfo import ZoneInfo
@@ -400,7 +400,6 @@ class UserProfile:
     zipcode: str | None
     favorite_slugs: list[str]    # empty = no specific favorites
     excluded_slugs: list[str]    # courses to never show
-    max_drive_minutes: int | None
     onboarding_step: str         # 'zip' | 'courses' | 'done'
     created_at: datetime
     updated_at: datetime
@@ -420,7 +419,6 @@ def upsert_profile(
     zipcode: str | None = None,
     favorite_slugs: list[str] | None = None,
     excluded_slugs: list[str] | None = None,
-    max_drive_minutes: int | None = None,
     onboarding_step: str = "done",
     now: datetime | None = None,
 ) -> UserProfile:
@@ -428,13 +426,12 @@ def upsert_profile(
     with connect() as c:
         c.execute(
             """
-            INSERT INTO user_profiles (phone, zipcode, favorite_slugs, excluded_slugs, max_drive_minutes, onboarding_step, created_at, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO user_profiles (phone, zipcode, favorite_slugs, excluded_slugs, onboarding_step, created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
             ON CONFLICT(phone) DO UPDATE SET
                 zipcode            = COALESCE(excluded.zipcode, zipcode),
                 favorite_slugs     = excluded.favorite_slugs,
                 excluded_slugs     = excluded.excluded_slugs,
-                max_drive_minutes  = COALESCE(excluded.max_drive_minutes, max_drive_minutes),
                 onboarding_step    = excluded.onboarding_step,
                 updated_at         = excluded.updated_at
             """,
@@ -443,7 +440,6 @@ def upsert_profile(
                 zipcode,
                 json.dumps(favorite_slugs or []),
                 json.dumps(excluded_slugs or []),
-                max_drive_minutes,
                 onboarding_step,
                 _dt_iso(now),
                 _dt_iso(now),
@@ -458,7 +454,6 @@ def _row_to_profile(row: sqlite3.Row) -> UserProfile:
         zipcode=row["zipcode"],
         favorite_slugs=json.loads(row["favorite_slugs"] or "[]"),
         excluded_slugs=json.loads(row["excluded_slugs"] or "[]"),
-        max_drive_minutes=row["max_drive_minutes"],
         onboarding_step=row["onboarding_step"],
         created_at=datetime.fromisoformat(row["created_at"]),
         updated_at=datetime.fromisoformat(row["updated_at"]),
@@ -523,18 +518,29 @@ def _criteria_to_json(c: SearchCriteria) -> str:
             "window": c.window.value,
             "holes": c.holes,
             "course_filter": c.course_filter,
+            "time_min": c.time_min.strftime("%H:%M") if c.time_min else None,
+            "time_max": c.time_max.strftime("%H:%M") if c.time_max else None,
         }
     )
 
 
 def _criteria_from_json(s: str) -> SearchCriteria:
     d = json.loads(s)
+
+    def _parse_t(v: str | None) -> time_cls | None:
+        if v is None:
+            return None
+        h, m = v.split(":")
+        return time_cls(int(h), int(m))
+
     return SearchCriteria(
         date=date_cls.fromisoformat(d["date"]),
         players=d["players"],
         window=TimeWindow(d["window"]),
         holes=d["holes"],
         course_filter=d["course_filter"],
+        time_min=_parse_t(d.get("time_min")),
+        time_max=_parse_t(d.get("time_max")),
     )
 
 
