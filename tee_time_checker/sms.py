@@ -316,17 +316,19 @@ def _build_criteria(parsed: ParsedSearch) -> SearchCriteria:
     from datetime import time as time_cls
 
     def _parse_hhmm(s: str) -> time_cls:
-        h, m = s.split(":")
-        return time_cls(int(h), int(m))
+        parts = s.strip().split(":")
+        return time_cls(int(parts[0]), int(parts[1]))
 
     time_min = time_max = target_time = None
     if parsed.target_time:
-        if "-" in parsed.target_time:
-            lo, hi = parsed.target_time.split("-", 1)
-            time_min = _parse_hhmm(lo)
-            time_max = _parse_hhmm(hi)
+        # Match "HH:MM-HH:MM" — split on the dash between the two times
+        range_match = re.match(r"^(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})$", parsed.target_time.strip())
+        if range_match:
+            time_min = _parse_hhmm(range_match.group(1))
+            time_max = _parse_hhmm(range_match.group(2))
         else:
             target_time = parsed.target_time
+            log.debug("target_time unparseable as range, treating as point: %r", parsed.target_time)
 
     return SearchCriteria(
         date=parsed.date,
