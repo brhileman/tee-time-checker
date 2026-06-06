@@ -49,18 +49,20 @@ CREATE TABLE IF NOT EXISTS watches (
     last_checked_at     TEXT,
     last_seen_slot_count INTEGER,
     notified_at         TEXT,
-    last_checkin_at     TEXT
+    last_checkin_at     TEXT,
+    initial_slot_keys   TEXT
 );
 
 CREATE INDEX IF NOT EXISTS watches_status_next_idx
     ON watches (status, next_check_at);
 
 CREATE TABLE IF NOT EXISTS pending_conversations (
-    phone         TEXT PRIMARY KEY,
-    parsed_json   TEXT NOT NULL,
-    criteria_json TEXT,          -- resolved SearchCriteria, set on a search miss for WATCH
-    expires_at    TEXT NOT NULL,
-    updated_at    TEXT NOT NULL
+    phone              TEXT PRIMARY KEY,
+    parsed_json        TEXT NOT NULL,
+    criteria_json      TEXT,          -- resolved SearchCriteria, set on a search miss/hit for WATCH
+    initial_slot_keys  TEXT,          -- baseline slot keys from a hit, so WATCH hunts for NEW slots
+    expires_at         TEXT NOT NULL,
+    updated_at         TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS last_searches (
@@ -119,6 +121,14 @@ def connect() -> Iterator[sqlite3.Connection]:
             conn.execute("ALTER TABLE last_searches ADD COLUMN searched_slugs TEXT")
         except sqlite3.OperationalError:
             pass
+        try:
+            conn.execute("ALTER TABLE watches ADD COLUMN initial_slot_keys TEXT")
+        except sqlite3.OperationalError:
+            pass
+        try:
+            conn.execute("ALTER TABLE pending_conversations ADD COLUMN initial_slot_keys TEXT")
+        except sqlite3.OperationalError:
+            pass
         conn.execute("BEGIN")
         yield conn
         conn.execute("COMMIT")
@@ -153,6 +163,7 @@ class Watch:
     last_seen_slot_count: int | None = None
     notified_at: datetime | None = None
     last_checkin_at: datetime | None = None
+    initial_slot_keys: frozenset[str] | None = None  # baseline from initial hit; watch fires only on NEW slots
 
 
 def start_watch(
@@ -161,6 +172,7 @@ def start_watch(
     *,
     duration_hours: int = 24,
     initial_check_delay_minutes: int = 0,
+    initial_slot_keys: frozenset[str] | None = None,
     now: datetime | None = None,
 ) -> Watch:
     """Create or replace a watch for `phone`.
@@ -170,6 +182,10 @@ def start_watch(
     `initial_check_delay_minutes` to delay the first tick (useful when
     the caller just ran a search and got nothing — wait a bit before the
     next attempt).
+
+    `initial_slot_keys` is a frozenset of "slug|YYYY-MM-DDTHH:MM" strings
+    representing slots already shown to the user. When set, the watch only
+    fires if a poll finds slots NOT in this baseline ("watch for new" mode).
     """
     now = now or datetime.now(tz=ZoneInfo("UTC"))
     watch = Watch(
@@ -179,20 +195,23 @@ def start_watch(
         created_at=now,
         expires_at=now + timedelta(hours=duration_hours),
         next_check_at=now + timedelta(minutes=initial_check_delay_minutes),
+        initial_slot_keys=initial_slot_keys,
     )
+    keys_json = json.dumps(sorted(initial_slot_keys)) if initial_slot_keys else None
     with connect() as c:
         c.execute(
             """
             INSERT INTO watches (
                 phone, criteria_json, status,
-                created_at, expires_at, next_check_at
-            ) VALUES (?, ?, ?, ?, ?, ?)
+                created_at, expires_at, next_check_at, initial_slot_keys
+            ) VALUES (?, ?, ?, ?, ?, ?, ?)
             ON CONFLICT(phone) DO UPDATE SET
                 criteria_json   = excluded.criteria_json,
                 status          = excluded.status,
                 created_at      = excluded.created_at,
                 expires_at      = excluded.expires_at,
                 next_check_at   = excluded.next_check_at,
+                initial_slot_keys = excluded.initial_slot_keys,
                 last_checked_at = NULL,
                 last_seen_slot_count = NULL,
                 notified_at     = NULL,
@@ -205,6 +224,7 @@ def start_watch(
                 _dt_iso(watch.created_at),
                 _dt_iso(watch.expires_at),
                 _dt_iso(watch.next_check_at),
+                keys_json,
             ),
         )
     return watch
@@ -355,6 +375,7 @@ def save_pending(
     parsed: ParsedSearch,
     *,
     criteria: SearchCriteria | None = None,
+    initial_slot_keys: frozenset[str] | None = None,
     ttl_minutes: int = 30,
     now: datetime | None = None,
 ) -> None:
@@ -363,28 +384,34 @@ def save_pending(
     Conversation state is short-lived — if the user goes silent for half
     an hour, treat their next message as fresh.
 
-    `criteria` is the fully-resolved SearchCriteria from a search miss
-    (time ranges + profile defaults already applied). It's stored so a
-    follow-up `WATCH` reply hunts exactly what was searched, rather than
-    re-deriving from the bare parse. Leave None for mid-dialog partials.
+    `criteria` is the fully-resolved SearchCriteria from a search miss or hit
+    (time ranges + profile defaults already applied). Stored so a follow-up
+    `WATCH` hunts exactly what was searched.
+
+    `initial_slot_keys` is set on a search HIT — frozenset of
+    "slug|YYYY-MM-DDTHH:MM" strings for every slot already shown. A follow-up
+    WATCH will only fire when slots appear that aren't in this baseline.
     """
     now = now or datetime.now(tz=ZoneInfo("UTC"))
     expires = now + timedelta(minutes=ttl_minutes)
+    keys_json = json.dumps(sorted(initial_slot_keys)) if initial_slot_keys else None
     with connect() as c:
         c.execute(
             """
-            INSERT INTO pending_conversations (phone, parsed_json, criteria_json, expires_at, updated_at)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO pending_conversations (phone, parsed_json, criteria_json, initial_slot_keys, expires_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?)
             ON CONFLICT(phone) DO UPDATE SET
-                parsed_json   = excluded.parsed_json,
-                criteria_json = excluded.criteria_json,
-                expires_at    = excluded.expires_at,
-                updated_at    = excluded.updated_at
+                parsed_json       = excluded.parsed_json,
+                criteria_json     = excluded.criteria_json,
+                initial_slot_keys = excluded.initial_slot_keys,
+                expires_at        = excluded.expires_at,
+                updated_at        = excluded.updated_at
             """,
             (
                 phone,
                 parsed.model_dump_json(),
                 _criteria_to_json(criteria) if criteria is not None else None,
+                keys_json,
                 _dt_iso(expires),
                 _dt_iso(now),
             ),
@@ -409,6 +436,25 @@ def get_pending_criteria(phone: str, *, now: datetime | None = None) -> SearchCr
     if datetime.fromisoformat(row["expires_at"]) <= now:
         return None
     return _criteria_from_json(row["criteria_json"])
+
+
+def get_pending_initial_slot_keys(phone: str, *, now: datetime | None = None) -> frozenset[str] | None:
+    """Return the baseline slot keys saved on the last search HIT, or None.
+
+    None means "no baseline" — a follow-up WATCH will hunt for any slots,
+    not just new ones.
+    """
+    now = now or datetime.now(tz=ZoneInfo("UTC"))
+    with connect() as c:
+        row = c.execute(
+            "SELECT initial_slot_keys, expires_at FROM pending_conversations WHERE phone = ?",
+            (phone,),
+        ).fetchone()
+    if not row or row["initial_slot_keys"] is None:
+        return None
+    if datetime.fromisoformat(row["expires_at"]) <= now:
+        return None
+    return frozenset(json.loads(row["initial_slot_keys"]))
 
 
 def clear_pending(phone: str) -> None:
@@ -621,6 +667,7 @@ def _dt_iso(dt: datetime) -> str:
 
 
 def _row_to_watch(row: sqlite3.Row) -> Watch:
+    raw_keys = row["initial_slot_keys"] if "initial_slot_keys" in row.keys() else None
     return Watch(
         phone=row["phone"],
         criteria=_criteria_from_json(row["criteria_json"]),
@@ -644,4 +691,5 @@ def _row_to_watch(row: sqlite3.Row) -> Watch:
             if row["last_checkin_at"]
             else None
         ),
+        initial_slot_keys=frozenset(json.loads(raw_keys)) if raw_keys else None,
     )

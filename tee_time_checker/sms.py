@@ -35,7 +35,7 @@ from typing import TYPE_CHECKING
 from tee_time_checker import profile as profile_mod
 from tee_time_checker import state
 from tee_time_checker.config import load_targets
-from tee_time_checker.domain import SearchCriteria, TimeWindow
+from tee_time_checker.domain import SearchCriteria, TimeWindow, slot_key
 from tee_time_checker.geo import drive_minutes, zip_coords
 from tee_time_checker.parser import ParsedSearch, parse
 from tee_time_checker.search import build_default_registry, search
@@ -154,18 +154,29 @@ def _handle_command(cmd: str, phone: str, *, notifier: "Notifier", watch_key: st
             )
             return
 
-        # Prefer the resolved criteria saved on the miss (carries the exact
+        # Prefer the resolved criteria saved on the miss/hit (carries the exact
         # time range and profile-resolved courses); fall back to rebuilding
         # from the bare parse for older pendings.
         criteria = state.get_pending_criteria(phone) or _build_criteria(pending)
-        state.start_watch(watch_key, criteria, initial_check_delay_minutes=10)
+        initial_slot_keys = state.get_pending_initial_slot_keys(phone)
+        state.start_watch(
+            watch_key, criteria,
+            initial_check_delay_minutes=10,
+            initial_slot_keys=initial_slot_keys,
+        )
         state.clear_pending(phone)
 
-        notifier.notify(
-            phone,
-            "I'm on it. Watching for the next 24h like a lion stalking the jungle. "
-            "I'll holler when something opens up. Reply STOP to call it off.",
-        )
+        if initial_slot_keys:
+            msg = (
+                "On it. I'll keep an eye out and holler if anything new opens up beyond what's already there. "
+                "Reply STOP to call it off."
+            )
+        else:
+            msg = (
+                "I'm on it. Watching for the next 24h like a lion stalking the jungle. "
+                "I'll holler when something opens up. Reply STOP to call it off."
+            )
+        notifier.notify(phone, msg)
         return
 
 
@@ -314,8 +325,13 @@ def _handle_natural_language(
     state.save_last_search(phone, parsed, searched_slugs=searched_slugs)
 
     if result.tee_times:
-        state.clear_pending(phone)
-        notifier.notify(phone, format_sms_summary(result))
+        # Build a baseline fingerprint of every slot we're about to show so a
+        # follow-up WATCH only fires on genuinely new openings.
+        slot_keys = frozenset(slot_key(tt) for tt in result.tee_times)
+        state.save_pending(phone, parsed, criteria=criteria, initial_slot_keys=slot_keys)
+        body = format_sms_summary(result)
+        body += "\n\nReply **WATCH** and I'll alert you if any new slots open up."
+        notifier.notify(phone, body)
         return
 
     # Miss. Save the complete parse (dialog context) AND the resolved criteria

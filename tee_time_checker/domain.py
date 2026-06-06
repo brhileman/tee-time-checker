@@ -88,3 +88,15 @@ class TeeTime:
     holes: int
     booking_url: str | None = None      # deep-link the user can tap to book
     raw: dict[str, Any] = field(default_factory=dict, repr=False)  # debugging only
+
+
+def slot_key(tt: TeeTime) -> str:
+    """Stable fingerprint for one slot — `"slug|YYYY-MM-DDTHH:MM"`.
+
+    Used to compare a watch's poll results against the slots already shown
+    to the user, so a "watch for new" can fire only on genuinely new
+    openings. Course-local wall time is fine here: each adapter normalizes
+    to its course timezone consistently across polls, so the same slot keys
+    the same string every time.
+    """
+    return f"{tt.course_slug}|{tt.start_time.strftime('%Y-%m-%dT%H:%M')}"

@@ -162,19 +162,6 @@ booking_url = "https://www.riverdalegolf.com/teetimes/"
   alias = "riverdale"
   facility_id = 1016
 
-[[targets]]
-slug = "riverdale-knolls"
-name = "Riverdale Knolls"
-adapter = "teeitup"
-timezone = "America/Denver"
-area = "northeast"
-lat = 39.9158
-lng = -104.9814
-booking_url = "https://www.riverdalegolf.com/teetimes/"
-
-  [targets.params]
-  alias = "riverdale"
-  facility_id = 1017
 
 [[targets]]
 slug = "commonground"
@@ -254,8 +241,7 @@ booking_url = "https://indiantree.cps.golf/onlineresweb/search-teetime"
   website_id = "00000000-0000-0000-0000-000000000000"
   api_key = "8ea2914e-cac2-48a7-a3e5-e0f41350bf3a"
   site_id = 1
-  # 1 = Regulation 18, 2 = Regulation Back 9
-  course_ids = [1, 2]
+  course_ids = [1]
 
 [[targets]]
 slug = "green-valley-ranch"

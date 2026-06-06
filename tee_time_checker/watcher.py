@@ -37,7 +37,8 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 from tee_time_checker import state
 from tee_time_checker.config import load_targets
-from tee_time_checker.search import build_default_registry, search
+from tee_time_checker.domain import slot_key
+from tee_time_checker.search import SearchResult, build_default_registry, search
 from tee_time_checker.summary import format_sms_summary
 from tee_time_checker.state import Watch
 
@@ -282,10 +283,27 @@ def _process_one(
     result = search(watch.criteria, targets, registry)
 
     if result.tee_times:
-        # Hit — notify-once-then-stop semantics.
-        state.mark_watch_fired(watch.phone, slot_count=len(result.tee_times), fired_at=now)
-        notifier.notify(watch.phone, format_sms_summary(result))
-        return "fired"
+        # A watch started off a hit carries a baseline of the slots already
+        # shown — for those, only slots NOT in the baseline count as a fire.
+        # A watch started off a miss has no baseline, so every slot counts.
+        if watch.initial_slot_keys is not None:
+            new_slots = [tt for tt in result.tee_times if slot_key(tt) not in watch.initial_slot_keys]
+            prefix = "🆕 New slots just opened up!\n\n"
+        else:
+            new_slots = result.tee_times
+            prefix = ""
+
+        if new_slots:
+            fire_result = SearchResult(
+                criteria=result.criteria,
+                tee_times=new_slots,
+                errors=result.errors,
+                targets_searched=result.targets_searched,
+            )
+            state.mark_watch_fired(watch.phone, slot_count=len(new_slots), fired_at=now)
+            notifier.notify(watch.phone, prefix + format_sms_summary(fire_result))
+            return "fired"
+        # Slots exist but all were already shown — fall through and keep watching.
 
     # Miss — send a check-in if one is due, then schedule next search tick.
     checkin_time = _due_checkin(watch, now)
